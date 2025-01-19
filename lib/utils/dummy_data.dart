@@ -339,6 +339,22 @@ class DummyData {
     "Remove"
   ];
 
+  static List<String> countryItems = [
+    "India",
+    "UAE",
+    "USA",
+    "Send to Bar",
+    "Remove"
+  ];
+
+  static List<String> stateItems = [
+    "Delhi",
+    "Ahmedabad",
+    "Surat",
+    "Baroda",
+    "Mumbai"
+  ];
+
   static List<String> payItems = [
     'Cash',
     'Credit Card',

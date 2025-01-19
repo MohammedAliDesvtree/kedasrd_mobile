@@ -15,7 +15,8 @@ import 'package:kedasrd/views/pos/cart_view.dart';
 
 import 'package:kedasrd/views/settings_view.dart';
 
-import 'package:kedasrd/views/online_store_view.dart';
+import 'package:kedasrd/views/online_store/info.dart';
+import 'package:kedasrd/views/online_store/online_store_view.dart';
 
 import 'package:kedasrd/views/restaurant/orders_view.dart';
 import 'package:kedasrd/views/restaurant/shifts_view.dart';
@@ -115,6 +116,7 @@ class MyApp extends StatelessWidget {
               name: '/keypad_screens', page: () => const KeypadScreensView()),
           // Online Store
           GetPage(name: '/onlineStore', page: () => const OnlineStoreView()),
+          GetPage(name: '/info', page: () => const Info()),
           // Settings
           GetPage(name: '/settings', page: () => const SettingsView()),
           // Notifications

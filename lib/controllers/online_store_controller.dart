@@ -27,9 +27,9 @@ class OnlineStoreController extends GetxController {
       isLoading.value = false;
     });
 
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-      SystemUiOverlay.top,
-    ]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+    //   SystemUiOverlay.top,
+    // ]);
   }
 
   @override
@@ -38,18 +38,28 @@ class OnlineStoreController extends GetxController {
     isVisible.value = false;
     isLoading.value = true;
 
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-      SystemUiOverlay.top,
-      SystemUiOverlay.bottom,
-    ]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+    //   SystemUiOverlay.top,
+    //   SystemUiOverlay.bottom,
+    // ]);
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-      SystemUiOverlay.top,
-      SystemUiOverlay.bottom,
-    ]);
+  // @override
+  // void onClose() {
+  //   super.onClose();
+  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+  //     SystemUiOverlay.top,
+  //     SystemUiOverlay.bottom,
+  //   ]);
+  // }
+
+  var selectedItems = <String>{}.obs;
+
+  void toggleSelection(String item) {
+    if (selectedItems.contains(item)) {
+      selectedItems.remove(item);
+    } else {
+      selectedItems.add(item);
+    }
   }
 }

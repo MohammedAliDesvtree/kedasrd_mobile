@@ -34,50 +34,64 @@ class _FastFoodCartState extends State<FastFoodCart> {
       key: fastFoodCartGlobalKey,
       backgroundColor: Themes.kWhiteColor,
       drawer: CustomDrawer(items: DummyData.fastFoodDrawerItems),
-      bottomNavigationBar: Container(
-        height: 124.0,
-        padding: const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          boxShadow: [
-            BoxShadow(
-              color: Themes.kBlackColor.withOpacity(0.20),
-              blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 0),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Material(
-              color: Themes.kTransparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(24.0),
-                onTap: () => clearOrder(context),
-                child: Ink(
-                  decoration: BoxDecoration(
-                      color: Themes.kGreyColor[300],
-                      borderRadius: BorderRadius.circular(24.0)),
-                  child: Container(
-                    height: 24.0,
-                    width: 24.0,
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      Images.close,
-                      color: Themes.kRedColor,
-                    ),
-                  ),
+      bottomNavigationBar: data["title"] == "Online Store"
+          ? SafeArea(
+              child: SizedBox(
+                height: 64.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(height: 8.0),
+                    checkoutButton(),
+                  ],
                 ),
               ),
+            )
+          : Container(
+              height: 124.0,
+              padding:
+                  const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Themes.kWhiteColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Themes.kBlackColor.withOpacity(0.20),
+                    blurRadius: 8.0,
+                    spreadRadius: -3,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Material(
+                    color: Themes.kTransparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(24.0),
+                      onTap: () => clearOrder(context),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                            color: Themes.kGreyColor[300],
+                            borderRadius: BorderRadius.circular(24.0)),
+                        child: Container(
+                          height: 24.0,
+                          width: 24.0,
+                          padding: const EdgeInsets.all(8.0),
+                          child: Image.asset(
+                            Images.close,
+                            color: Themes.kRedColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6.0),
+                  bottomButtons(),
+                ],
+              ),
             ),
-            const SizedBox(height: 6.0),
-            bottomButtons(),
-          ],
-        ),
-      ),
       body: SafeArea(
         bottom: false,
         child: Column(
@@ -524,6 +538,34 @@ class _FastFoodCartState extends State<FastFoodCart> {
         height: 11.0,
         width: 11.0,
         color: Themes.kPrimaryColor,
+      ),
+    );
+  }
+
+  Widget checkoutButton() {
+    return Material(
+      color: Themes.kTransparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8.0),
+        onTap: () => Get.toNamed("/info"),
+        child: Ink(
+          decoration: const BoxDecoration(
+            color: Themes.kPrimaryColor,
+            // borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Container(
+            height: 54.0,
+            alignment: Alignment.center,
+            child: const Text(
+              "Checkout",
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w700,
+                color: Themes.kWhiteColor,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }
