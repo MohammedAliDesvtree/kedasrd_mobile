@@ -25,17 +25,17 @@ class _InfoState extends State<Info> {
         bottom: false,
         child: Column(
           children: [
-            const CustomHeader(title: "Info"),
+            const CustomHeader(title: "Add Address"),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Column(
                     children: [
-                      CustomDropdowns(
-                          listData: DummyData.countryItems,
-                          hintText: "Select Country"),
-                      const SizedBox(height: 14.0),
+                      // CustomDropdowns(
+                      //     listData: DummyData.countryItems,
+                      //     hintText: "Select Country"),
+                      // const SizedBox(height: 14.0),
                       inputView("Full Name"),
                       const SizedBox(height: 14.0),
                       inputView("Mobile Number"),
@@ -45,12 +45,12 @@ class _InfoState extends State<Info> {
                       const SizedBox(height: 14.0),
                       inputView("Area, Street, Sector, Village"),
                       const SizedBox(height: 14.0),
-                      inputView("Landmark"),
+                      inputView("Landmark (Optional)"),
                       const SizedBox(height: 14.0),
-                      CustomDropdowns(
-                          listData: DummyData.stateItems,
-                          hintText: "Select State"),
-                      const SizedBox(height: 14.0),
+                      // CustomDropdowns(
+                      //     listData: DummyData.stateItems,
+                      //     hintText: "Select State"),
+                      // const SizedBox(height: 14.0),
                       inputView("Town/City"),
                       const SizedBox(height: 14.0),
                       inputView("Pincode"),
@@ -114,14 +114,28 @@ class _InfoState extends State<Info> {
           ),
           child: Container(
             height: 54.0,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             alignment: Alignment.center,
-            child: const Text(
-              "Continue",
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w700,
-                color: Themes.kWhiteColor,
-              ),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "2 Items",
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w700,
+                    color: Themes.kWhiteColor,
+                  ),
+                ),
+                const Text(
+                  "Pay \$1024.32",
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w700,
+                    color: Themes.kWhiteColor,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

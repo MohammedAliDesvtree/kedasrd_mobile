@@ -24,11 +24,16 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    double modalSize = widget.title.contains("Payment")
-        ? 0.4
-        : widget.title.contains("Item")
-            ? 0.25
-            : 0.2;
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+
+    double modalSize = !isPortrait
+        ? 0.6
+        : widget.title.contains("Payment")
+            ? 0.4
+            : widget.title.contains("Item")
+                ? 0.25
+                : 0.2;
     return DraggableScrollableSheet(
       initialChildSize: modalSize, // Opens at 1/3 screen height
       minChildSize: modalSize, // Minimum 1/3 screen height

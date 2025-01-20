@@ -16,7 +16,10 @@ class OrdersView extends StatefulWidget {
 class _OrdersViewState extends State<OrdersView> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       body: SafeArea(
@@ -26,17 +29,22 @@ class _OrdersViewState extends State<OrdersView> {
             customHeader(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Column(
+              child: Wrap(
+                spacing: 16.0,
+                runSpacing: 16.0,
                 children: List.generate(DummyData.ordersItems.length, (index) {
                   var data = DummyData.ordersItems[index];
+
+                  // Calculate item width based on orientation
+                  final itemWidth = isPortrait
+                      ? size.width - 32 // Account for padding
+                      : (size.width / 2.2);
+
                   return WidgetAnimator(
                     incomingEffect:
                         WidgetTransitionEffects.incomingSlideInFromRight(
                             delay: Duration(milliseconds: index * 200)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 14.0),
-                      child: ordersItem(data, size),
-                    ),
+                    child: ordersItem(data, size, itemWidth),
                   );
                 }),
               ),
@@ -47,12 +55,13 @@ class _OrdersViewState extends State<OrdersView> {
     );
   }
 
-  Widget ordersItem(dynamic data, Size size) {
+  Widget ordersItem(dynamic data, Size size, double itemWidth) {
     return GestureDetector(
       onTap: () =>
           Get.toNamed('/all_orders', arguments: {"title": data["title"]}),
       child: Container(
         height: 52.0,
+        width: itemWidth,
         padding: const EdgeInsets.symmetric(horizontal: 14.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8.0),

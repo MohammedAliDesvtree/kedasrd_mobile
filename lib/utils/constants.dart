@@ -1,6 +1,7 @@
+import 'package:get/get.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
 import 'package:kedasrd/utils/themes.dart';
 
 class Constants {
@@ -18,10 +19,10 @@ class Constants {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  static Widget divider() {
+  static Widget divider(Size size) {
     return Container(
       height: 0.2,
-      width: Get.width,
+      width: size.width,
       color: Themes.kGreyColor,
       margin: const EdgeInsets.symmetric(vertical: 6.0),
     );

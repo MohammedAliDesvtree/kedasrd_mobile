@@ -26,6 +26,10 @@ class _TablesViewState extends State<TablesView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       key: tablesGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -33,7 +37,8 @@ class _TablesViewState extends State<TablesView> {
       body: SafeArea(
         bottom: false,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:
+              isPortrait ? CrossAxisAlignment.center : CrossAxisAlignment.start,
           children: [
             CustomHeader(
                 title: data["title"],
@@ -50,7 +55,7 @@ class _TablesViewState extends State<TablesView> {
                           : controller.selectedTabIndex.value == 3
                               ? 1
                               : 1;
-              return tablesView(tableLength);
+              return tablesView(tableLength, isPortrait, size);
             }),
             const SizedBox(height: 24.0),
           ],
@@ -59,31 +64,39 @@ class _TablesViewState extends State<TablesView> {
     );
   }
 
-  Widget tablesView(int tableLength) {
+  Widget tablesView(int tableLength, bool isPortrait, Size size) {
     return Obx(
-      () => Padding(
-        key: ValueKey(controller.selectedTabIndex.value),
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Wrap(
-          runSpacing: 16.0,
-          spacing: 16.0,
-          children: List.generate(tableLength, (index) {
-            return WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingScaleDown(
-                    delay: Duration(milliseconds: index * 100)),
-                child: customTables(index, controller.randomNumbers[index]));
-          }),
+      () => Expanded(
+        child: SingleChildScrollView(
+          key: ValueKey(controller.selectedTabIndex.value),
+          padding: EdgeInsets.symmetric(horizontal: isPortrait ? 0.0 : 16.0),
+          child: Wrap(
+            runSpacing: 16.0,
+            spacing: 16.0,
+            children: List.generate(tableLength, (index) {
+              // Calculate item width based on orientation
+              final itemWidth = isPortrait
+                  ? (size.width - 32) / 3.2 // Account for padding
+                  : (size.width - 32) / 7.2;
+
+              return WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingScaleDown(
+                      delay: Duration(milliseconds: index * 100)),
+                  child: customTables(
+                      index, controller.randomNumbers[index], itemWidth));
+            }),
+          ),
         ),
       ),
     );
   }
 
-  Widget customTables(int index, int randomNumber) {
+  Widget customTables(int index, int randomNumber, double itemWidth) {
     return GestureDetector(
       onTap: () => continueTable(),
       child: Container(
         height: 92.0,
-        width: Get.width / 3.6,
+        width: itemWidth,
         decoration: BoxDecoration(
           color: Themes.kWhiteColor,
           borderRadius: BorderRadius.circular(10.0),

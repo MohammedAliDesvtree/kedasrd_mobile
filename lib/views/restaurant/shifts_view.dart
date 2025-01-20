@@ -1,11 +1,12 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:kedasrd/widgets/custom_bottom_sheet_shifts.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
+
+import 'package:kedasrd/widgets/custom_bottom_sheet_shifts.dart';
 
 import 'package:kedasrd/controllers/restaurant/shifts_controller.dart';
 
@@ -21,7 +22,6 @@ class _ShiftsViewState extends State<ShiftsView> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       body: SafeArea(
@@ -42,7 +42,7 @@ class _ShiftsViewState extends State<ShiftsView> {
                                 delay: Duration(milliseconds: index * 200)),
                         child: Padding(
                           padding: const EdgeInsets.only(bottom: 14.0),
-                          child: shiftItem(size, index),
+                          child: shiftItem(index),
                         ),
                       );
                     }),
@@ -57,14 +57,14 @@ class _ShiftsViewState extends State<ShiftsView> {
     );
   }
 
-  Widget shiftItem(Size size, int index) {
+  Widget shiftItem(int index) {
     return Obx(() {
       bool isExpanded = controller.isExpanded[index] ?? false;
       return GestureDetector(
         onTap: () => controller.toggleExpansion(index),
         child: Container(
           // height: 56.0,
-          width: Get.width,
+          width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
           decoration: BoxDecoration(
             color: Themes.kWhiteColor,

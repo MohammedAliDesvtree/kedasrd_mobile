@@ -30,23 +30,13 @@ class _FastFoodCartState extends State<FastFoodCart> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     return Scaffold(
       key: fastFoodCartGlobalKey,
       backgroundColor: Themes.kWhiteColor,
       drawer: CustomDrawer(items: DummyData.fastFoodDrawerItems),
       bottomNavigationBar: data["title"] == "Online Store"
-          ? SafeArea(
-              child: SizedBox(
-                height: 64.0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    const SizedBox(height: 8.0),
-                    checkoutButton(),
-                  ],
-                ),
-              ),
-            )
+          ? checkoutButton()
           : Container(
               height: 124.0,
               padding:
@@ -102,46 +92,58 @@ class _FastFoodCartState extends State<FastFoodCart> {
                 onMenuTapped: () =>
                     fastFoodCartGlobalKey.currentState!.openDrawer()),
             customerDetails(),
-            const SizedBox(height: 14.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Dine In | User : Paloma Medrano",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w600,
-                      color: Themes.kBlackColor,
-                    ),
+            data["title"] == "Online Store"
+                ? const SizedBox.shrink()
+                : Column(
+                    children: [
+                      const SizedBox(height: 14.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Dine In | User : Paloma Medrano",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600,
+                                color: Themes.kBlackColor,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () => openBottomSheet(
+                                  "Options", DummyData.cartOptionsItems),
+                              child: Image.asset(
+                                Images.more,
+                                height: 14.0,
+                                color: Themes.kBlackColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () =>
-                        openBottomSheet("Options", DummyData.cartOptionsItems),
-                    child: Image.asset(
-                      Images.more,
-                      height: 14.0,
-                      color: Themes.kBlackColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
             const SizedBox(height: 14.0),
             // data["title"] == "Delivery"
             //     ?
             Expanded(
               child: Column(
                 children: [
-                  cartItems(),
+                  cartItems(size),
                   // const Spacer(),
                 ],
               ),
             ),
             // : emptySection(),
-            totalView(),
+            data["title"] == "Online Store"
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: digitSection("Total", "DOP \$1,024.32", 100),
+                  )
+                : totalView(),
             const SizedBox(height: 4.0),
             Obx(() {
               if (controller.isDigitsViewVisible.value) {
@@ -294,32 +296,34 @@ class _FastFoodCartState extends State<FastFoodCart> {
                     ),
                   ),
                 ),
-          GestureDetector(
-            onTap: () => showModalBottomSheet(
-              context: context,
-              isDismissible: false,
-              enableDrag: false,
-              isScrollControlled: true, // To allow full screen dragging
-              backgroundColor: Themes.kTransparent,
-              builder: (context) {
-                return const AddCustomerView();
-              },
-            ),
-            child: Container(
-              height: controller.isNameVisible.value ? 46.0 : 48.0,
-              padding:
-                  EdgeInsets.all(controller.isNameVisible.value ? 16.0 : 16.0),
-              margin: const EdgeInsets.symmetric(horizontal: 16.0),
-              decoration: BoxDecoration(
-                  color: Themes.kPrimaryColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8.0)),
-              child: Image.asset(
-                Images.add,
-                height: 12.0,
-                color: Themes.kPrimaryColor,
-              ),
-            ),
-          ),
+          data["title"] == "Online Store"
+              ? const SizedBox(width: 16.0)
+              : GestureDetector(
+                  onTap: () => showModalBottomSheet(
+                    context: context,
+                    isDismissible: false,
+                    enableDrag: false,
+                    isScrollControlled: true, // To allow full screen dragging
+                    backgroundColor: Themes.kTransparent,
+                    builder: (context) {
+                      return const AddCustomerView();
+                    },
+                  ),
+                  child: Container(
+                    height: controller.isNameVisible.value ? 46.0 : 48.0,
+                    padding: EdgeInsets.all(
+                        controller.isNameVisible.value ? 16.0 : 16.0),
+                    margin: const EdgeInsets.symmetric(horizontal: 16.0),
+                    decoration: BoxDecoration(
+                        color: Themes.kPrimaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.0)),
+                    child: Image.asset(
+                      Images.add,
+                      height: 12.0,
+                      color: Themes.kPrimaryColor,
+                    ),
+                  ),
+                ),
         ],
       ),
     );
@@ -371,7 +375,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
-  Widget cartItems() {
+  Widget cartItems(Size size) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
@@ -425,13 +429,19 @@ class _FastFoodCartState extends State<FastFoodCart> {
                     ),
                     const SizedBox(height: 10.0),
                     cartBullet("Items", "Nachitos Ricos"),
-                    Constants.divider(),
+                    Constants.divider(size),
                     cartBullet("Qty", "0"),
-                    Constants.divider(),
+                    Constants.divider(size),
                     cartBullet("Price", "0"),
-                    Constants.divider(),
-                    cartBullet("Disc %", "0"),
-                    Constants.divider(),
+                    Constants.divider(size),
+                    data["title"] == "Online Store"
+                        ? const SizedBox.shrink()
+                        : Column(
+                            children: [
+                              cartBullet("Disc %", "0"),
+                              Constants.divider(size),
+                            ],
+                          ),
                     cartBullet("Total", "\$500.00"),
                   ],
                 ),
@@ -557,7 +567,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
             height: 54.0,
             alignment: Alignment.center,
             child: const Text(
-              "Checkout",
+              "Add Address",
               style: const TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700,

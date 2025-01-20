@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+import 'package:kedasrd/widgets/custom_search_bar.dart';
 import 'package:kedasrd/widgets/custom_bottom_sheet.dart';
 
 import 'package:kedasrd/utils/images.dart';
@@ -21,7 +22,10 @@ class _AllOrdersViewState extends State<AllOrdersView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       body: SafeArea(
@@ -29,22 +33,26 @@ class _AllOrdersViewState extends State<AllOrdersView> {
         child: Column(
           children: [
             customHeader(),
-            searchBar(),
+            const CustomSearchBar(isEnabled: true, title: "Search Order"),
             const SizedBox(height: 16.0),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
+                  child: Wrap(
+                    spacing: 16.0,
+                    runSpacing: 16.0,
                     children: List.generate(5, (index) {
+                      // Calculate item width based on orientation
+                      final itemWidth = isPortrait
+                          ? size.width - 32 // Account for padding
+                          : (size.width / 2.2);
+
                       return WidgetAnimator(
                         incomingEffect:
                             WidgetTransitionEffects.incomingSlideInFromRight(
                                 delay: Duration(milliseconds: index * 200)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 14.0),
-                          child: orderItem(size, index),
-                        ),
+                        child: orderItem(size, index, itemWidth),
                       );
                     }),
                   ),
@@ -58,11 +66,11 @@ class _AllOrdersViewState extends State<AllOrdersView> {
     );
   }
 
-  Widget orderItem(Size size, int index) {
+  Widget orderItem(Size size, int index, double itemWidth) {
     String title = data["title"];
     return Container(
       // height: 56.0,
-      width: Get.width,
+      width: itemWidth,
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
@@ -82,8 +90,9 @@ class _AllOrdersViewState extends State<AllOrdersView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: Get.width / 4.3,
+              Expanded(
+                // width: size.width / 4.3,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -118,8 +127,9 @@ class _AllOrdersViewState extends State<AllOrdersView> {
                   ],
                 ),
               ),
-              SizedBox(
-                width: Get.width / 4.3,
+              Expanded(
+                // width: size.width / 4.3,
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -152,8 +162,9 @@ class _AllOrdersViewState extends State<AllOrdersView> {
                   ],
                 ),
               ),
-              SizedBox(
-                width: Get.width / 6.0,
+              Expanded(
+                // width: size.width / 6.0,
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -186,8 +197,9 @@ class _AllOrdersViewState extends State<AllOrdersView> {
                   ],
                 ),
               ),
-              SizedBox(
-                width: Get.width / 6.0,
+              Expanded(
+                // width: size.width / 6.0,
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -260,44 +272,6 @@ class _AllOrdersViewState extends State<AllOrdersView> {
                     : type == "Key"
                         ? Themes.kPrimaryColor
                         : Themes.kBlackColor,
-      ),
-    );
-  }
-
-  Widget searchBar() {
-    return WidgetAnimator(
-      incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(),
-      child: Container(
-        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-        padding: const EdgeInsets.only(left: 24.0, right: 10.0),
-        decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(48.0),
-          boxShadow: [
-            BoxShadow(
-              color: Themes.kBlackColor.withOpacity(0.20),
-              blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 0),
-            ),
-          ],
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
-            border: InputBorder.none,
-            hintText: "Search Order",
-            hintStyle: TextStyle(color: Themes.kGreyColor[500]),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Image.asset(
-                Images.search,
-                height: 24.0,
-                color: Themes.kGreyColor[500],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

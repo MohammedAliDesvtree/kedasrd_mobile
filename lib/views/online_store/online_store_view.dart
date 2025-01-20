@@ -9,11 +9,12 @@ import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
-import 'package:kedasrd/widgets/custom_dropdown.dart';
 // import 'package:kedasrd/widgets/custom_loader.dart';
+import 'package:kedasrd/widgets/custom_search_bar.dart';
+// import 'package:kedasrd/widgets/custom_dropdown.dart';
 // import 'package:kedasrd/widgets/custom_back_button.dart';
 
-import 'package:kedasrd/views/fastfood/filter_view.dart';
+// import 'package:kedasrd/views/fastfood/filter_view.dart';
 
 import 'package:kedasrd/controllers/online_store_controller.dart';
 
@@ -193,6 +194,10 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       // key: fastFoodGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -205,42 +210,52 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
               children: [
                 customHeader(),
                 // const SizedBox(height: 16.0),
-                customTabList(),
+                // customTabList(),
+                tabList(),
                 const SizedBox(height: 16.0),
-                Obx(() => controller.selectedItems.contains("Search Customer")
-                    ? Column(
+                Obx(() => controller.isSearchVisible.value
+                    ? const Column(
                         children: [
-                          searchBar("Price List", false),
+                          CustomSearchBar(
+                              isEnabled: true, title: "Search Item by Name"),
                           const SizedBox(height: 16.0),
                         ],
                       )
                     : const SizedBox.shrink()),
-                Obx(() =>
-                    controller.selectedItems.contains("Search Item by Name")
-                        ? Column(
-                            children: [
-                              searchBar("Search Item by Name", true),
-                              const SizedBox(height: 16.0),
-                            ],
-                          )
-                        : const SizedBox.shrink()),
-                Obx(() => controller.selectedItems.contains("Select Currency")
-                    ? Column(
-                        children: [
-                          Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: CustomDropdowns(
-                                listData: DummyData.currencyItems,
-                                hintText: "Select Currency",
-                                borderRadius: 100.0,
-                                isShadow: true,
-                              )),
-                          const SizedBox(height: 16.0),
-                        ],
-                      )
-                    : const SizedBox.shrink()),
-                productList(),
+                // Obx(() => controller.selectedItems.contains("Search Customer")
+                //     ? Column(
+                //         children: [
+                //  CustomSearchBar(isEnabled: false, title: "Price List"),
+                //           const SizedBox(height: 16.0),
+                //         ],
+                //       )
+                //     : const SizedBox.shrink()),
+                // Obx(() =>
+                //     controller.selectedItems.contains("Search Item by Name")
+                //         ? Column(
+                //             children: [
+                //  CustomSearchBar(isEnabled: true, title: "Search Item by Name"),
+                //               const SizedBox(height: 16.0),
+                //             ],
+                //           )
+                //         : const SizedBox.shrink()),
+                // Obx(() => controller.selectedItems.contains("Select Currency")
+                //     ? Column(
+                //         children: [
+                //           Padding(
+                //               padding:
+                //                   const EdgeInsets.symmetric(horizontal: 16.0),
+                //               child: CustomDropdowns(
+                //                 listData: DummyData.currencyItems,
+                //                 hintText: "Select Currency",
+                //                 borderRadius: 100.0,
+                //                 isShadow: true,
+                //               )),
+                //           const SizedBox(height: 16.0),
+                //         ],
+                //       )
+                //     : const SizedBox.shrink()),
+                productList(isPortrait, size),
                 const SizedBox(height: 24.0),
               ],
             ),
@@ -333,183 +348,199 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
     );
   }
 
-  Widget productList() {
+  Widget productList(bool isPortrait, Size size) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 0.0),
-          child: Column(
+          child: Wrap(
+              spacing: 16.0,
+              runSpacing: 16.0,
               children: List.generate(DummyData.productList.length, (index) {
-            var data = DummyData.productList[index];
-            return WidgetAnimator(
-              incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                  delay: Duration(milliseconds: index * 150)),
-              child: Container(
-                height: 84.0,
-                width: Get.width,
-                margin: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 16.0),
-                decoration: BoxDecoration(
-                  color: Themes.kWhiteColor,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Themes.kBlackColor.withOpacity(0.25),
-                      blurRadius: 8.0,
-                      spreadRadius: -3,
-                      offset: const Offset(0, 4),
+                var data = DummyData.productList[index];
+
+                // Calculate item width based on orientation
+                final itemWidth = isPortrait
+                    ? size.width - 32 // Account for padding
+                    : (size.width / 2.2);
+
+                return WidgetAnimator(
+                  incomingEffect:
+                      WidgetTransitionEffects.incomingSlideInFromRight(
+                          delay: Duration(milliseconds: index * 150)),
+                  child: Container(
+                    height: 84.0,
+                    width: itemWidth,
+                    decoration: BoxDecoration(
+                      color: Themes.kWhiteColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Themes.kBlackColor.withOpacity(0.25),
+                          blurRadius: 8.0,
+                          spreadRadius: -3,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Stack(
-                    children: [
-                      Row(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Stack(
                         children: [
-                          SizedBox(
-                            width: 116.0,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: -74.0,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(100.0),
-                                        bottomRight: Radius.circular(100.0)),
-                                    child: Image.asset(
-                                      data["image"],
-                                      height: 124.0,
-                                      width: 168.0,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Row(
                             children: [
-                              Text(
-                                data["title"],
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: Themes.kBlackColor,
-                                ),
-                              ),
-                              Text(
-                                "\$${data["price"]}",
-                                style: const TextStyle(
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: Themes.kBlackColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: 0.0,
-                        right: 0.0,
-                        child: Material(
-                          color: Themes.kTransparent,
-                          child: InkWell(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(13.0),
-                              bottomRight: Radius.circular(8.0),
-                            ),
-                            onTap: () =>
-                                Constants.showSnackBar(context, "Item Added!"),
-                            child: Ink(
-                              decoration: const BoxDecoration(
-                                color: Themes.kPrimaryColor,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(13.0),
-                                  bottomRight: Radius.circular(8.0),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 16.0),
-                                child: Row(
+                              SizedBox(
+                                width: 116.0,
+                                child: Stack(
                                   children: [
-                                    Image.asset(
-                                      Images.add,
-                                      height: 10.0,
-                                      width: 10.0,
-                                      color: Themes.kWhiteColor,
-                                    ),
-                                    const SizedBox(width: 8.0),
-                                    Text(
-                                      "Add".toUpperCase(),
-                                      style: const TextStyle(
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.w700,
-                                        color: Themes.kWhiteColor,
+                                    Positioned(
+                                      left: -74.0,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(100.0),
+                                            bottomRight:
+                                                Radius.circular(100.0)),
+                                        child: Image.asset(
+                                          data["image"],
+                                          height: 124.0,
+                                          width: 168.0,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    data["title"],
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w700,
+                                      color: Themes.kBlackColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    "\$${data["price"]}",
+                                    style: const TextStyle(
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.w700,
+                                      color: Themes.kBlackColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            bottom: 0.0,
+                            right: 0.0,
+                            child: Material(
+                              color: Themes.kTransparent,
+                              child: InkWell(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(13.0),
+                                  bottomRight: Radius.circular(8.0),
+                                ),
+                                onTap: () => Constants.showSnackBar(
+                                    context, "Item Added!"),
+                                child: Ink(
+                                  decoration: const BoxDecoration(
+                                    color: Themes.kPrimaryColor,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(13.0),
+                                      bottomRight: Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 16.0),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          Images.add,
+                                          height: 10.0,
+                                          width: 10.0,
+                                          color: Themes.kWhiteColor,
+                                        ),
+                                        const SizedBox(width: 8.0),
+                                        Text(
+                                          "Add".toUpperCase(),
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.w700,
+                                            color: Themes.kWhiteColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          })),
+                );
+              })),
         ),
       ),
     );
   }
 
-  Widget searchBar(String title, bool isEnabled) {
-    return WidgetAnimator(
-      incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(),
-      child: Container(
-        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-        padding: const EdgeInsets.only(left: 16.0, right: 4.0),
-        decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(100.0),
-          boxShadow: [
-            BoxShadow(
-              color: Themes.kBlackColor.withOpacity(0.20),
-              blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: TextFormField(
-          enabled: isEnabled,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
-            border: InputBorder.none,
-            hintText: title,
-            hintStyle: TextStyle(
-              color: Themes.kGreyColor[500],
-            ),
-            suffixIcon: Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: isEnabled ? 12.0 : 20.0,
-                  horizontal: isEnabled ? 16.0 : 18.0),
-              child: Image.asset(
-                isEnabled ? Images.search : Images.downFilledArrow,
-                height: isEnabled ? 24.0 : 4.0,
-                width: isEnabled ? 24.0 : 4.0,
-                color: Themes.kGreyColor[500],
+  Widget tabList() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: List.generate(DummyData.filterItems.length, (index) {
+          String title = DummyData.filterItems[index];
+          return WidgetAnimator(
+            incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
+                delay: Duration(milliseconds: index * 200)),
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: index == 0 ? 12.0 : 0.0, right: 12.0),
+              child: Material(
+                color: Themes.kTransparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(48.0),
+                  onTap: () => controller.selectTab(index),
+                  child: Obx(
+                    () => Ink(
+                      decoration: BoxDecoration(
+                          color: controller.selectedTabIndex.value == index
+                              ? Themes.kPrimaryColor // Selected color
+                              : Themes.kWhiteColor, // Unselected color
+                          border: Border.all(
+                              width: 0.5, color: Themes.kPrimaryColor),
+                          borderRadius: BorderRadius.circular(48.0)),
+                      child: Container(
+                        height: 42.0,
+                        width: 136.0,
+                        alignment: Alignment.center,
+                        child: Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                            color: controller.selectedTabIndex.value == index
+                                ? Themes.kWhiteColor
+                                : Themes.kGreyColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     );
   }
@@ -604,20 +635,29 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
             ),
             Row(
               children: [
+                // GestureDetector(
+                //   onTap: () => showModalBottomSheet(
+                //     context: context,
+                //     isDismissible: false,
+                //     enableDrag: false,
+                //     isScrollControlled: true, // To allow full screen dragging
+                //     backgroundColor: Themes.kTransparent,
+                //     builder: (context) {
+                //       return const FilterView();
+                //     },
+                //   ),
+                //   child: Image.asset(
+                //     Images.filter,
+                //     height: 20.0,
+                //     color: Themes.kBlackColor,
+                //   ),
+                // ),
                 GestureDetector(
-                  onTap: () => showModalBottomSheet(
-                    context: context,
-                    isDismissible: false,
-                    enableDrag: false,
-                    isScrollControlled: true, // To allow full screen dragging
-                    backgroundColor: Themes.kTransparent,
-                    builder: (context) {
-                      return const FilterView();
-                    },
-                  ),
+                  onTap: () => controller.isSearchVisible.value =
+                      !controller.isSearchVisible.value,
                   child: Image.asset(
-                    Images.filter,
-                    height: 20.0,
+                    Images.search,
+                    height: 24.0,
                     color: Themes.kBlackColor,
                   ),
                 ),

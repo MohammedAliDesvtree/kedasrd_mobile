@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:kedasrd/widgets/custom_dropdown.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/utils/images.dart';
@@ -9,6 +8,9 @@ import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/widgets/custom_drawer.dart';
+import 'package:kedasrd/widgets/custom_dropdown.dart';
+import 'package:kedasrd/widgets/custom_search_bar.dart';
+
 import 'package:kedasrd/views/fastfood/filter_view.dart';
 
 import 'package:kedasrd/controllers/fastfood/fast_food_controller.dart';
@@ -27,6 +29,10 @@ class _FastFoodViewState extends State<FastFoodView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       key: fastFoodGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -39,21 +45,24 @@ class _FastFoodViewState extends State<FastFoodView> {
               children: [
                 customHeader(),
                 // const SizedBox(height: 16.0),
-                customTabList(),
+                Align(alignment: Alignment.centerLeft, child: customTabList()),
                 const SizedBox(height: 16.0),
                 Obx(() => controller.selectedItems.contains("Search Customer")
-                    ? Column(
+                    ? const Column(
                         children: [
-                          searchBar("Price List", false),
+                          CustomSearchBar(
+                              isEnabled: false, title: "Price List"),
                           const SizedBox(height: 16.0),
                         ],
                       )
                     : const SizedBox.shrink()),
                 Obx(() =>
                     controller.selectedItems.contains("Search Item by Name")
-                        ? Column(
+                        ? const Column(
                             children: [
-                              searchBar("Search Item by Name", true),
+                              CustomSearchBar(
+                                  isEnabled: true,
+                                  title: "Search Item by Name"),
                               const SizedBox(height: 16.0),
                             ],
                           )
@@ -74,7 +83,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                         ],
                       )
                     : const SizedBox.shrink()),
-                productList(),
+                productList(isPortrait, size),
                 const SizedBox(height: 24.0),
               ],
             ),
@@ -95,7 +104,7 @@ class _FastFoodViewState extends State<FastFoodView> {
         child: Container(
           height: 67.0,
           margin: const EdgeInsets.only(bottom: 24.0, left: 32.0, right: 32.0),
-          padding: const EdgeInsets.only(left: 24.0, right: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, right: 8.0),
           decoration: BoxDecoration(
             color: Themes.kWhiteColor,
             borderRadius: BorderRadius.circular(12.0),
@@ -126,7 +135,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                   Text(
                     "DOP \$847.46",
                     style: const TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.w600,
                       color: Themes.kBlackColor,
                     ),
@@ -167,182 +176,146 @@ class _FastFoodViewState extends State<FastFoodView> {
     );
   }
 
-  Widget productList() {
+  Widget productList(bool isPortrait, Size size) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(bottom: 84.0),
-          child: Column(
+          child: Wrap(
+              spacing: 16.0,
+              runSpacing: 16.0,
               children: List.generate(DummyData.productList.length, (index) {
-            var data = DummyData.productList[index];
-            return WidgetAnimator(
-              incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                  delay: Duration(milliseconds: index * 150)),
-              child: Container(
-                height: 84.0,
-                width: Get.width,
-                margin: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 16.0),
-                decoration: BoxDecoration(
-                  color: Themes.kWhiteColor,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Themes.kBlackColor.withOpacity(0.25),
-                      blurRadius: 8.0,
-                      spreadRadius: -3,
-                      offset: const Offset(0, 4),
+                var data = DummyData.productList[index];
+
+                // Calculate item width based on orientation
+                final itemWidth = isPortrait
+                    ? size.width - 32 // Account for padding
+                    : (size.width / 2.2);
+
+                return WidgetAnimator(
+                  incomingEffect:
+                      WidgetTransitionEffects.incomingSlideInFromRight(
+                          delay: Duration(milliseconds: index * 150)),
+                  child: Container(
+                    height: 84.0,
+                    width: itemWidth,
+                    decoration: BoxDecoration(
+                      color: Themes.kWhiteColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Themes.kBlackColor.withOpacity(0.25),
+                          blurRadius: 8.0,
+                          spreadRadius: -3,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Stack(
-                    children: [
-                      Row(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Stack(
                         children: [
-                          SizedBox(
-                            width: 116.0,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: -74.0,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(100.0),
-                                        bottomRight: Radius.circular(100.0)),
-                                    child: Image.asset(
-                                      data["image"],
-                                      height: 124.0,
-                                      width: 168.0,
-                                      fit: BoxFit.fill,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          Row(
                             children: [
-                              Text(
-                                data["title"],
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: Themes.kBlackColor,
-                                ),
-                              ),
-                              Text(
-                                "\$${data["price"]}",
-                                style: const TextStyle(
-                                  fontSize: 24.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: Themes.kBlackColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Positioned(
-                        bottom: 0.0,
-                        right: 0.0,
-                        child: Material(
-                          color: Themes.kTransparent,
-                          child: InkWell(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(13.0),
-                              bottomRight: Radius.circular(8.0),
-                            ),
-                            onTap: () =>
-                                Constants.showSnackBar(context, "Item Added!"),
-                            child: Ink(
-                              decoration: const BoxDecoration(
-                                color: Themes.kPrimaryColor,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(13.0),
-                                  bottomRight: Radius.circular(8.0),
-                                ),
-                              ),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 16.0),
-                                child: Row(
+                              SizedBox(
+                                width: 116.0,
+                                child: Stack(
                                   children: [
-                                    Image.asset(
-                                      Images.add,
-                                      height: 10.0,
-                                      width: 10.0,
-                                      color: Themes.kWhiteColor,
-                                    ),
-                                    const SizedBox(width: 8.0),
-                                    Text(
-                                      "Add".toUpperCase(),
-                                      style: const TextStyle(
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.w700,
-                                        color: Themes.kWhiteColor,
+                                    Positioned(
+                                      left: -74.0,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(100.0),
+                                            bottomRight:
+                                                Radius.circular(100.0)),
+                                        child: Image.asset(
+                                          data["image"],
+                                          height: 124.0,
+                                          width: 168.0,
+                                          fit: BoxFit.fill,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    data["title"],
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w700,
+                                      color: Themes.kBlackColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    "\$${data["price"]}",
+                                    style: const TextStyle(
+                                      fontSize: 24.0,
+                                      fontWeight: FontWeight.w700,
+                                      color: Themes.kBlackColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Positioned(
+                            bottom: 0.0,
+                            right: 0.0,
+                            child: Material(
+                              color: Themes.kTransparent,
+                              child: InkWell(
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(13.0),
+                                  bottomRight: Radius.circular(8.0),
+                                ),
+                                onTap: () => Constants.showSnackBar(
+                                    context, "Item Added!"),
+                                child: Ink(
+                                  decoration: const BoxDecoration(
+                                    color: Themes.kPrimaryColor,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(13.0),
+                                      bottomRight: Radius.circular(8.0),
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 16.0),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          Images.add,
+                                          height: 10.0,
+                                          width: 10.0,
+                                          color: Themes.kWhiteColor,
+                                        ),
+                                        const SizedBox(width: 8.0),
+                                        Text(
+                                          "Add".toUpperCase(),
+                                          style: const TextStyle(
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.w700,
+                                            color: Themes.kWhiteColor,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            );
-          })),
-        ),
-      ),
-    );
-  }
-
-  Widget searchBar(String title, bool isEnabled) {
-    return WidgetAnimator(
-      incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(),
-      child: Container(
-        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-        padding: const EdgeInsets.only(left: 16.0, right: 4.0),
-        decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(100.0),
-          boxShadow: [
-            BoxShadow(
-              color: Themes.kBlackColor.withOpacity(0.20),
-              blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: TextFormField(
-          enabled: isEnabled,
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
-            border: InputBorder.none,
-            hintText: title,
-            hintStyle: TextStyle(
-              color: Themes.kGreyColor[500],
-            ),
-            suffixIcon: Container(
-              padding: EdgeInsets.symmetric(
-                  vertical: isEnabled ? 12.0 : 20.0,
-                  horizontal: isEnabled ? 16.0 : 18.0),
-              child: Image.asset(
-                isEnabled ? Images.search : Images.downFilledArrow,
-                height: isEnabled ? 24.0 : 4.0,
-                width: isEnabled ? 24.0 : 4.0,
-                color: Themes.kGreyColor[500],
-              ),
-            ),
-          ),
+                );
+              })),
         ),
       ),
     );

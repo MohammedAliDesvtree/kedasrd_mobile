@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+import 'package:kedasrd/widgets/custom_search_bar.dart';
+
 import 'package:kedasrd/views/fastfood/filter_view.dart';
 import 'package:kedasrd/views/pos/add_customer_view.dart';
 
@@ -26,7 +28,10 @@ class _AllItemsViewState extends State<AllItemsView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       body: SafeArea(
@@ -47,24 +52,32 @@ class _AllItemsViewState extends State<AllItemsView> {
                   ),
                 ),
               ),
-            searchBar(),
+            CustomSearchBar(
+                isEnabled: true,
+                title: data["title"] == "Items"
+                    ? "Search Item"
+                    : "Search Customer"),
             const SizedBox(height: 16.0),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Column(
+                  child: Wrap(
+                    spacing: 16.0,
+                    runSpacing: 16.0,
                     children: List.generate(5, (index) {
+                      // Calculate item width based on orientation
+                      final itemWidth = isPortrait
+                          ? size.width - 32 // Account for padding
+                          : (size.width / 2.2);
+
                       return WidgetAnimator(
                         incomingEffect:
                             WidgetTransitionEffects.incomingSlideInFromRight(
                                 delay: Duration(milliseconds: index * 200)),
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 14.0),
-                          child: data["title"] == "Items"
-                              ? itemView(size, index)
-                              : customerView(size, index),
-                        ),
+                        child: data["title"] == "Items"
+                            ? itemView(size, index, itemWidth)
+                            : customerView(size, index, itemWidth),
                       );
                     }),
                   ),
@@ -78,12 +91,12 @@ class _AllItemsViewState extends State<AllItemsView> {
     );
   }
 
-  Widget customerView(Size size, int index) {
+  Widget customerView(Size size, int index, double itemWidth) {
     return GestureDetector(
       onTap: () => showSnackBar(context, "Customer Selected"),
       child: Container(
         // height: 56.0,
-        width: Get.width,
+        width: itemWidth,
         decoration: BoxDecoration(
           color: Themes.kWhiteColor,
           borderRadius: BorderRadius.circular(10.0),
@@ -113,7 +126,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                       itemBullet("Paloma Medrano", "Value"),
                     ],
                   ),
-                  Constants.divider(),
+                  Constants.divider(size),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -121,7 +134,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                       itemBullet("0276744518", "Value"),
                     ],
                   ),
-                  Constants.divider(),
+                  Constants.divider(size),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -129,7 +142,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                       itemBullet("9856320147", "Value"),
                     ],
                   ),
-                  Constants.divider(),
+                  Constants.divider(size),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -137,7 +150,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                       itemBullet("mesa10@kedas.com", "Value"),
                     ],
                   ),
-                  Constants.divider(),
+                  Constants.divider(size),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -145,7 +158,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                       itemBullet("131174884", "Value"),
                     ],
                   ),
-                  Constants.divider(),
+                  Constants.divider(size),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -162,10 +175,10 @@ class _AllItemsViewState extends State<AllItemsView> {
     );
   }
 
-  Widget itemView(Size size, int index) {
+  Widget itemView(Size size, int index, double itemWidth) {
     return Container(
       // height: 56.0,
-      width: Get.width,
+      width: itemWidth,
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(10.0),
@@ -195,7 +208,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                     itemBullet("Nachitos Ricos", "Value"),
                   ],
                 ),
-                Constants.divider(),
+                Constants.divider(size),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -203,7 +216,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                     itemBullet("64913826", "Value"),
                   ],
                 ),
-                Constants.divider(),
+                Constants.divider(size),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -211,7 +224,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                     itemBullet("DOP \$512.16", "Value"),
                   ],
                 ),
-                Constants.divider(),
+                Constants.divider(size),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -220,7 +233,7 @@ class _AllItemsViewState extends State<AllItemsView> {
                         index % 3 != 1 ? "In Stock" : "Out Of Stock", "Value"),
                   ],
                 ),
-                Constants.divider(),
+                Constants.divider(size),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -292,45 +305,6 @@ class _AllItemsViewState extends State<AllItemsView> {
                 : type == "Key"
                     ? Themes.kPrimaryColor
                     : Themes.kBlackColor,
-      ),
-    );
-  }
-
-  Widget searchBar() {
-    return WidgetAnimator(
-      incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(),
-      child: Container(
-        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-        padding: const EdgeInsets.only(left: 24.0, right: 10.0),
-        decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(100.0),
-          boxShadow: [
-            BoxShadow(
-              color: Themes.kBlackColor.withOpacity(0.20),
-              blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
-            border: InputBorder.none,
-            hintText:
-                data["title"] == "Items" ? "Search Item" : "Search Customer",
-            hintStyle: TextStyle(color: Themes.kGreyColor[500]),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Image.asset(
-                Images.search,
-                height: 24.0,
-                color: Themes.kGreyColor[500],
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }

@@ -21,8 +21,15 @@ class _AddCustomerViewState extends State<AddCustomerView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
     isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    double modalSize = isKeyboardVisible ? 0.8 : 0.5;
+
+    double modalSize = !isPortrait
+        ? 0.75
+        : isKeyboardVisible
+            ? 0.8
+            : 0.5;
     return DraggableScrollableSheet(
       initialChildSize: modalSize, // Opens at 1/3 screen height
       minChildSize: modalSize, // Minimum 1/3 screen height
@@ -59,7 +66,7 @@ class _AddCustomerViewState extends State<AddCustomerView> {
               closeButton(),
               WidgetAnimator(
                 incomingEffect: WidgetTransitionEffects.incomingScaleUp(),
-                child: inputSection(),
+                child: inputSection(isPortrait),
               ),
               Positioned(
                 bottom: 16.0,
@@ -109,17 +116,20 @@ class _AddCustomerViewState extends State<AddCustomerView> {
     );
   }
 
-  Widget inputSection() {
+  Widget inputSection(bool isPortrait) {
     return Padding(
       padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 84.0),
-      child: Column(
-        children: [
-          inputView("Name", controller.nameController),
-          const SizedBox(height: 28.0),
-          inputView("Tax ID", controller.taxIDController),
-          const SizedBox(height: 28.0),
-          inputView("Phone Number", controller.phoneNumberController),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            inputView("Name", controller.nameController),
+            const SizedBox(height: 28.0),
+            inputView("Tax ID", controller.taxIDController),
+            const SizedBox(height: 28.0),
+            inputView("Phone Number", controller.phoneNumberController),
+            SizedBox(height: isPortrait ? 0.0 : 85.0),
+          ],
+        ),
       ),
     );
   }

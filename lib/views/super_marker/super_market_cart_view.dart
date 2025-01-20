@@ -22,15 +22,19 @@ class _SuperMarketCartViewState extends State<SuperMarketCartView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       bottomNavigationBar: SizedBox(
-        height: Get.height / 2,
+        height: size.height / 2,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             deskTabList(),
-            SafeArea(child: keyboardView()),
+            SafeArea(child: keyboardView(isPortrait, size)),
           ],
         ),
       ),
@@ -43,7 +47,7 @@ class _SuperMarketCartViewState extends State<SuperMarketCartView> {
               incomingEffect: WidgetTransitionEffects.incomingScaleUp(
                   delay: const Duration(milliseconds: 500)),
               child: Text(
-                "Total Bill\n\$${0.00.toStringAsFixed(2)}".toUpperCase(),
+                "Total Bill \$${0.00.toStringAsFixed(2)}".toUpperCase(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 36.0,
@@ -58,11 +62,15 @@ class _SuperMarketCartViewState extends State<SuperMarketCartView> {
     );
   }
 
-  Widget keyboardView() {
+  Widget keyboardView(bool isPortrait, Size size) {
     return Wrap(
       spacing: 1.0,
       runSpacing: 1.0,
       children: List.generate(11, (index) {
+        final itemWidth = isPortrait
+            ? (index == 10 ? size.width / 1.51 : size.width / 3.03)
+            : (index == 10 ? size.width : size.width / 5.03);
+
         return WidgetAnimator(
           incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
               delay: Duration(milliseconds: index * 100)),
@@ -74,7 +82,7 @@ class _SuperMarketCartViewState extends State<SuperMarketCartView> {
                 color: Themes.kPrimaryColor.withOpacity(0.8),
                 child: Container(
                   height: 52.0,
-                  width: index == 10 ? Get.width / 1.51 : Get.width / 3.03,
+                  width: itemWidth,
                   alignment: Alignment.center,
                   child: Text(
                     index == 10 ? "Delete" : "${index + 1}",

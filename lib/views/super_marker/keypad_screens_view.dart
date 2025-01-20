@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:kedasrd/utils/constants.dart';
 
 import 'package:kedasrd/widgets/custom_header.dart';
 import 'package:kedasrd/widgets/custom_dropdown.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/controllers/super_market/keypad_screens_controller.dart';
@@ -24,7 +24,9 @@ class _KeypadScreensViewState extends State<KeypadScreensView> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.sizeOf(context);
     String title = data["title"];
+
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       body: SafeArea(
@@ -32,8 +34,7 @@ class _KeypadScreensViewState extends State<KeypadScreensView> {
         child: Column(
           children: [
             CustomHeader(title: title),
-            if (title != "Cash") digitsView(title),
-            bodyView(title),
+            bodyView(title, size),
           ],
         ),
       ),
@@ -178,13 +179,14 @@ class _KeypadScreensViewState extends State<KeypadScreensView> {
     );
   }
 
-  Widget bodyView(String title) {
+  Widget bodyView(String title, Size size) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
           child: Column(
             children: [
+              if (title != "Cash") digitsView(title, size),
               if (title.contains("Partial"))
                 Column(
                   children: [
@@ -339,10 +341,10 @@ class _KeypadScreensViewState extends State<KeypadScreensView> {
     );
   }
 
-  Widget digitsView(String title) {
+  Widget digitsView(String title, Size size) {
     return Container(
       padding: const EdgeInsets.all(12.0),
-      margin: const EdgeInsets.symmetric(horizontal: 24.0),
+      margin: const EdgeInsets.only(bottom: 8.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),
@@ -371,15 +373,15 @@ class _KeypadScreensViewState extends State<KeypadScreensView> {
           if (!title.contains("Card"))
             Column(
               children: [
-                Constants.divider(),
+                Constants.divider(size),
                 digitsItems(
                     title.contains("Partial") ? "Partial Total" : "Payment",
                     "DOP \$120.87"),
-                Constants.divider(),
+                Constants.divider(size),
                 digitsItems("Balance", "DOP \$0.00"),
               ],
             ),
-          Constants.divider(),
+          Constants.divider(size),
           digitsItems("Client Balance", "DOP \$0.00"),
         ],
       ),

@@ -20,12 +20,17 @@ class CustomBottomSheetInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
     isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    double modalSize = isKeyboardVisible
-        ? 0.6
-        : title.contains("Cash")
-            ? 0.46
-            : 0.3;
+
+    double modalSize = !isPortrait
+        ? 0.75
+        : isKeyboardVisible
+            ? 0.6
+            : title.contains("Cash")
+                ? 0.46
+                : 0.3;
     return DraggableScrollableSheet(
       initialChildSize: modalSize, // Opens at 1/3 screen height
       minChildSize: modalSize, // Minimum 1/3 screen height

@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:kedasrd/utils/constants.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_drawer.dart';
@@ -8,6 +7,7 @@ import 'package:kedasrd/widgets/custom_header.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/controllers/restaurant/kitchen_controller.dart';
@@ -25,6 +25,10 @@ class _KitchenViewState extends State<KitchenView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       key: kitchenGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -32,7 +36,6 @@ class _KitchenViewState extends State<KitchenView> {
       body: SafeArea(
         bottom: false,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomHeader(
                 title: "Kitchen",
@@ -43,13 +46,21 @@ class _KitchenViewState extends State<KitchenView> {
             const SizedBox(height: 16.0),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
+                child: Wrap(
+                  spacing: 16.0,
+                  runSpacing: 16.0,
                   children: List.generate(8, (index) {
+                    // Calculate item width based on orientation
+                    final itemWidth = isPortrait
+                        ? size.width - 32 // Account for padding
+                        : (size.width / 2.2);
+
                     return WidgetAnimator(
                       incomingEffect:
                           WidgetTransitionEffects.incomingSlideInFromRight(
                               delay: Duration(milliseconds: index * 500)),
-                      child: orderView(controller.orders[index], index),
+                      child:
+                          orderView(controller.orders[index], index, itemWidth),
                     );
                   }),
                 ),
@@ -65,7 +76,7 @@ class _KitchenViewState extends State<KitchenView> {
   Widget totalCountView() {
     return Container(
       height: 44.0,
-      width: Get.width,
+      // width: Get.width,
       margin: const EdgeInsets.symmetric(horizontal: 16.0),
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -82,85 +93,81 @@ class _KitchenViewState extends State<KitchenView> {
     );
   }
 
-  Widget orderView(List<String> items, int index) {
-    return Column(
-      children: [
-        Container(
-          width: Get.width,
-          margin: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-          decoration: BoxDecoration(
-              color: Themes.kPrimaryColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10.0)),
-          child: Stack(
-            clipBehavior: Clip.none,
+  Widget orderView(List<String> items, int index, double itemWidth) {
+    return Container(
+      width: itemWidth,
+      // margin: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+      decoration: BoxDecoration(
+          color: Themes.kPrimaryColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10.0)),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(
+            top: 24.0,
+            right: -6.0,
+            child: GestureDetector(
+              onTap: () => Constants.showSnackBar(context, "Printing..."),
+              child: Image.asset(
+                Images.printer,
+                height: 22.0,
+                width: 22.0,
+                color: Themes.kPrimaryColor,
+              ),
+            ),
+          ),
+          Positioned(
+            top: -12.0,
+            right: -12.0,
+            child: Container(
+              height: 28.0,
+              width: 84.0,
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                color: Themes.kPrimaryColor,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10.0),
+                  bottomLeft: Radius.circular(10.0),
+                ),
+              ),
+              child: Text(
+                index % 2 != 0 ? "Table: 8" : "Delivery",
+                style: const TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: Themes.kWhiteColor,
+                ),
+              ),
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Positioned(
-                top: 24.0,
-                right: -6.0,
-                child: GestureDetector(
-                  onTap: () => Constants.showSnackBar(context, "Printing..."),
-                  child: Image.asset(
-                    Images.printer,
-                    height: 22.0,
-                    width: 22.0,
-                    color: Themes.kPrimaryColor,
-                  ),
-                ),
-              ),
-              Positioned(
-                top: -12.0,
-                right: -12.0,
-                child: Container(
-                  height: 28.0,
-                  width: 84.0,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Themes.kPrimaryColor,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10.0),
-                      bottomLeft: Radius.circular(10.0),
-                    ),
-                  ),
-                  child: Text(
-                    index % 2 != 0 ? "Table: 8" : "Delivery",
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.bold,
-                      color: Themes.kWhiteColor,
-                    ),
-                  ),
-                ),
-              ),
+              keyValuesBullet("Order Id : ", "139925"),
+              const SizedBox(height: 4.0),
+              keyValuesBullet("Customer : ", "Paloma Medrano"),
+              const SizedBox(height: 12.0),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  keyValuesBullet("Order Id : ", "139925"),
-                  const SizedBox(height: 4.0),
-                  keyValuesBullet("Customer : ", "Paloma Medrano"),
-                  const SizedBox(height: 12.0),
-                  Column(
-                    children: List.generate(items.length, (index) {
-                      return Padding(
-                        padding: EdgeInsets.only(
-                            bottom: items.length - 1 == index ? 0.0 : 8.0),
-                        child:
-                            //  WidgetAnimator(
-                            //   incomingEffect:
-                            //       WidgetTransitionEffects.incomingSlideInFromRight(
-                            //           delay: Duration(milliseconds: index * 500)),
-                            //   child:
-                            singleOrderView(index),
-                        // ),
-                      );
-                    }),
-                  ),
-                ],
+                children: List.generate(items.length, (index) {
+                  return Padding(
+                    padding: EdgeInsets.only(
+                        bottom: items.length - 1 == index ? 0.0 : 8.0),
+                    child:
+                        //  WidgetAnimator(
+                        //   incomingEffect:
+                        //       WidgetTransitionEffects.incomingSlideInFromRight(
+                        //           delay: Duration(milliseconds: index * 500)),
+                        //   child:
+                        singleOrderView(index),
+                    // ),
+                  );
+                }),
               ),
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

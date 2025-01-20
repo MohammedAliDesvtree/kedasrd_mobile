@@ -61,45 +61,49 @@ class _CustomDrawerState extends State<CustomDrawer> {
               ),
             ),
             const SizedBox(height: 16.0),
-            Column(
-              children: List.generate(widget.items.length, (index) {
-                var data = widget.items[index];
-                return Material(
-                  color: Themes.kTransparent,
-                  child: InkWell(
-                    onTap: () => controller.onMenuItemTapped(
-                        data["title"], index, context),
-                    child: Ink(
-                      child: Container(
-                        color: controller.selectedIndex == index
-                            ? Themes.kWhiteColor.withOpacity(0.2)
-                            : Themes.kTransparent,
-                        padding: const EdgeInsets.only(
-                            top: 12.0, bottom: 12.0, left: 24.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              data["icon"],
-                              height: 20.0,
-                              color: Themes.kWhiteColor,
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(widget.items.length, (index) {
+                    var data = widget.items[index];
+                    return Material(
+                      color: Themes.kTransparent,
+                      child: InkWell(
+                        onTap: () => controller.onMenuItemTapped(
+                            data["title"], index, context),
+                        child: Ink(
+                          child: Container(
+                            color: controller.selectedIndex == index
+                                ? Themes.kWhiteColor.withOpacity(0.2)
+                                : Themes.kTransparent,
+                            padding: const EdgeInsets.only(
+                                top: 12.0, bottom: 12.0, left: 24.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  data["icon"],
+                                  height: 20.0,
+                                  color: Themes.kWhiteColor,
+                                ),
+                                const SizedBox(width: 16.0),
+                                Text(
+                                  data["title"],
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: Themes.kWhiteColor,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 16.0),
-                            Text(
-                              data["title"],
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                color: Themes.kWhiteColor,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              }),
+                    );
+                  }),
+                ),
+              ),
             ),
           ],
         ),

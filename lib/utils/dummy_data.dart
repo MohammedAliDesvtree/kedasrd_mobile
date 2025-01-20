@@ -121,11 +121,28 @@ class DummyData {
   ].obs;
 
   static List<dynamic> dashboardList = [
-    {"icon": Images.regular, "title": "Regular"},
-    {"icon": Images.restaurant, "title": "Restaurant"},
-    {"icon": Images.fastFood, "title": "Fast Food"},
-    {"icon": Images.superMarket, "title": "Super Market"},
-    {"icon": Images.onlineOrder, "title": "Online Order"},
+    {"image": Images.regular, "title": "Regular"},
+    {"image": Images.restaurant, "title": "Restaurant"},
+    {"image": Images.fastFood, "title": "Fast Food"},
+    {"image": Images.superMarket, "title": "Super Market"},
+    {"image": Images.onlineOrder, "title": "Online Store"},
+  ];
+
+  static List<dynamic> restaurantList = [
+    {"image": Images.newOrder, "title": "New Order"},
+    {"image": Images.activeOrder, "title": "Active Order"},
+    {"image": Images.kitchen, "title": "Kitchen"},
+  ];
+
+  static List<dynamic> newOrderList = [
+    {"image": Images.dineIn, "title": "Dine In"},
+    {"image": Images.delivery, "title": "Delivery"},
+    {"image": Images.pickUp, "title": "Pickup"},
+  ];
+
+  static List<dynamic> activeOrderList = [
+    {"image": Images.dineIn, "title": "Dine In"},
+    {"image": Images.delivery, "title": "Delivery"},
   ];
 
   static List<String> filterItems = [

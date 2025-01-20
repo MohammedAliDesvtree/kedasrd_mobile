@@ -36,6 +36,7 @@ import 'package:kedasrd/views/super_marker/keypad_screens_view.dart';
 import 'package:kedasrd/views/super_marker/super_market_view.dart';
 import 'package:kedasrd/views/super_marker/super_market_cart_view.dart';
 
+import 'package:kedasrd/controllers/common_controller.dart';
 import 'package:kedasrd/controllers/drawer_controller.dart';
 import 'package:kedasrd/controllers/pos/pos_controller.dart';
 import 'package:kedasrd/controllers/pos/cart_controller.dart';
@@ -44,7 +45,6 @@ import 'package:kedasrd/controllers/restaurant/tables_controller.dart';
 import 'package:kedasrd/controllers/restaurant/kitchen_controller.dart';
 import 'package:kedasrd/controllers/fastfood/fast_food_controller.dart';
 import 'package:kedasrd/controllers/restaurant/dine_in_controller.dart';
-import 'package:kedasrd/controllers/restaurant/restaurant_controller.dart';
 import 'package:kedasrd/controllers/super_market/super_market_controller.dart';
 
 void main() async {
@@ -59,11 +59,11 @@ void main() async {
 
   await preLoadAllImages();
 
+  Get.put(CommonController());
   Get.put(CartController());
   Get.put(POSController());
   Get.put(FastFoodController());
   Get.put(FilterController());
-  Get.put(RestaurantController());
   Get.put(SuperMarketController());
   Get.put(DineInController());
   Get.put(TablesController());

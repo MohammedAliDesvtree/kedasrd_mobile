@@ -33,10 +33,15 @@ class _FilterViewState extends State<FilterView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+
+    double modalSize = isPortrait ? 0.5 : 0.75;
+
     return DraggableScrollableSheet(
-      initialChildSize: 0.5, // Opens at 1/3 screen height
-      minChildSize: 0.5, // Minimum 1/3 screen height
-      maxChildSize: 0.5, // Maximum full screen height
+      initialChildSize: modalSize, // Opens at 1/3 screen height
+      minChildSize: modalSize, // Minimum 1/3 screen height
+      maxChildSize: modalSize, // Maximum full screen height
       snap: false,
       // snapSizes: const [0.3, 0.6, 0.9],
       builder: (context, scrollController) {

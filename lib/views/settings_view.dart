@@ -1,12 +1,13 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:kedasrd/utils/dummy_data.dart';
-import 'package:kedasrd/widgets/custom_dropdown.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+
+import 'package:kedasrd/widgets/custom_dropdown.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
+import 'package:kedasrd/utils/dummy_data.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -29,11 +30,17 @@ class _SettingsViewState extends State<SettingsView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             customHeader(),
-            bodyView(),
-            const Spacer(),
-            const SizedBox(height: 28.0),
+            Expanded(
+              child: ListView(
+                children: [
+                  bodyView(),
+                  const Spacer(),
+                  const SizedBox(height: 28.0),
+                ],
+              ),
+            ),
             submitButton(),
-            const SizedBox(height: 28.0),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),
