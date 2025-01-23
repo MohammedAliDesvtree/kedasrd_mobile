@@ -33,6 +33,8 @@ class _FastFoodViewState extends State<FastFoodView> {
         MediaQuery.orientationOf(context) == Orientation.portrait;
     Size size = MediaQuery.sizeOf(context);
 
+    controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       key: fastFoodGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -45,49 +47,94 @@ class _FastFoodViewState extends State<FastFoodView> {
               children: [
                 customHeader(),
                 // const SizedBox(height: 16.0),
-                Align(alignment: Alignment.centerLeft, child: customTabList()),
-                const SizedBox(height: 16.0),
-                Obx(() => controller.selectedItems.contains("Search Customer")
-                    ? const Column(
-                        children: [
-                          CustomSearchBar(
-                              isEnabled: false, title: "Price List"),
-                          const SizedBox(height: 16.0),
-                        ],
-                      )
-                    : const SizedBox.shrink()),
-                Obx(() =>
-                    controller.selectedItems.contains("Search Item by Name")
-                        ? const Column(
-                            children: [
-                              CustomSearchBar(
-                                  isEnabled: true,
-                                  title: "Search Item by Name"),
-                              const SizedBox(height: 16.0),
-                            ],
-                          )
-                        : const SizedBox.shrink()),
-                Obx(() => controller.selectedItems.contains("Select Currency")
+                isPortrait
+                    ? Align(
+                        alignment: Alignment.centerLeft, child: customTabList())
+                    : const SizedBox.shrink(),
+                isPortrait
                     ? Column(
                         children: [
-                          Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: CustomDropdowns(
-                                listData: DummyData.currencyItems,
-                                hintText: "Select Currency",
-                                borderRadius: 100.0,
-                                isShadow: true,
-                              )),
                           const SizedBox(height: 16.0),
+                          Obx(() => controller.selectedItems
+                                  .contains("Search Customer")
+                              ? const Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 16.0, right: 16.0),
+                                      child: CustomSearchBar(
+                                          isEnabled: false,
+                                          title: "Price List"),
+                                    ),
+                                    SizedBox(height: 16.0),
+                                  ],
+                                )
+                              : const SizedBox.shrink()),
+                          Obx(() => controller.selectedItems
+                                  .contains("Search Item by Name")
+                              ? const Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 16.0, right: 16.0),
+                                      child: CustomSearchBar(
+                                          isEnabled: true,
+                                          title: "Search Item by Name"),
+                                    ),
+                                    SizedBox(height: 16.0),
+                                  ],
+                                )
+                              : const SizedBox.shrink()),
+                          Obx(() => controller.selectedItems
+                                  .contains("Select Currency")
+                              ? Column(
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: CustomDropdowns(
+                                          listData: DummyData.currencyItems,
+                                          hintText: "Select Currency",
+                                          borderRadius: 100.0,
+                                          isShadow: true,
+                                        )),
+                                    const SizedBox(height: 16.0),
+                                  ],
+                                )
+                              : const SizedBox.shrink()),
                         ],
                       )
-                    : const SizedBox.shrink()),
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const SizedBox(width: 16.0),
+                          const Expanded(
+                            child: CustomSearchBar(
+                                isEnabled: false, title: "Price List"),
+                          ),
+                          const SizedBox(width: 16.0),
+                          const Expanded(
+                            child: CustomSearchBar(
+                                isEnabled: true, title: "Search Item by Name"),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: CustomDropdowns(
+                              listData: DummyData.currencyItems,
+                              hintText: "Select Currency",
+                              borderRadius: 100.0,
+                              isShadow: true,
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                        ],
+                      ),
+                const SizedBox(height: 16.0),
                 productList(isPortrait, size),
                 const SizedBox(height: 24.0),
               ],
             ),
-            viewCartButton(),
+            if (!controller.isKeyboardVisible) viewCartButton(),
           ],
         ),
       ),
@@ -124,9 +171,9 @@ class _FastFoodViewState extends State<FastFoodView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "1 Item",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w500,
                       color: Themes.kGreyColor,
@@ -134,7 +181,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                   ),
                   Text(
                     "DOP \$847.46",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.w600,
                       color: Themes.kBlackColor,

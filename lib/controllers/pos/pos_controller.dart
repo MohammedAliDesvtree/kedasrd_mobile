@@ -12,6 +12,7 @@ import 'package:kedasrd/controllers/pos/cart_controller.dart';
 class POSController extends GetxController {
   final CartController cartController = Get.find<CartController>();
   RxBool isSearchVisible = false.obs;
+  bool isKeyboardVisible = false;
   var filteredList = RxList<dynamic>(DummyData.productList);
   final TextEditingController searchController = TextEditingController();
 

@@ -8,7 +8,7 @@ import 'package:kedasrd/utils/constants.dart';
 
 class CustomHeader extends StatefulWidget {
   final String title;
-  final onMenuTapped;
+  final dynamic onMenuTapped;
   const CustomHeader({super.key, required this.title, this.onMenuTapped});
 
   @override

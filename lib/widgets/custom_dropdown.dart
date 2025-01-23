@@ -47,7 +47,7 @@ class CustomDropdowns extends StatelessWidget {
       // initialItem: listData[0],
       return CustomDropdown<String>.search(
         closedHeaderPadding: EdgeInsets.symmetric(
-            horizontal: isShadow == true ? 14.0 : 0.0, vertical: 14.0),
+            horizontal: isShadow == true ? 14.0 : 0.0, vertical: 11.0),
         decoration:
             isShadow == true ? dropdownDecoration() : lineDropdownDecoration(),
         hintText: hintText,
@@ -67,15 +67,15 @@ class CustomDropdowns extends StatelessWidget {
           BoxShadow(
             color: Themes.kBlackColor.withOpacity(0.20),
             blurRadius: 8.0,
-            spreadRadius: -3,
-            offset: const Offset(0, 0),
+            spreadRadius: 0,
+            offset: const Offset(4, 4),
           ),
         ],
         closedFillColor: Themes.kWhiteColor,
         closedBorder: Border.all(color: Themes.kWhiteColor),
         closedBorderRadius: BorderRadius.circular(borderRadius ?? 8.0),
         hintStyle: TextStyle(
-            fontSize: 16.0,
+            fontSize: 12.0,
             fontWeight: FontWeight.bold,
             color: Themes.kGreyColor[400]),
         expandedSuffixIcon:

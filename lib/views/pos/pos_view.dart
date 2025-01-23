@@ -31,6 +31,8 @@ class _POSViewState extends State<POSView> {
         MediaQuery.orientationOf(context) == Orientation.portrait;
     Size size = MediaQuery.sizeOf(context);
 
+    controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       key: posGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -45,100 +47,105 @@ class _POSViewState extends State<POSView> {
                     title: "Regular",
                     onMenuTapped: () =>
                         posGlobalKey.currentState!.openDrawer()),
-                const CustomSearchBar(isEnabled: true, title: "Search Product"),
+                const Padding(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: const CustomSearchBar(
+                      isEnabled: true, title: "Search Product"),
+                ),
                 const SizedBox(height: 16.0),
                 productList(isPortrait, size),
               ],
             ),
           ),
-          Obx(() {
-            if (cartController.cartItems.isNotEmpty) {
-              return Positioned(
-                bottom: 8.0,
-                left: 0.0,
-                right: 0.0,
-                child: WidgetAnimator(
-                  incomingEffect:
-                      WidgetTransitionEffects.incomingSlideInFromBottom(),
-                  child: Container(
-                    height: 67.0,
-                    margin: const EdgeInsets.only(
-                        bottom: 24.0, left: 32.0, right: 32.0),
-                    padding: const EdgeInsets.only(left: 16.0, right: 8.0),
-                    decoration: BoxDecoration(
-                      color: Themes.kWhiteColor,
-                      borderRadius: BorderRadius.circular(12.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Themes.kBlackColor.withOpacity(0.20),
-                          blurRadius: 8.0,
-                          spreadRadius: -3,
-                          offset: const Offset(0, 0),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Obx(
-                          () => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "${cartController.cartItems.length} Item",
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w500,
-                                  color: Themes.kGreyColor,
-                                ),
-                              ),
-                              Text(
-                                "DOP \$${cartController.subtotal.value.toStringAsFixed(2)}",
-                                style: const TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Themes.kBlackColor,
-                                ),
-                              ),
-                            ],
+          if (!controller.isKeyboardVisible)
+            Obx(() {
+              if (cartController.cartItems.isNotEmpty) {
+                return Positioned(
+                  bottom: 8.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: WidgetAnimator(
+                    incomingEffect:
+                        WidgetTransitionEffects.incomingSlideInFromBottom(),
+                    child: Container(
+                      height: 67.0,
+                      margin: const EdgeInsets.only(
+                          bottom: 24.0, left: 32.0, right: 32.0),
+                      padding: const EdgeInsets.only(left: 16.0, right: 8.0),
+                      decoration: BoxDecoration(
+                        color: Themes.kWhiteColor,
+                        borderRadius: BorderRadius.circular(12.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Themes.kBlackColor.withOpacity(0.20),
+                            blurRadius: 8.0,
+                            spreadRadius: -3,
+                            offset: const Offset(0, 0),
                           ),
-                        ),
-                        Material(
-                          color: Themes.kTransparent,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(12.0),
-                            onTap: () => Get.toNamed("/cart"),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                color: Themes.kPrimaryColor,
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Container(
-                                height: 50.0,
-                                width: 160.0,
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  "View Cart",
-                                  style: TextStyle(
-                                    fontSize: 18.0,
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Obx(
+                            () => Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${cartController.cartItems.length} Item",
+                                  style: const TextStyle(
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Themes.kGreyColor,
+                                  ),
+                                ),
+                                Text(
+                                  "DOP \$${cartController.subtotal.value.toStringAsFixed(2)}",
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
-                                    color: Themes.kWhiteColor,
+                                    color: Themes.kBlackColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Material(
+                            color: Themes.kTransparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12.0),
+                              onTap: () => Get.toNamed("/cart"),
+                              child: Ink(
+                                decoration: BoxDecoration(
+                                  color: Themes.kPrimaryColor,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Container(
+                                  height: 50.0,
+                                  width: 160.0,
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    "View Cart",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w600,
+                                      color: Themes.kWhiteColor,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              );
-            } else {
-              return const SizedBox.shrink();
-            }
-          }),
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            }),
         ],
       ),
     );

@@ -6,7 +6,7 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 
-class CustomBottomSheetShifts extends StatelessWidget {
+class CustomBottomSheetShifts extends StatefulWidget {
   final String title, hintText, btnText1;
   final String? btnText2;
   const CustomBottomSheetShifts(
@@ -17,10 +17,24 @@ class CustomBottomSheetShifts extends StatelessWidget {
       this.btnText2});
 
   @override
+  State<CustomBottomSheetShifts> createState() =>
+      _CustomBottomSheetShiftsState();
+}
+
+class _CustomBottomSheetShiftsState extends State<CustomBottomSheetShifts> {
+  bool isKeyboardVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
-    double modalSize = isPortrait ? 0.48 : 0.75;
+    isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+
+    double modalSize = !isPortrait
+        ? 1
+        : isKeyboardVisible
+            ? 0.75
+            : 0.48;
 
     return DraggableScrollableSheet(
       initialChildSize: modalSize, // Opens at 1/3 screen height
@@ -46,7 +60,7 @@ class CustomBottomSheetShifts extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24.0),
                   child: Text(
-                    title,
+                    widget.title,
                     style: const TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.bold,
@@ -105,14 +119,15 @@ class CustomBottomSheetShifts extends StatelessWidget {
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment:
-                              btnText2 != null && btnText2!.isNotEmpty
-                                  ? MainAxisAlignment.spaceBetween
-                                  : MainAxisAlignment.center,
+                          mainAxisAlignment: widget.btnText2 != null &&
+                                  widget.btnText2!.isNotEmpty
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
                           children: [
-                            submitButton(btnText1, context),
-                            if (btnText2 != null && btnText2!.isNotEmpty)
-                              submitButton(btnText2!, context)
+                            submitButton(widget.btnText1, context),
+                            if (widget.btnText2 != null &&
+                                widget.btnText2!.isNotEmpty)
+                              submitButton(widget.btnText2!, context)
                           ],
                         ),
                       ],
@@ -201,7 +216,7 @@ class CustomBottomSheetShifts extends StatelessWidget {
         decoration: InputDecoration(
           // contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
           border: InputBorder.none,
-          hintText: hintText,
+          hintText: widget.hintText,
           hintStyle: TextStyle(
             color: Themes.kGreyColor[500],
           ),
@@ -229,7 +244,7 @@ class CustomBottomSheetShifts extends StatelessWidget {
           ),
           child: Container(
             height: 52.0,
-            width: btnText2 != null && btnText2!.isNotEmpty
+            width: widget.btnText2 != null && widget.btnText2!.isNotEmpty
                 ? Get.width / 2.5
                 : Get.width / 2,
             alignment: Alignment.center,

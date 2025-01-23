@@ -1,13 +1,15 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
-import 'package:kedasrd/widgets/custom_bottom_Sheet_Input.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
-import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+import 'package:kedasrd/widgets/custom_text_input.dart';
+import 'package:kedasrd/widgets/custom_bottom_Sheet_Input.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/controllers/restaurant/tables_controller.dart';
@@ -82,8 +84,8 @@ class _TablesViewState extends State<TablesView> {
               return WidgetAnimator(
                   incomingEffect: WidgetTransitionEffects.incomingScaleDown(
                       delay: Duration(milliseconds: index * 100)),
-                  child: customTables(
-                      index, controller.randomNumbers[index], itemWidth));
+                  child: customTables(index, controller.randomNumbers[index],
+                      itemWidth, isPortrait, size));
             }),
           ),
         ),
@@ -91,9 +93,17 @@ class _TablesViewState extends State<TablesView> {
     );
   }
 
-  Widget customTables(int index, int randomNumber, double itemWidth) {
+  Widget customTables(int index, int randomNumber, double itemWidth,
+      bool isPortrait, Size size) {
     return GestureDetector(
-      onTap: () => continueTable(),
+      onTap: () => Constants.openDialog(
+        context: context,
+        title: "Enter Code to\nContinue",
+        btnText1: "Submit",
+        scroll: const AlwaysScrollableScrollPhysics(),
+        height: isPortrait ? size.height / 3.2 : 0,
+        child: const CustomTextInput(hintText: "Enter Code", isNumber: true),
+      ),
       child: Container(
         height: 92.0,
         width: itemWidth,

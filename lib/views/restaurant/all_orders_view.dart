@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_search_bar.dart';
-import 'package:kedasrd/widgets/custom_bottom_sheet.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
@@ -33,7 +32,11 @@ class _AllOrdersViewState extends State<AllOrdersView> {
         child: Column(
           children: [
             customHeader(),
-            const CustomSearchBar(isEnabled: true, title: "Search Order"),
+            const Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child:
+                  const CustomSearchBar(isEnabled: true, title: "Search Order"),
+            ),
             const SizedBox(height: 16.0),
             Expanded(
               child: SingleChildScrollView(
@@ -244,7 +247,8 @@ class _AllOrdersViewState extends State<AllOrdersView> {
             top: 6.0,
             right: 0.0,
             child: GestureDetector(
-              onTap: () => openBottomSheet("Share", DummyData.actionItems),
+              onTapDown: (details) => Constants.openPopupMenu(
+                  context, details, DummyData.actionItems, "Items"),
               child: Image.asset(
                 Images.more,
                 height: 12.0,
@@ -304,31 +308,19 @@ class _AllOrdersViewState extends State<AllOrdersView> {
               ),
             ),
             GestureDetector(
-              onTap: () =>
-                  openBottomSheet("Select Filter", DummyData.ordersFilters),
+              onTapDown: (details) => Constants.openPopupMenu(
+                  context, details, DummyData.ordersFilters, "Items"),
               child: Image.asset(Images.filters, height: 20.0),
             ),
             const SizedBox(width: 16.0),
             GestureDetector(
-              onTap: () => openBottomSheet("Export", DummyData.exportItems),
+              onTapDown: (details) => Constants.openPopupMenu(
+                  context, details, DummyData.exportItems, "Items"),
               child: Image.asset(Images.export, height: 20.0),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  dynamic openBottomSheet(String title, List<String> data) {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      isScrollControlled: true, // To allow full screen dragging
-      backgroundColor: Themes.kTransparent,
-      builder: (context) {
-        return CustomBottomSheet(title: title, listData: data);
-      },
     );
   }
 }

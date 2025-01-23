@@ -137,7 +137,7 @@ class _KeypadScreensViewState extends State<KeypadScreensView> {
       children: [
         const Text(
           "Payment Type : ",
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w600,
             color: Themes.kPrimaryColor,

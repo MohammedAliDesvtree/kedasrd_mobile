@@ -43,7 +43,7 @@ class _AllItemsViewState extends State<AllItemsView> {
             if (data["title"] == "Customers")
               const Padding(
                 padding: EdgeInsets.only(left: 24.0, bottom: 14.0),
-                child: const Text(
+                child: Text(
                   "Paloma Medrano",
                   style: TextStyle(
                     fontSize: 14.0,
@@ -52,11 +52,14 @@ class _AllItemsViewState extends State<AllItemsView> {
                   ),
                 ),
               ),
-            CustomSearchBar(
-                isEnabled: true,
-                title: data["title"] == "Items"
-                    ? "Search Item"
-                    : "Search Customer"),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+              child: CustomSearchBar(
+                  isEnabled: true,
+                  title: data["title"] == "Items"
+                      ? "Search Item"
+                      : "Search Customer"),
+            ),
             const SizedBox(height: 16.0),
             Expanded(
               child: SingleChildScrollView(
@@ -352,7 +355,13 @@ class _AllItemsViewState extends State<AllItemsView> {
               ),
             if (data["title"] == "Customers")
               GestureDetector(
-                onTap: () => openBottomSheet(data["title"]),
+                onTap: () => Constants.openDialog(
+                  context: context,
+                  title: "Add Customer",
+                  btnText1: "Proceed",
+                  scroll: const AlwaysScrollableScrollPhysics(),
+                  child: Constants.inputSection(),
+                ),
                 child: Image.asset(Images.add, height: 14.0),
               )
           ],

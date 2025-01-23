@@ -216,9 +216,13 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                 Obx(() => controller.isSearchVisible.value
                     ? const Column(
                         children: [
-                          CustomSearchBar(
-                              isEnabled: true, title: "Search Item by Name"),
-                          const SizedBox(height: 16.0),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                            child: CustomSearchBar(
+                                isEnabled: true, title: "Search Item by Name"),
+                          ),
+                          SizedBox(height: 16.0),
                         ],
                       )
                     : const SizedBox.shrink()),
@@ -296,9 +300,9 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "1 Item",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.w500,
                       color: Themes.kGreyColor,
@@ -306,7 +310,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                   ),
                   Text(
                     "DOP \$847.46",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w600,
                       color: Themes.kBlackColor,
@@ -673,7 +677,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                         top: -14.0,
                         left: 6.0,
                         right: 0.0,
-                        child: const Text(
+                        child: Text(
                           "3",
                           style: TextStyle(
                             fontSize: 16.0,

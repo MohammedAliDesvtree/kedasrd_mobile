@@ -36,7 +36,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
       backgroundColor: Themes.kWhiteColor,
       drawer: CustomDrawer(items: DummyData.fastFoodDrawerItems),
       bottomNavigationBar: data["title"] == "Online Store"
-          ? checkoutButton()
+          ? SafeArea(child: checkoutButton())
           : Container(
               height: 124.0,
               padding:
@@ -112,8 +112,11 @@ class _FastFoodCartState extends State<FastFoodCart> {
                               ),
                             ),
                             GestureDetector(
-                              onTap: () => openBottomSheet(
-                                  "Options", DummyData.cartOptionsItems),
+                              onTapDown: (details) => Constants.openPopupMenu(
+                                  context,
+                                  details,
+                                  DummyData.cartOptionsItems,
+                                  "Regular - User"),
                               child: Image.asset(
                                 Images.more,
                                 height: 14.0,
@@ -251,7 +254,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                 color: Themes.kBlackColor,
                               ),
                             ),
-                            const Text(
+                            Text(
                               "ccmatua@kedasrd.com - 809-536-9566",
                               style: TextStyle(
                                 fontSize: 10.0,
@@ -417,8 +420,11 @@ class _FastFoodCartState extends State<FastFoodCart> {
                         ),
                         const SizedBox(width: 12.0),
                         GestureDetector(
-                          onTap: () => openBottomSheet(
-                              "Item Options", DummyData.cartSingleItems),
+                          onTapDown: (details) => Constants.openPopupMenu(
+                              context,
+                              details,
+                              DummyData.cartSingleItems,
+                              "Regular - Item"),
                           child: Image.asset(
                             Images.more,
                             height: 14.0,
@@ -567,8 +573,8 @@ class _FastFoodCartState extends State<FastFoodCart> {
             height: 54.0,
             alignment: Alignment.center,
             child: const Text(
-              "Add Address",
-              style: const TextStyle(
+              "Confirm Order",
+              style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700,
                 color: Themes.kWhiteColor,
@@ -695,7 +701,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
           Obx(() =>
               digitSection("Discount", "\$${controller.qty.value}.00", 800)),
           const SizedBox(height: 6.0),
-          digitSection("Total", "DOP \$1,024.32", 1000)
+          digitSection("Total", "DOP \$1,024.32", 1000),
         ],
       ),
     );
@@ -725,8 +731,9 @@ class _FastFoodCartState extends State<FastFoodCart> {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 15.0,
+            style: TextStyle(
+              fontSize:
+                  title == "Total" || title.contains("1,024") ? 18.0 : 15.0,
               fontWeight: FontWeight.w600,
               color: Themes.kBlackColor,
             ),

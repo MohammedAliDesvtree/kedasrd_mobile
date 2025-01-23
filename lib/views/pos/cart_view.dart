@@ -5,10 +5,10 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
-import 'package:kedasrd/views/pos/add_customer_view.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/controllers/pos/cart_controller.dart';
@@ -554,15 +554,12 @@ class _CartViewState extends State<CartView> {
             Material(
               color: Themes.kTransparent,
               child: InkWell(
-                onTap: () => showModalBottomSheet(
+                onTap: () => Constants.openDialog(
                   context: context,
-                  isDismissible: false,
-                  enableDrag: false,
-                  isScrollControlled: true, // To allow full screen dragging
-                  backgroundColor: Themes.kTransparent,
-                  builder: (context) {
-                    return const AddCustomerView();
-                  },
+                  title: "Add Customer",
+                  btnText1: "Proceed",
+                  scroll: const AlwaysScrollableScrollPhysics(),
+                  child: Constants.inputSection(),
                 ),
                 borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(48.0),

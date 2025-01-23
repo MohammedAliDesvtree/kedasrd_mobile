@@ -26,11 +26,18 @@ class _SuperMarketViewState extends State<SuperMarketView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.of(context).size;
+
     controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+
     return Scaffold(
       key: superMarketGlobalKey,
       backgroundColor: Themes.kWhiteColor,
-      bottomNavigationBar: SafeArea(child: buttonsView()),
+      bottomNavigationBar: controller.isKeyboardVisible
+          ? const SizedBox.shrink()
+          : SafeArea(child: buttonsView()),
       drawer: CustomDrawer(items: DummyData.superMarketDrawerItems),
       body: SafeArea(
         bottom: false,
@@ -38,41 +45,87 @@ class _SuperMarketViewState extends State<SuperMarketView> {
           children: [
             customHeader(),
             // const SizedBox(height: 16.0),
-            Align(alignment: Alignment.centerLeft, child: customTabList()),
-            const SizedBox(height: 16.0),
-            Obx(() => controller.selectedItems.contains("Search Customer")
-                ? const Column(
-                    children: [
-                      CustomSearchBar(
-                          isEnabled: true, title: "Search Customers"),
-                      const SizedBox(height: 16.0),
-                    ],
-                  )
-                : const SizedBox.shrink()),
-            Obx(() => controller.selectedItems.contains("Search Item by Name")
-                ? const Column(
-                    children: [
-                      CustomSearchBar(
-                          isEnabled: true, title: "Search Item by Name"),
-                      const SizedBox(height: 16.0),
-                    ],
-                  )
-                : const SizedBox.shrink()),
-            Obx(() => controller.selectedItems.contains("Select Currency")
+            isPortrait
+                ? Align(alignment: Alignment.centerLeft, child: customTabList())
+                : const SizedBox.shrink(),
+            isPortrait
                 ? Column(
                     children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: CustomDropdowns(
-                            listData: DummyData.currencyItems,
-                            hintText: "Select Currency",
-                            borderRadius: 100.0,
-                            isShadow: true,
-                          )),
                       const SizedBox(height: 16.0),
+                      Obx(() =>
+                          controller.selectedItems.contains("Search Customer")
+                              ? const Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 16.0, right: 16.0),
+                                      child: CustomSearchBar(
+                                          isEnabled: true,
+                                          title: "Search Customers"),
+                                    ),
+                                    SizedBox(height: 16.0),
+                                  ],
+                                )
+                              : const SizedBox.shrink()),
+                      Obx(() => controller.selectedItems
+                              .contains("Search Item by Name")
+                          ? const Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16.0, right: 16.0),
+                                  child: CustomSearchBar(
+                                      isEnabled: true,
+                                      title: "Search Item by Name"),
+                                ),
+                                SizedBox(height: 16.0),
+                              ],
+                            )
+                          : const SizedBox.shrink()),
+                      Obx(() =>
+                          controller.selectedItems.contains("Select Currency")
+                              ? Column(
+                                  children: [
+                                    Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        child: CustomDropdowns(
+                                          listData: DummyData.currencyItems,
+                                          hintText: "Select Currency",
+                                          borderRadius: 100.0,
+                                          isShadow: true,
+                                        )),
+                                    const SizedBox(height: 16.0),
+                                  ],
+                                )
+                              : const SizedBox.shrink()),
                     ],
                   )
-                : const SizedBox.shrink()),
+                : Row(
+                    children: [
+                      const SizedBox(width: 16.0),
+                      const Expanded(
+                        child: CustomSearchBar(
+                            isEnabled: true, title: "Search Customers"),
+                      ),
+                      const SizedBox(width: 16.0),
+                      const Expanded(
+                        child: CustomSearchBar(
+                            isEnabled: true, title: "Search Item by Name"),
+                      ),
+                      const SizedBox(width: 16.0),
+                      Expanded(
+                        child: CustomDropdowns(
+                          listData: DummyData.currencyItems,
+                          hintText: "Select Currency",
+                          borderRadius: 100.0,
+                          isShadow: true,
+                        ),
+                      ),
+                      const SizedBox(width: 16.0),
+                    ],
+                  ),
+            const SizedBox(height: 16.0),
             Flexible(
               child: SingleChildScrollView(
                 child: Column(
@@ -82,7 +135,6 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                 ),
               ),
             ),
-
             const SizedBox(height: 16.0),
             // if (!controller.isKeyboardVisible)
             Column(
@@ -691,7 +743,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                           top: -14.0,
                           left: 6.0,
                           right: 0.0,
-                          child: const Text(
+                          child: Text(
                             "3",
                             style: TextStyle(
                               fontSize: 16.0,

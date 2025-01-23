@@ -18,7 +18,7 @@ class CustomSearchBar extends StatelessWidget {
     return WidgetAnimator(
       incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(),
       child: Container(
-        margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+        // margin: const EdgeInsets.only(left: 16.0, right: 16.0),
         padding: const EdgeInsets.only(left: 16.0, right: 4.0),
         decoration: BoxDecoration(
           color: Themes.kWhiteColor,
@@ -27,8 +27,8 @@ class CustomSearchBar extends StatelessWidget {
             BoxShadow(
               color: Themes.kBlackColor.withOpacity(0.20),
               blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 4),
+              spreadRadius: 0,
+              offset: const Offset(4, 4),
             ),
           ],
         ),
@@ -40,6 +40,7 @@ class CustomSearchBar extends StatelessWidget {
             hintText: title,
             hintStyle: TextStyle(
               color: Themes.kGreyColor[500],
+              fontSize: 14.0,
             ),
             suffixIcon: Container(
               padding: EdgeInsets.symmetric(
