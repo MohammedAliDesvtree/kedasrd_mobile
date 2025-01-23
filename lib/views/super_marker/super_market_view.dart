@@ -28,7 +28,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
 
     controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
@@ -52,28 +52,28 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                 ? Column(
                     children: [
                       const SizedBox(height: 16.0),
-                      Obx(() =>
-                          controller.selectedItems.contains("Search Customer")
-                              ? const Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 16.0, right: 16.0),
-                                      child: CustomSearchBar(
-                                          isEnabled: true,
-                                          title: "Search Customers"),
-                                    ),
-                                    SizedBox(height: 16.0),
-                                  ],
-                                )
-                              : const SizedBox.shrink()),
+                      Obx(() => controller.selectedItems
+                              .contains("Search Customer")
+                          ? const Column(
+                              children: [
+                                Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 16.0, right: 16.0),
+                                  child: CustomSearchBar(
+                                      isEnabled: true,
+                                      title: "Search Customers"),
+                                ),
+                                SizedBox(height: 16.0),
+                              ],
+                            )
+                          : const SizedBox.shrink()),
                       Obx(() => controller.selectedItems
                               .contains("Search Item by Name")
                           ? const Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16.0, right: 16.0),
+                                  padding:
+                                      EdgeInsets.only(left: 16.0, right: 16.0),
                                   child: CustomSearchBar(
                                       isEnabled: true,
                                       title: "Search Item by Name"),

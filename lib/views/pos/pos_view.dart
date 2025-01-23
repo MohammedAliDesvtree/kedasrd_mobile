@@ -48,9 +48,9 @@ class _POSViewState extends State<POSView> {
                     onMenuTapped: () =>
                         posGlobalKey.currentState!.openDrawer()),
                 const Padding(
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: const CustomSearchBar(
-                      isEnabled: true, title: "Search Product"),
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  child:
+                      CustomSearchBar(isEnabled: true, title: "Search Product"),
                 ),
                 const SizedBox(height: 16.0),
                 productList(isPortrait, size),

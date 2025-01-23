@@ -217,8 +217,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                     ? const Column(
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.only(left: 16.0, right: 16.0),
+                            padding: EdgeInsets.only(left: 16.0, right: 16.0),
                             child: CustomSearchBar(
                                 isEnabled: true, title: "Search Item by Name"),
                           ),

@@ -59,31 +59,31 @@ class _InfoState extends State<Info> {
                               children: [
                                 Row(
                                   children: [
-                                    const Expanded(
+                                    Expanded(
                                         child: CustomTextInput(
                                             hintText: "Name", isNumber: false)),
-                                    const SizedBox(width: 14.0),
-                                    const Expanded(
+                                    SizedBox(width: 14.0),
+                                    Expanded(
                                         child: CustomTextInput(
                                             hintText: "Phone Number",
                                             isNumber: true)),
                                   ],
                                 ),
-                                const SizedBox(height: 14.0),
+                                SizedBox(height: 14.0),
                                 Row(
                                   children: [
-                                    const Expanded(
+                                    Expanded(
                                         child: CustomTextInput(
                                             hintText: "Email Address",
                                             isNumber: false)),
-                                    const SizedBox(width: 14.0),
-                                    const Expanded(
+                                    SizedBox(width: 14.0),
+                                    Expanded(
                                         child: CustomTextInput(
                                             hintText: "Address",
                                             isNumber: false)),
                                   ],
                                 ),
-                                const SizedBox(height: 14.0),
+                                SizedBox(height: 14.0),
                               ],
                             ),
 

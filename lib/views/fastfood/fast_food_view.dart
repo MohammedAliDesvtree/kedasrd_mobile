@@ -60,7 +60,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                               ? const Column(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                           left: 16.0, right: 16.0),
                                       child: CustomSearchBar(
                                           isEnabled: false,
@@ -75,7 +75,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                               ? const Column(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.only(
+                                      padding: EdgeInsets.only(
                                           left: 16.0, right: 16.0),
                                       child: CustomSearchBar(
                                           isEnabled: true,
