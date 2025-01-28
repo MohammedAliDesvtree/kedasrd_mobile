@@ -181,8 +181,8 @@ class DummyData {
   ];
 
   static List<dynamic> superMarketItems = [
-    'Search Customer',
-    'Search Item by Name',
+    'Customer',
+    'Item Name',
     'Select Currency'
   ];
 
@@ -267,6 +267,11 @@ class DummyData {
     {"icon": Images.discount, "title": "Discount"},
     {"icon": Images.exit, "title": "Exit"},
     {"icon": Images.exit, "title": "Logout"},
+  ];
+
+  static List<dynamic> onlineStoreDrawerItems = [
+    {"icon": Images.home, "title": "Home"},
+    {"icon": Images.telephone, "title": "Contact"},
   ];
 
   // List of items in our dropdown menu
@@ -382,5 +387,22 @@ class DummyData {
     'Uber Eats',
     'Pedidos Ya',
     'Glovo'
+  ];
+
+  static List<String> extraItems = [
+    'Paneer',
+    'Black Olives',
+    'Red Peppers',
+    'Mashroom',
+    'Cheeze',
+    "Vegitable",
+    "Chicken"
+  ];
+
+  static List<String> formulaItems = ["No result found"];
+
+  static List<String> tableModeItems = [
+    "Only Table by Section",
+    "All Tables",
   ];
 }

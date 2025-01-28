@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
-import 'package:kedasrd/utils/dummy_data.dart';
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
+import 'package:kedasrd/utils/dummy_data.dart';
+
 import 'package:kedasrd/widgets/custom_bottom_sheet_input.dart';
 
 class CustomBottomSheetController extends GetxController {
@@ -36,6 +38,23 @@ class CustomBottomSheetController extends GetxController {
     for (int i = 0; i < isVisibleItems.length; i++) {
       await Future.delayed(const Duration(milliseconds: 100));
       isVisibleItems[i] = true;
+    }
+  }
+
+  void onTabTapped(String title, BuildContext context) {
+    Get.back();
+    if (title.contains("Items")) {
+      Get.toNamed('/all_items', arguments: {"title": "Items"});
+    } else if (title.contains("Customers")) {
+      Get.toNamed('/all_items', arguments: {"title": "Customers"});
+    } else if (title.contains("Orders")) {
+      Get.toNamed('/all_orders', arguments: {"title": "Orders"});
+    } else if (title.contains("Save")) {
+      showSnackBar(context);
+    } else if (title.contains("Discard")) {
+      Constants.discardOrder(context);
+    } else if (title == "Discount") {
+      Constants.addDiscount(context);
     }
   }
 

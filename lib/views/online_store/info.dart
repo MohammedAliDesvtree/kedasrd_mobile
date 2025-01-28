@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kedasrd/utils/themes.dart';
@@ -25,12 +26,20 @@ class _InfoState extends State<Info> {
 
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
-      bottomNavigationBar: SafeArea(child: submitButton()),
+      bottomNavigationBar: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            submitButton("Continue Shopping", size),
+            submitButton("Submit Order", size),
+          ],
+        ),
+      ),
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            const CustomHeader(title: "Add Address"),
+            const CustomHeader(title: "New Customer"),
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
@@ -47,10 +56,13 @@ class _InfoState extends State<Info> {
                               children: [
                                 CustomTextInput(
                                     hintText: "Name", isNumber: false),
+                                SizedBox(height: 16.0),
                                 CustomTextInput(
                                     hintText: "Phone Number", isNumber: true),
+                                SizedBox(height: 16.0),
                                 CustomTextInput(
                                     hintText: "Email Address", isNumber: false),
+                                SizedBox(height: 16.0),
                                 CustomTextInput(
                                     hintText: "Address", isNumber: false),
                               ],
@@ -114,59 +126,45 @@ class _InfoState extends State<Info> {
     );
   }
 
-  Widget submitButton() {
+  Widget submitButton(String title, Size size) {
     return Material(
       color: Themes.kTransparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(8.0),
-        onTap: () => showModalBottomSheet(
-          context: context,
-          isDismissible: false,
-          enableDrag: false,
-          isScrollControlled: true, // To allow full screen dragging
-          backgroundColor: Themes.kTransparent,
-          builder: (context) {
-            return const PaymentInfoView();
-          },
-        ),
+        onTap: () {
+          if (title.contains("Submit")) {
+            showModalBottomSheet(
+              context: context,
+              isDismissible: false,
+              enableDrag: false,
+              isScrollControlled: true, // To allow full screen dragging
+              backgroundColor: Themes.kTransparent,
+              builder: (context) {
+                return const PaymentInfoView();
+              },
+            );
+          } else {
+            Get.toNamed("/onlineStore");
+          }
+        },
         child: Ink(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Themes.kPrimaryColor,
-            // borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(8.0),
           ),
           child: Container(
             height: 54.0,
+            width: size.width / 2.2,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             alignment: Alignment.center,
-            child: const Text(
-              "Submit Order Now",
-              style: TextStyle(
-                fontSize: 18.0,
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16.0,
                 fontWeight: FontWeight.w700,
                 color: Themes.kWhiteColor,
               ),
             ),
-            // child: const Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text(
-            //       "2 Items",
-            //       style: TextStyle(
-            //         fontSize: 18.0,
-            //         fontWeight: FontWeight.w700,
-            //         color: Themes.kWhiteColor,
-            //       ),
-            //     ),
-            //     Text(
-            //       "Pay \$1024.32",
-            //       style: TextStyle(
-            //         fontSize: 18.0,
-            //         fontWeight: FontWeight.w700,
-            //         color: Themes.kWhiteColor,
-            //       ),
-            //     ),
-            //   ],
-            // ),
           ),
         ),
       ),

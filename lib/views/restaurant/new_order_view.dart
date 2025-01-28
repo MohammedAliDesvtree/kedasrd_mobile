@@ -23,6 +23,10 @@ class _NewOrderViewState extends State<NewOrderView> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       key: newOrderGlobalKey,
       backgroundColor: Themes.kWhiteColor,
@@ -37,8 +41,8 @@ class _NewOrderViewState extends State<NewOrderView> {
                     newOrderGlobalKey.currentState!.openDrawer()),
             WrapList(
                 listData: DummyData.newOrderList,
-                onItemTap: (title) =>
-                    commonController.onNewOrderItemTapped(title))
+                onItemTap: (title) => commonController.onNewOrderItemTapped(
+                    context, size, isPortrait, title))
           ],
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 // import 'package:kedasrd/widgets/custom_loader.dart';
+import 'package:kedasrd/widgets/product_info.dart';
 import 'package:kedasrd/widgets/custom_search_bar.dart';
 // import 'package:kedasrd/widgets/custom_dropdown.dart';
 // import 'package:kedasrd/widgets/custom_back_button.dart';
@@ -201,7 +202,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
     return Scaffold(
       // key: fastFoodGlobalKey,
       backgroundColor: Themes.kWhiteColor,
-      // drawer: CustomDrawer(items: DummyData.fastFoodDrawerItems),
+      // drawer: CustomDrawer(items: DummyData.onlineStoreDrawerItems),
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -357,9 +358,11 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
         child: Padding(
           padding: const EdgeInsets.only(bottom: 0.0),
           child: Wrap(
-              spacing: 16.0,
-              runSpacing: 16.0,
-              children: List.generate(DummyData.productList.length, (index) {
+            spacing: 16.0,
+            runSpacing: 16.0,
+            children: List.generate(
+              DummyData.productList.length,
+              (index) {
                 var data = DummyData.productList[index];
 
                 // Calculate item width based on orientation
@@ -448,8 +451,18 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                                   topLeft: Radius.circular(13.0),
                                   bottomRight: Radius.circular(8.0),
                                 ),
-                                onTap: () => Constants.showSnackBar(
-                                    context, "Item Added!"),
+                                onTap: () => showModalBottomSheet(
+                                  context: context,
+                                  isDismissible: false,
+                                  enableDrag: false,
+                                  isScrollControlled:
+                                      true, // To allow full screen dragging
+                                  backgroundColor: Themes.kTransparent,
+                                  builder: (context) {
+                                    return ProductInfo(
+                                        itemData: data, index: index);
+                                  },
+                                ),
                                 child: Ink(
                                   decoration: const BoxDecoration(
                                     color: Themes.kPrimaryColor,
@@ -490,7 +503,9 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                     ),
                   ),
                 );
-              })),
+              },
+            ),
+          ),
         ),
       ),
     );

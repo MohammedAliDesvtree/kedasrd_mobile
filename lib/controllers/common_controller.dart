@@ -1,11 +1,19 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+
+import 'package:kedasrd/utils/constants.dart';
 
 class CommonController extends GetxController {
-  void onHomeItemTapped(String title) {
+  RxBool isLocationAllow = false.obs;
+  bool isKeyboardVisible = false;
+
+  void onHomeItemTapped(
+      BuildContext context, Size size, bool isPortrait, String title) {
     if (title.contains("Regular")) {
       Get.toNamed('/pos');
     } else if (title == "Restaurant") {
-      Get.toNamed('/restaurant');
+      Constants.enterAuthCode(
+          context: context, isPortrait: isPortrait, size: size, screen: "Home");
     } else if (title.contains("Fast")) {
       Get.toNamed('/fastFood');
     } else if (title.contains("Market")) {
@@ -25,9 +33,14 @@ class CommonController extends GetxController {
     }
   }
 
-  void onNewOrderItemTapped(String title) {
+  void onNewOrderItemTapped(
+      BuildContext context, Size size, bool isPortrait, String title) {
     if (title.contains("Dine")) {
-      Get.toNamed('/tables', arguments: {"title": "Tables"});
+      Constants.enterAuthCode(
+          context: context,
+          isPortrait: isPortrait,
+          size: size,
+          screen: "New Order");
     } else {
       Get.toNamed('/fastFood', arguments: {"title": "Delivery"});
     }
@@ -39,5 +52,9 @@ class CommonController extends GetxController {
     } else {
       Get.toNamed('/delivery');
     }
+  }
+
+  void locationAllowed() {
+    isLocationAllow.value = !isLocationAllow.value;
   }
 }

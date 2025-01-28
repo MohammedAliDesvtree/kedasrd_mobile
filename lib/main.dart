@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/load_images.dart';
 
+import 'package:kedasrd/views/invoice_view.dart';
+import 'package:kedasrd/views/entry_log_view.dart';
+import 'package:kedasrd/views/upload_photo_view.dart';
+
 import 'package:kedasrd/views/fastfood/fast_food_cart.dart';
 
 import 'package:kedasrd/views/home_view.dart';
@@ -16,6 +20,7 @@ import 'package:kedasrd/views/pos/cart_view.dart';
 import 'package:kedasrd/views/settings_view.dart';
 
 import 'package:kedasrd/views/online_store/info.dart';
+import 'package:kedasrd/views/online_store/contact_view.dart';
 import 'package:kedasrd/views/online_store/online_store_view.dart';
 
 import 'package:kedasrd/views/restaurant/orders_view.dart';
@@ -116,12 +121,17 @@ class MyApp extends StatelessWidget {
               name: '/keypad_screens', page: () => const KeypadScreensView()),
           // Online Store
           GetPage(name: '/onlineStore', page: () => const OnlineStoreView()),
+          GetPage(name: '/contact', page: () => const ContactView()),
           GetPage(name: '/info', page: () => const Info()),
           // Settings
           GetPage(name: '/settings', page: () => const SettingsView()),
           // Notifications
           GetPage(
               name: '/notifications', page: () => const NotificationsView()),
+
+          GetPage(name: '/upload_photo', page: () => const UploadPhotoView()),
+          GetPage(name: '/entry_log', page: () => const EntryLogView()),
+          GetPage(name: '/invoice', page: () => const InvoiceView()),
         ]);
   }
 }

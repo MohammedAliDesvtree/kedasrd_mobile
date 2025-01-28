@@ -1,8 +1,13 @@
+import 'package:get/get.dart';
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
+import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_text_input.dart';
 import 'package:kedasrd/widgets/custom_input_dialog.dart';
+import 'package:kedasrd/widgets/custom_bottom_sheet.dart';
+import 'package:kedasrd/widgets/custom_bottom_sheet_input.dart';
+import 'package:kedasrd/widgets/custom_bottom_sheet_shifts.dart';
 
 import 'package:kedasrd/utils/themes.dart';
 
@@ -81,7 +86,8 @@ class Constants {
     required BuildContext context,
     required String title,
     btnText1,
-    String? btnText2,
+    String? screen,
+    btnText2,
     btnText3,
     double? height,
     Widget? child,
@@ -91,6 +97,7 @@ class Constants {
       barrierDismissible: false,
       context: context,
       builder: (context) => CustomInputDialog(
+        screen: screen,
         title: title,
         btnText1: btnText1,
         btnText2: btnText2,
@@ -110,6 +117,99 @@ class Constants {
         SizedBox(height: 16.0),
         CustomTextInput(hintText: "Phone Number", isNumber: true),
       ],
+    );
+  }
+
+  static dynamic openBottomSheet(
+      BuildContext context, String title, List<dynamic> data) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true, // To allow full screen dragging
+      backgroundColor: Themes.kTransparent,
+      builder: (context) {
+        return CustomBottomSheet(title: title, listData: data);
+      },
+    );
+  }
+
+  static dynamic discardOrder(context) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => CustomDialog(
+        title: 'Discard Order',
+        msg: 'Are you sure or want to cancel your cart?',
+        positiveAction: () {
+          Constants.showSnackBar(context, "Order Discarded!");
+          Get.back();
+        },
+      ),
+    );
+  }
+
+  static dynamic addDiscount(context) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true, // To allow full screen dragging
+      backgroundColor: Themes.kTransparent,
+      builder: (context) => const CustomBottomSheetInput(
+        title: "Add Discount",
+        hintText: "Discount",
+        btnText1: "Cancel",
+        btnText2: "Submit",
+      ),
+    );
+  }
+
+  static dynamic enterCode(context) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true, // To allow full screen dragging
+      backgroundColor: Themes.kTransparent,
+      builder: (context) => const CustomBottomSheetInput(
+        title: "Enter Code to Continue",
+        hintText: "Enter Code",
+        btnText1: "Submit",
+      ),
+    );
+  }
+
+  static dynamic enterAuthCode({
+    required BuildContext context,
+    bool? isPortrait,
+    required Size size,
+    required String screen,
+  }) {
+    return Constants.openDialog(
+      context: context,
+      screen: screen,
+      title: "Please enter your\nauth code",
+      btnText1: "Submit",
+      scroll: const AlwaysScrollableScrollPhysics(),
+      height: (isPortrait != null && isPortrait) ? size.height / 2.8 : 0,
+      child: const CustomTextInput(hintText: "Enter Code here", isNumber: true),
+    );
+  }
+
+  static dynamic closeShift(context) {
+    return showModalBottomSheet(
+      context: context,
+      isDismissible: false,
+      enableDrag: false,
+      isScrollControlled: true, // To allow full screen dragging
+      backgroundColor: Themes.kTransparent,
+      builder: (context) => const CustomBottomSheetShifts(
+        title: "Close Shift",
+        hintText: "Observations",
+        btnText1: "Submit",
+        btnText2: "Close and Print",
+      ),
     );
   }
 }

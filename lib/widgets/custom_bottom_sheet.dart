@@ -10,7 +10,7 @@ import 'package:kedasrd/controllers/custom_bottom_sheet_controller.dart';
 
 class CustomBottomSheet extends StatefulWidget {
   final String title;
-  final List<String> listData;
+  final List<dynamic> listData;
   const CustomBottomSheet(
       {super.key, required this.title, required this.listData});
 
@@ -29,7 +29,8 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
     double modalSize = !isPortrait
         ? 0.6
-        : widget.title.contains("Payment")
+        : (widget.title.contains("Payment") ||
+                widget.title == "Super Market Tabs")
             ? 0.4
             : widget.title.contains("Item")
                 ? 0.25
@@ -103,6 +104,8 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                         } else if (widget.title.contains("Payment")) {
                           Get.back();
                           controller.onTappedSpecificView(data, context);
+                        } else if (widget.title == "Super Market Tabs") {
+                          controller.onTabTapped(data["title"], context);
                         } else {
                           controller.selectFilter(index);
                         }
@@ -118,7 +121,9 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 12.0),
                           child: Text(
-                            data,
+                            widget.title == "Super Market Tabs"
+                                ? data["title"]
+                                : data,
                             style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,

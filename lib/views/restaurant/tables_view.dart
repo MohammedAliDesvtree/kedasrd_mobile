@@ -5,7 +5,6 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
 import 'package:kedasrd/widgets/custom_text_input.dart';
-import 'package:kedasrd/widgets/custom_bottom_Sheet_Input.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
@@ -226,21 +225,6 @@ class _TablesViewState extends State<TablesView> {
             ),
           );
         }),
-      ),
-    );
-  }
-
-  dynamic continueTable() {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      isScrollControlled: true, // To allow full screen dragging
-      backgroundColor: Themes.kTransparent,
-      builder: (context) => const CustomBottomSheetInput(
-        title: "Enter Code to Continue",
-        hintText: "Enter Code",
-        btnText1: "Submit",
       ),
     );
   }

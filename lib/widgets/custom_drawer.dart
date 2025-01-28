@@ -7,7 +7,12 @@ import 'package:kedasrd/controllers/drawer_controller.dart';
 
 class CustomDrawer extends StatefulWidget {
   final List<dynamic> items;
-  const CustomDrawer({super.key, required this.items});
+  final String? screenName;
+  const CustomDrawer({
+    super.key,
+    required this.items,
+    this.screenName,
+  });
 
   @override
   State<CustomDrawer> createState() => _CustomDrawerState();
@@ -18,6 +23,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.of(context).size;
+
     return Drawer(
       width: Get.width / 1.9,
       backgroundColor: Themes.kPrimaryColor,
@@ -25,41 +34,48 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: Column(
           children: [
             // Image.asset(Images.kedasLogo, height: 84.0),
-            const SizedBox(height: 24.0),
-            Material(
-              color: Themes.kTransparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(4.0),
-                onTap: () => controller.onCloseShiftTapped(context),
-                child: Ink(
-                  decoration: BoxDecoration(
-                      color: Themes.kWhiteColor,
-                      borderRadius: BorderRadius.circular(42.0)),
-                  child: Container(
-                    height: 42.0,
-                    width: Get.width / 3,
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Close Shift",
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Themes.kPrimaryColor,
+            widget.screenName != "Online Store"
+                ? Column(
+                    children: [
+                      const SizedBox(height: 24.0),
+                      Material(
+                        color: Themes.kTransparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(4.0),
+                          onTap: () => controller.onCloseShiftTapped(
+                              context, size, isPortrait),
+                          child: Ink(
+                            decoration: BoxDecoration(
+                                color: Themes.kWhiteColor,
+                                borderRadius: BorderRadius.circular(42.0)),
+                            child: Container(
+                              height: 42.0,
+                              width: Get.width / 3,
+                              alignment: Alignment.center,
+                              child: const Text(
+                                "Close Shift",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Themes.kPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            const Text(
-              "s ID : 00123",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Themes.kWhiteColor,
-              ),
-            ),
+                      const SizedBox(height: 16.0),
+                      const Text(
+                        "s ID : 00123",
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Themes.kWhiteColor,
+                        ),
+                      ),
+                    ],
+                  )
+                : const SizedBox.shrink(),
             const SizedBox(height: 16.0),
             Expanded(
               child: SingleChildScrollView(

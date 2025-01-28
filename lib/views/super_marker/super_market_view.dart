@@ -28,62 +28,84 @@ class _SuperMarketViewState extends State<SuperMarketView> {
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
-    // Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size;
 
     controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       key: superMarketGlobalKey,
       backgroundColor: Themes.kWhiteColor,
-      bottomNavigationBar: controller.isKeyboardVisible
-          ? const SizedBox.shrink()
-          : SafeArea(child: buttonsView()),
+      // bottomNavigationBar: controller.isKeyboardVisible
+      //     ? const SizedBox.shrink()
+      //     : SafeArea(child: buttonsView()),
       drawer: CustomDrawer(items: DummyData.superMarketDrawerItems),
       body: SafeArea(
         bottom: false,
-        child: Column(
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            customHeader(),
-            // const SizedBox(height: 16.0),
-            isPortrait
-                ? Align(alignment: Alignment.centerLeft, child: customTabList())
-                : const SizedBox.shrink(),
-            isPortrait
-                ? Column(
-                    children: [
-                      const SizedBox(height: 16.0),
-                      Obx(() => controller.selectedItems
-                              .contains("Search Customer")
-                          ? const Column(
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 16.0, right: 16.0),
-                                  child: CustomSearchBar(
-                                      isEnabled: true,
-                                      title: "Search Customers"),
+            Column(
+              children: [
+                customHeader(),
+                // const SizedBox(height: 16.0),
+                isPortrait
+                    ? Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                              child: const Text(
+                                "Search by :",
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Themes.kPrimaryColor,
                                 ),
-                                SizedBox(height: 16.0),
-                              ],
-                            )
-                          : const SizedBox.shrink()),
-                      Obx(() => controller.selectedItems
-                              .contains("Search Item by Name")
-                          ? const Column(
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(left: 16.0, right: 16.0),
-                                  child: CustomSearchBar(
-                                      isEnabled: true,
-                                      title: "Search Item by Name"),
-                                ),
-                                SizedBox(height: 16.0),
-                              ],
-                            )
-                          : const SizedBox.shrink()),
-                      Obx(() =>
-                          controller.selectedItems.contains("Select Currency")
+                              ),
+                            ),
+                            customTabList(size),
+                          ],
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+                isPortrait
+                    ? Column(
+                        children: [
+                          const SizedBox(height: 16.0),
+                          Obx(() =>
+                              controller.selectedItems.contains("Customer")
+                                  ? const Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 16.0, right: 16.0),
+                                          child: CustomSearchBar(
+                                              isEnabled: true,
+                                              title: "Search Customers"),
+                                        ),
+                                        SizedBox(height: 16.0),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink()),
+                          Obx(() =>
+                              controller.selectedItems.contains("Item Name")
+                                  ? const Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 16.0, right: 16.0),
+                                          child: CustomSearchBar(
+                                              isEnabled: true,
+                                              title: "Search Item by Name"),
+                                        ),
+                                        SizedBox(height: 16.0),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink()),
+                          Obx(() => controller.selectedItems
+                                  .contains("Select Currency")
                               ? Column(
                                   children: [
                                     Padding(
@@ -99,64 +121,93 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                                   ],
                                 )
                               : const SizedBox.shrink()),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      const SizedBox(width: 16.0),
-                      const Expanded(
-                        child: CustomSearchBar(
-                            isEnabled: true, title: "Search Customers"),
+                        ],
+                      )
+                    : Row(
+                        children: [
+                          const SizedBox(width: 16.0),
+                          const Expanded(
+                            child: CustomSearchBar(
+                                isEnabled: true, title: "Search Customers"),
+                          ),
+                          const SizedBox(width: 16.0),
+                          const Expanded(
+                            child: CustomSearchBar(
+                                isEnabled: true, title: "Search Item by Name"),
+                          ),
+                          const SizedBox(width: 16.0),
+                          Expanded(
+                            child: CustomDropdowns(
+                              listData: DummyData.currencyItems,
+                              hintText: "Select Currency",
+                              borderRadius: 100.0,
+                              isShadow: true,
+                            ),
+                          ),
+                          const SizedBox(width: 16.0),
+                        ],
                       ),
-                      const SizedBox(width: 16.0),
-                      const Expanded(
-                        child: CustomSearchBar(
-                            isEnabled: true, title: "Search Item by Name"),
-                      ),
-                      const SizedBox(width: 16.0),
-                      Expanded(
-                        child: CustomDropdowns(
-                          listData: DummyData.currencyItems,
-                          hintText: "Select Currency",
-                          borderRadius: 100.0,
-                          isShadow: true,
+                Flexible(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(3, (index) {
+                        return marketItemList(index);
+                      }),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16.0),
+                // if (!controller.isKeyboardVisible)
+                Column(
+                  children: [
+                    totalView(),
+                    const SizedBox(height: 16.0),
+
+                    Obx(() {
+                      if (controller.isDigitsViewVisible.value) {
+                        return Column(
+                          children: [
+                            digitsView(),
+                            const SizedBox(height: 16.0),
+                          ],
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    })
+                    // bottomView(),
+                    // const SizedBox(height: 16.0),
+                  ],
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 24.0,
+              child: WidgetAnimator(
+                atRestEffect: WidgetRestingEffects.bounce(),
+                child: Material(
+                  color: Themes.kTransparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(50.0),
+                    onTap: () => Constants.openBottomSheet(context,
+                        "Super Market Tabs", DummyData.superMarketButtonItems),
+                    child: Ink(
+                      decoration: BoxDecoration(
+                          color: Themes.kPrimaryColor,
+                          borderRadius: BorderRadius.circular(50.0)),
+                      child: const SizedBox(
+                        height: 44.0,
+                        width: 44.0,
+                        child: const Icon(
+                          Icons.menu,
+                          size: 24.0,
+                          color: Themes.kWhiteColor,
                         ),
                       ),
-                      const SizedBox(width: 16.0),
-                    ],
+                    ),
                   ),
-            const SizedBox(height: 16.0),
-            Flexible(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(3, (index) {
-                    return marketItemList(index);
-                  }),
                 ),
               ),
-            ),
-            const SizedBox(height: 16.0),
-            // if (!controller.isKeyboardVisible)
-            Column(
-              children: [
-                totalView(),
-                const SizedBox(height: 16.0),
-
-                Obx(() {
-                  if (controller.isDigitsViewVisible.value) {
-                    return Column(
-                      children: [
-                        digitsView(),
-                        const SizedBox(height: 16.0),
-                      ],
-                    );
-                  } else {
-                    return const SizedBox.shrink();
-                  }
-                })
-                // bottomView(),
-                // const SizedBox(height: 16.0),
-              ],
             ),
           ],
         ),
@@ -630,59 +681,56 @@ class _SuperMarketViewState extends State<SuperMarketView> {
     );
   }
 
-  Widget customTabList() {
+  Widget customTabList(Size size) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: List.generate(DummyData.superMarketItems.length, (index) {
-            String title = DummyData.superMarketItems[index];
-            return WidgetAnimator(
-              incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                duration: const Duration(milliseconds: 500),
-                delay: Duration(milliseconds: index * 100),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Obx(
-                  () => Material(
-                    color: Themes.kTransparent,
-                    child: InkWell(
-                      onTap: () => controller.toggleSelection(title),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1.5,
-                            color: Themes.kPrimaryColor.withOpacity(0.5),
-                          ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(DummyData.superMarketItems.length, (index) {
+          String title = DummyData.superMarketItems[index];
+          return WidgetAnimator(
+            incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
+              duration: const Duration(milliseconds: 500),
+              delay: Duration(milliseconds: index * 100),
+            ),
+            child: Obx(
+              () => Material(
+                color: Themes.kTransparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8.0),
+                  onTap: () => controller.toggleSelection(title),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1.5,
+                        color: Themes.kPrimaryColor.withOpacity(0.5),
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: controller.selectedItems.contains(title)
+                          ? Themes.kPrimaryColor.withOpacity(0.8)
+                          : Themes.kTransparent,
+                    ),
+                    child: Container(
+                      height: 40.0,
+                      width: size.width / 3.4,
+                      alignment: Alignment.center,
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 12.0,
+                          fontWeight: FontWeight.bold,
                           color: controller.selectedItems.contains(title)
-                              ? Themes.kPrimaryColor.withOpacity(0.8)
-                              : Themes.kTransparent,
-                        ),
-                        child: Container(
-                          height: 42.0,
-                          padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: controller.selectedItems.contains(title)
-                                  ? Themes.kWhiteColor
-                                  : Themes.kBlackColor,
-                            ),
-                          ),
+                              ? Themes.kWhiteColor
+                              : Themes.kBlackColor,
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

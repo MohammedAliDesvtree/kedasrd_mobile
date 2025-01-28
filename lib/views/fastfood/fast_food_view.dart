@@ -49,42 +49,60 @@ class _FastFoodViewState extends State<FastFoodView> {
                 // const SizedBox(height: 16.0),
                 isPortrait
                     ? Align(
-                        alignment: Alignment.centerLeft, child: customTabList())
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 12.0, bottom: 4.0),
+                              child: const Text(
+                                "Search by :",
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Themes.kPrimaryColor,
+                                ),
+                              ),
+                            ),
+                            customTabList(size),
+                          ],
+                        ),
+                      )
                     : const SizedBox.shrink(),
                 isPortrait
                     ? Column(
                         children: [
                           const SizedBox(height: 16.0),
-                          Obx(() => controller.selectedItems
-                                  .contains("Search Customer")
-                              ? const Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 16.0, right: 16.0),
-                                      child: CustomSearchBar(
-                                          isEnabled: false,
-                                          title: "Price List"),
-                                    ),
-                                    SizedBox(height: 16.0),
-                                  ],
-                                )
-                              : const SizedBox.shrink()),
-                          Obx(() => controller.selectedItems
-                                  .contains("Search Item by Name")
-                              ? const Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: 16.0, right: 16.0),
-                                      child: CustomSearchBar(
-                                          isEnabled: true,
-                                          title: "Search Item by Name"),
-                                    ),
-                                    SizedBox(height: 16.0),
-                                  ],
-                                )
-                              : const SizedBox.shrink()),
+                          Obx(() =>
+                              controller.selectedItems.contains("Customer")
+                                  ? const Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 16.0, right: 16.0),
+                                          child: CustomSearchBar(
+                                              isEnabled: false,
+                                              title: "Price List"),
+                                        ),
+                                        SizedBox(height: 16.0),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink()),
+                          Obx(() =>
+                              controller.selectedItems.contains("Item Name")
+                                  ? const Column(
+                                      children: [
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 16.0, right: 16.0),
+                                          child: CustomSearchBar(
+                                              isEnabled: true,
+                                              title: "Search Item by Name"),
+                                        ),
+                                        SizedBox(height: 16.0),
+                                      ],
+                                    )
+                                  : const SizedBox.shrink()),
                           Obx(() => controller.selectedItems
                                   .contains("Select Currency")
                               ? Column(
@@ -368,59 +386,56 @@ class _FastFoodViewState extends State<FastFoodView> {
     );
   }
 
-  Widget customTabList() {
+  Widget customTabList(Size size) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: List.generate(DummyData.superMarketItems.length, (index) {
-            String title = DummyData.superMarketItems[index];
-            return WidgetAnimator(
-              incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                duration: const Duration(milliseconds: 500),
-                delay: Duration(milliseconds: index * 100),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: Obx(
-                  () => Material(
-                    color: Themes.kTransparent,
-                    child: InkWell(
-                      onTap: () => controller.toggleSelection(title),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1.5,
-                            color: Themes.kPrimaryColor.withOpacity(0.5),
-                          ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(DummyData.superMarketItems.length, (index) {
+          String title = DummyData.superMarketItems[index];
+          return WidgetAnimator(
+            incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
+              duration: const Duration(milliseconds: 500),
+              delay: Duration(milliseconds: index * 100),
+            ),
+            child: Obx(
+              () => Material(
+                color: Themes.kTransparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8.0),
+                  onTap: () => controller.toggleSelection(title),
+                  child: Ink(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1.5,
+                        color: Themes.kPrimaryColor.withOpacity(0.5),
+                      ),
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: controller.selectedItems.contains(title)
+                          ? Themes.kPrimaryColor.withOpacity(0.8)
+                          : Themes.kTransparent,
+                    ),
+                    child: Container(
+                      height: 40.0,
+                      width: size.width / 3.4,
+                      alignment: Alignment.center,
+                      child: Text(
+                        title.contains("Customer") ? "Price List" : title,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
                           color: controller.selectedItems.contains(title)
-                              ? Themes.kPrimaryColor.withOpacity(0.8)
-                              : Themes.kTransparent,
-                        ),
-                        child: Container(
-                          height: 42.0,
-                          padding: const EdgeInsets.symmetric(horizontal: 14.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            title.contains("Customer") ? "Price List" : title,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: controller.selectedItems.contains(title)
-                                  ? Themes.kWhiteColor
-                                  : Themes.kBlackColor,
-                            ),
-                          ),
+                              ? Themes.kWhiteColor
+                              : Themes.kBlackColor,
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }

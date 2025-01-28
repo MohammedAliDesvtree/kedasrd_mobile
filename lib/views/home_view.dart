@@ -23,6 +23,10 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       backgroundColor: Themes.kWhiteColor,
       body: SafeArea(
@@ -32,7 +36,8 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
             customHeader(),
             WrapList(
                 listData: DummyData.dashboardList,
-                onItemTap: (title) => commonController.onHomeItemTapped(title)),
+                onItemTap: (title) => commonController.onHomeItemTapped(
+                    context, size, isPortrait, title)),
           ],
         ),
       ),

@@ -5,7 +5,6 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
-import 'package:kedasrd/widgets/custom_bottom_sheet.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
@@ -30,13 +29,28 @@ class _FastFoodCartState extends State<FastFoodCart> {
 
   @override
   Widget build(BuildContext context) {
+    final isPortrait =
+        MediaQuery.orientationOf(context) == Orientation.portrait;
     Size size = MediaQuery.sizeOf(context);
+
     return Scaffold(
       key: fastFoodCartGlobalKey,
       backgroundColor: Themes.kWhiteColor,
-      drawer: CustomDrawer(items: DummyData.fastFoodDrawerItems),
+      drawer: CustomDrawer(
+          screenName: "Online Store",
+          items: data["title"] == "Online Store"
+              ? DummyData.onlineStoreDrawerItems
+              : DummyData.fastFoodDrawerItems),
       bottomNavigationBar: data["title"] == "Online Store"
-          ? SafeArea(child: checkoutButton())
+          ? SafeArea(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  checkoutButton("Discard Order", size),
+                  checkoutButton("Confirm Order", size),
+                ],
+              ),
+            )
           : Container(
               height: 124.0,
               padding:
@@ -78,7 +92,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                     ),
                   ),
                   const SizedBox(height: 6.0),
-                  bottomButtons(),
+                  bottomButtons(isPortrait, size),
                 ],
               ),
             ),
@@ -135,7 +149,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
             Expanded(
               child: Column(
                 children: [
-                  cartItems(size),
+                  cartItems(size, isPortrait),
                   // const Spacer(),
                 ],
               ),
@@ -144,7 +158,17 @@ class _FastFoodCartState extends State<FastFoodCart> {
             data["title"] == "Online Store"
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: digitSection("Total", "DOP \$1,024.32", 100),
+                    child: Column(
+                      children: [
+                        digitSection(
+                            "Subtotal (Items - 1)", "DOP \$22.00", 100),
+                        const SizedBox(height: 6.0),
+                        digitSection("Tax", "DOP \$0.00", 200),
+                        const SizedBox(height: 6.0),
+                        digitSection("Total", "DOP \$22.00", 300),
+                        const SizedBox(height: 6.0),
+                      ],
+                    ),
                   )
                 : totalView(),
             const SizedBox(height: 4.0),
@@ -210,19 +234,6 @@ class _FastFoodCartState extends State<FastFoodCart> {
           ],
         ),
       ),
-    );
-  }
-
-  dynamic openBottomSheet(String title, List<String> data) {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      isScrollControlled: true, // To allow full screen dragging
-      backgroundColor: Themes.kTransparent,
-      builder: (context) {
-        return CustomBottomSheet(title: title, listData: data);
-      },
     );
   }
 
@@ -378,7 +389,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
-  Widget cartItems(Size size) {
+  Widget cartItems(Size size, bool isPortrait) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
@@ -410,8 +421,11 @@ class _FastFoodCartState extends State<FastFoodCart> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                          onTap: () =>
-                              Constants.showSnackBar(context, "Item Removed!"),
+                          onTap: () => Constants.enterAuthCode(
+                              context: context,
+                              isPortrait: isPortrait,
+                              size: size,
+                              screen: "Cart"),
                           child: Image.asset(
                             Images.delete,
                             height: 16.0,
@@ -438,8 +452,12 @@ class _FastFoodCartState extends State<FastFoodCart> {
                     Constants.divider(size),
                     cartBullet("Qty", "0"),
                     Constants.divider(size),
-                    cartBullet("Price", "0"),
+                    SizedBox(
+                        height: data["title"] == "Online Store" ? 8.0 : 0.0),
+                    cartBullet("Price", "DOP \$11.00"),
                     Constants.divider(size),
+                    SizedBox(
+                        height: data["title"] == "Online Store" ? 8.0 : 0.0),
                     data["title"] == "Online Store"
                         ? const SizedBox.shrink()
                         : Column(
@@ -448,7 +466,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                               Constants.divider(size),
                             ],
                           ),
-                    cartBullet("Total", "\$500.00"),
+                    cartBullet("Total", "DOP \$22.00"),
                   ],
                 ),
               ),
@@ -499,7 +517,8 @@ class _FastFoodCartState extends State<FastFoodCart> {
             height: 0.0,
           ),
         ),
-        title.contains("Disc") || title == "Price"
+        title.contains("Disc") ||
+                (title == "Price" && data["title"] != "Online Store")
             ? inputView(title)
             : title.contains("Qty")
                 ? qtyView()
@@ -558,24 +577,32 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
-  Widget checkoutButton() {
+  Widget checkoutButton(String title, Size size) {
     return Material(
       color: Themes.kTransparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(8.0),
-        onTap: () => Get.toNamed("/info"),
+        onTap: () {
+          if (title.contains("Confirm")) {
+            Get.toNamed("/info");
+          } else {
+            Constants.discardOrder(context);
+          }
+        },
         child: Ink(
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Themes.kPrimaryColor,
-            // borderRadius: BorderRadius.circular(8.0),
+            borderRadius: BorderRadius.circular(8.0),
           ),
           child: Container(
             height: 54.0,
+            width: size.width / 2.2,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             alignment: Alignment.center,
-            child: const Text(
-              "Confirm Order",
-              style: TextStyle(
-                fontSize: 18.0,
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16.0,
                 fontWeight: FontWeight.w700,
                 color: Themes.kWhiteColor,
               ),
@@ -586,12 +613,13 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
-  Widget bottomButtons() {
+  Widget bottomButtons(bool isPortrait, Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () => openBottomSheet("Payment Options", DummyData.payItems),
+          onTap: () => Constants.openBottomSheet(
+              context, "Payment Options", DummyData.payItems),
           child: Container(
             padding:
                 const EdgeInsets.symmetric(vertical: 6.0, horizontal: 20.0),
@@ -611,16 +639,16 @@ class _FastFoodCartState extends State<FastFoodCart> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            customButton("Send Order To Kitchen"),
+            customButton(isPortrait, size, "Send Order To Kitchen"),
             const SizedBox(height: 6.0),
-            customButton("Save Item")
+            customButton(isPortrait, size, "Save Item")
           ],
         ),
       ],
     );
   }
 
-  Widget customButton(String title) {
+  Widget customButton(bool isPortrait, Size size, String title) {
     return WidgetAnimator(
       incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(),
       child: Material(
@@ -628,7 +656,11 @@ class _FastFoodCartState extends State<FastFoodCart> {
         child: InkWell(
           onTap: () {
             if (title.contains("Send")) {
-              showSnackBar(context, "Send Order to Kitchen Successfully!");
+              Constants.enterAuthCode(
+                  context: context,
+                  isPortrait: isPortrait,
+                  size: size,
+                  screen: "FastFood");
             } else {
               showSnackBar(context, "Save Order Successfully!");
             }

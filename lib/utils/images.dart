@@ -76,4 +76,7 @@ class Images {
   static const String setting = "lib/assets/icons/setting.png";
   static const String logout = "lib/assets/icons/logout.png";
   static const String exit = "lib/assets/icons/exit.png";
+
+  static const String cloudUpload = "lib/assets/icons/cloud_upload.png";
+  static const String telephone = "lib/assets/icons/telephone.png";
 }

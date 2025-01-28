@@ -1,12 +1,9 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:kedasrd/utils/constants.dart';
-
-import 'package:kedasrd/utils/themes.dart';
 
 import 'package:kedasrd/widgets/custom_dialog.dart';
-import 'package:kedasrd/widgets/custom_bottom_sheet_input.dart';
-import 'package:kedasrd/widgets/custom_bottom_sheet_shifts.dart';
+
+import 'package:kedasrd/utils/constants.dart';
 
 class DrawerMenuController extends GetxController {
   int selectedIndex = -1.obs;
@@ -41,14 +38,16 @@ class DrawerMenuController extends GetxController {
       Get.toNamed('/settings');
     } else if (title == "Help") {
       // Help
+    } else if (title == "Contact") {
+      Get.toNamed('/contact');
     } else if (title == "Items") {
       Get.toNamed('/all_items', arguments: {"title": "Items"});
     } else if (title == "Customers") {
       Get.toNamed('/all_items', arguments: {"title": "Customers"});
     } else if (title == "Discount") {
-      addDiscount(context);
+      Constants.addDiscount(context);
     } else if (title.contains("Discard")) {
-      discardOrder(context);
+      Constants.discardOrder(context);
     } else if (title == "Exit") {
       logout(context, "Exit");
     } else if (title == "Logout") {
@@ -56,9 +55,10 @@ class DrawerMenuController extends GetxController {
     }
   }
 
-  void onCloseShiftTapped(BuildContext context) {
+  void onCloseShiftTapped(BuildContext context, Size size, bool isPortrait) {
     Get.back();
-    closeShift(context);
+    Constants.enterAuthCode(
+        context: context, isPortrait: isPortrait, size: size, screen: "Drawer");
   }
 
   dynamic logout(BuildContext context, String type) {
@@ -70,50 +70,5 @@ class DrawerMenuController extends GetxController {
             msg:
                 "Are you sure you want to ${type == "Exit" ? "Exit" : "logout"} ?",
             positiveAction: () => Get.offAllNamed('/home')));
-  }
-
-  dynamic addDiscount(context) {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      isScrollControlled: true, // To allow full screen dragging
-      backgroundColor: Themes.kTransparent,
-      builder: (context) => const CustomBottomSheetInput(
-        title: "Add Discount",
-        hintText: "Discount",
-        btnText1: "Cancel",
-        btnText2: "Submit",
-      ),
-    );
-  }
-
-  dynamic closeShift(context) {
-    return showModalBottomSheet(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      isScrollControlled: true, // To allow full screen dragging
-      backgroundColor: Themes.kTransparent,
-      builder: (context) => const CustomBottomSheetShifts(
-        title: "Close Shift",
-        hintText: "Observations",
-        btnText1: "Submit",
-        btnText2: "Close and Print",
-      ),
-    );
-  }
-
-  dynamic discardOrder(context) {
-    return showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (context) => CustomDialog(
-            title: 'Discard Order',
-            msg: 'Are you sure or want to cancel your cart?',
-            positiveAction: () {
-              Constants.showSnackBar(context, "Order Discarded!");
-              Get.back();
-            }));
   }
 }

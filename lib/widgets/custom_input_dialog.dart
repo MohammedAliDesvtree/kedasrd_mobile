@@ -1,18 +1,22 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import 'package:kedasrd/widgets/custom_dialog.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
 
 class CustomInputDialog extends StatefulWidget {
   final String title;
-  final String? btnText1, btnText2;
+  final String? screen, btnText1, btnText2;
   final Widget? child;
   final double? height;
   final ScrollPhysics? scroll;
   const CustomInputDialog({
     super.key,
     required this.title,
+    this.screen,
     this.btnText1,
     this.btnText2,
     this.child,
@@ -41,9 +45,8 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
         child: Column(
           children: [
             // Fixed Header
-            Container(
-              height: 78.0,
-              padding: const EdgeInsets.only(top: 0.0),
+            SizedBox(
+              height: 116.0,
               child: Stack(
                 children: [
                   Center(
@@ -159,7 +162,19 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
         borderRadius: BorderRadius.circular(6.0),
         onTap: () {
           Get.back();
-          if (title.contains("Options")) {
+          if (title == "Submit" && widget.title.contains("auth code")) {
+            if (widget.screen == "Home") {
+              controlAlert(context);
+            } else if (widget.screen == "FastFood") {
+              Get.toNamed('/invoice');
+            } else if (widget.screen == "New Order") {
+              Get.toNamed('/tables', arguments: {"title": "Tables"});
+            } else if (widget.screen == "Cart") {
+              Constants.showSnackBar(context, "Item Removed!");
+            } else if (widget.screen == "Drawer") {
+              Constants.closeShift(context);
+            }
+          } else if (title.contains("Options")) {
             // Constants.openDialog(
             //   context: context,
             //   title: "Cash",
@@ -191,6 +206,24 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  dynamic controlAlert(BuildContext context) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => CustomDialog(
+        title: "Assistance Control Alert",
+        msg:
+            "You have to submit entry yet... Press Submit to continue or Cancel to go back to enter auth code.",
+        positiveBtn: "Submit",
+        negativeBtn: "Cancel",
+        positiveAction: () => {
+          Get.back(),
+          Get.toNamed('/entry_log'),
+        },
       ),
     );
   }

@@ -34,7 +34,7 @@ class _SettingsViewState extends State<SettingsView> {
               child: ListView(
                 children: [
                   bodyView(),
-                  const Spacer(),
+                  // const Spacer(),
                   const SizedBox(height: 28.0),
                 ],
               ),
@@ -95,6 +95,9 @@ class _SettingsViewState extends State<SettingsView> {
           CustomDropdowns(
               listData: DummyData.templateSelectionItems,
               hintText: "Template Selection"),
+          const SizedBox(height: 14.0),
+          CustomDropdowns(
+              listData: DummyData.tableModeItems, hintText: "Table Mode"),
           const SizedBox(height: 14.0),
           CustomDropdowns(
               listData: DummyData.printerItems, hintText: "Default Printer"),
