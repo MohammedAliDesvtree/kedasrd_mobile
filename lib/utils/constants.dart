@@ -21,6 +21,9 @@ class Constants {
 
   static double headerHeight = isIOS ? 52.0 : 64.0;
 
+  static String adminUser = "admin@gmail.com";
+  static String adminPass = "admin";
+
   static showSnackBar(context, msg) {
     var snackBar = SnackBar(content: Text(msg));
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
