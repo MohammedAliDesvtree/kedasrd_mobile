@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:kedasrd/widgets/custom_text_input.dart';
 
+import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 
 import 'package:kedasrd/controllers/auth/auth_controller.dart';
@@ -28,24 +29,32 @@ class _SignInViewState extends State<SignInView> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              CustomTextInput(
-                hintText: "Email Address",
-                isNumber: false,
-                isEmail: true,
-                controller: controller.emailController,
-              ),
-              const SizedBox(height: 16.0),
-              CustomTextInput(
-                hintText: "Password",
-                isNumber: false,
-                controller: controller.passwordController,
-                isSecure: true,
-              ),
-              const SizedBox(height: 48.0),
-              submitButton(context, size, "Sign In"),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 64.0),
+                Image.asset(Images.kedasLogo),
+                const SizedBox(height: 36.0),
+                CustomTextInput(
+                  hintText: "Email Address",
+                  isNumber: false,
+                  isEmail: true,
+                  controller: controller.emailController,
+                ),
+                const SizedBox(height: 24.0),
+                Obx(
+                  () => CustomTextInput(
+                    hintText: "Password",
+                    isNumber: false,
+                    controller: controller.passwordController,
+                    isSecure: controller.isPasswordShow.value,
+                  ),
+                ),
+                const SizedBox(height: 84.0),
+                submitButton(context, size, "Sign In".toUpperCase()),
+              ],
+            ),
           ),
         ),
       ),

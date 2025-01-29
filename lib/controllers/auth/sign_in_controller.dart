@@ -6,6 +6,7 @@ import 'package:kedasrd/routes/app_pages.dart';
 import 'package:kedasrd/utils/constants.dart';
 
 class SignInController extends GetxController {
+  RxBool isPasswordShow = false.obs;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -19,5 +20,9 @@ class SignInController extends GetxController {
     } else {
       Constants.showSnackBar(context, "ERROR", "Invalid credentials");
     }
+  }
+
+  void togglePassword() {
+    isPasswordShow.value = !isPasswordShow.value;
   }
 }

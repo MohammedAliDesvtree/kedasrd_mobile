@@ -79,4 +79,7 @@ class Images {
 
   static const String cloudUpload = "lib/assets/icons/cloud_upload.png";
   static const String telephone = "lib/assets/icons/telephone.png";
+
+  static const String passShow = "lib/assets/icons/show.png";
+  static const String passHide = "lib/assets/icons/hide.png";
 }

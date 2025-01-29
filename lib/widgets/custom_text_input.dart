@@ -1,8 +1,12 @@
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 
-class CustomTextInput extends StatelessWidget {
+import 'package:kedasrd/controllers/auth/sign_in_controller.dart';
+
+class CustomTextInput extends StatefulWidget {
   final String hintText;
   final bool isNumber, isSecure;
   final bool? isEmail;
@@ -17,37 +21,58 @@ class CustomTextInput extends StatelessWidget {
   });
 
   @override
+  State<CustomTextInput> createState() => _CustomTextInputState();
+}
+
+class _CustomTextInputState extends State<CustomTextInput> {
+  final SignInController signInController = Get.find<SignInController>();
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       autofocus: true,
-      readOnly: hintText.contains("Expire") ? true : false,
-      controller: controller,
-      obscureText: isSecure,
-      keyboardType: isNumber
+      readOnly: widget.hintText.contains("Expire") ? true : false,
+      controller: widget.controller,
+      obscureText: widget.isSecure,
+      keyboardType: widget.isNumber
           ? TextInputType.number
-          : (isEmail != null && isEmail == true)
+          : (widget.isEmail != null && widget.isEmail == true)
               ? TextInputType.emailAddress
               : TextInputType.text,
-      initialValue:
-          controller == null ? (hintText == "Amount" ? "\$120.87" : "") : null,
-      // style: const TextStyle(
-      //   fontSize: 14.0,
-      //   fontWeight: FontWeight.w500,
-      //   color: Themes.kDarkColor,
-      // ),
+      initialValue: widget.controller == null
+          ? (widget.hintText == "Amount" ? "\$120.87" : "")
+          : null,
       decoration: InputDecoration(
-        // contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
         focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Themes.kBlackColor.withOpacity(0.5))),
-        hintText: hintText,
+        hintText: widget.hintText,
         hintStyle: TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.w500,
           color: Themes.kGreyColor[500],
         ),
+        suffixIcon: widget.hintText == "Password"
+            ? Container(
+                height: 24.0,
+                width: 24.0,
+                alignment: Alignment.center,
+                child: Obx(
+                  () => GestureDetector(
+                    onTap: () => signInController.togglePassword(),
+                    child: Image.asset(
+                      signInController.isPasswordShow.value
+                          ? Images.passHide
+                          : Images.passShow,
+                      height: 24.0,
+                      width: 24.0,
+                    ),
+                  ),
+                ),
+              )
+            : null,
       ),
       onTap: () {
-        if (hintText.contains("Expire")) {
+        if (widget.hintText.contains("Expire")) {
           openDatePicker(context);
         }
       },
