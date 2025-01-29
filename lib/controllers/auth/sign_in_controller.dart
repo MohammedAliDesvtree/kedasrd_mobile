@@ -6,7 +6,7 @@ import 'package:kedasrd/routes/app_pages.dart';
 import 'package:kedasrd/utils/constants.dart';
 
 class SignInController extends GetxController {
-  RxBool isPasswordShow = false.obs;
+  RxBool isPasswordShow = true.obs;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
