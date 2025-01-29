@@ -4,6 +4,8 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_text_input.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -151,7 +153,7 @@ class _EntryLogViewState extends State<EntryLogView> {
         borderRadius: BorderRadius.circular(12.0),
         onTap: () {
           if (title == "Submit") {
-            Get.toNamed("/upload_photo");
+            Get.toNamed(Routes.UPLOAD_PHOTO);
           } else {
             FocusScope.of(context).unfocus();
           }

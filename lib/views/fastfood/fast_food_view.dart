@@ -7,6 +7,8 @@ import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_dropdown.dart';
 import 'package:kedasrd/widgets/custom_search_bar.dart';
@@ -211,7 +213,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                 color: Themes.kTransparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12.0),
-                  onTap: () => Get.toNamed("/fast_food_cart",
+                  onTap: () => Get.toNamed(Routes.FAST_FOOD_CART,
                       arguments: {"title": "Fast Food"}),
                   child: Ink(
                     decoration: BoxDecoration(
@@ -339,7 +341,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                                   bottomRight: Radius.circular(8.0),
                                 ),
                                 onTap: () => Constants.showSnackBar(
-                                    context, "Item Added!"),
+                                    context, "SUCCESS", "Item Added!"),
                                 child: Ink(
                                   decoration: const BoxDecoration(
                                     color: Themes.kPrimaryColor,
@@ -493,7 +495,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                 ),
                 const SizedBox(width: 16.0),
                 GestureDetector(
-                    onTap: () => Get.toNamed('/notifications'),
+                    onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [

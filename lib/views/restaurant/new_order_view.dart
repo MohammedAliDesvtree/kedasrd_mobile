@@ -9,6 +9,7 @@ import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/controllers/common_controller.dart';
+import 'package:kedasrd/controllers/auth/auth_controller.dart';
 
 class NewOrderView extends StatefulWidget {
   const NewOrderView({super.key});
@@ -20,6 +21,7 @@ class NewOrderView extends StatefulWidget {
 class _NewOrderViewState extends State<NewOrderView> {
   final GlobalKey<ScaffoldState> newOrderGlobalKey = GlobalKey();
   final CommonController commonController = Get.find<CommonController>();
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class _NewOrderViewState extends State<NewOrderView> {
             WrapList(
                 listData: DummyData.newOrderList,
                 onItemTap: (title) => commonController.onNewOrderItemTapped(
-                    context, size, isPortrait, title))
+                    context, size, isPortrait, title, authController))
           ],
         ),
       ),

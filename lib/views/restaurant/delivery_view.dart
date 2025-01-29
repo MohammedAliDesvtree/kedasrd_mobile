@@ -6,6 +6,8 @@ import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -70,7 +72,7 @@ class _DeliveryViewState extends State<DeliveryView> {
   Widget customButton(int index, double itemWidth) {
     return GestureDetector(
       onTap: () =>
-          Get.toNamed('/fast_food_cart', arguments: {"title": "Delivery"}),
+          Get.toNamed(Routes.FAST_FOOD_CART, arguments: {"title": "Delivery"}),
       child: Container(
         height: 56.0,
         width: itemWidth,
@@ -181,7 +183,7 @@ class _DeliveryViewState extends State<DeliveryView> {
             title: "Delete Order",
             msg: "Are you sure or want to delete order ?",
             positiveAction: () {
-              Constants.showSnackBar(context, "Order Deleted!");
+              Constants.showSnackBar(context, "SUCCESS", "Order Deleted!");
               Get.back();
             }));
   }

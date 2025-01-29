@@ -51,7 +51,8 @@ class _SettingsViewState extends State<SettingsView> {
     return Material(
       color: Themes.kTransparent,
       child: InkWell(
-        onTap: () => Constants.showSnackBar(context, "Saved Successfully!"),
+        onTap: () =>
+            Constants.showSnackBar(context, "SUCCESS", "Saved Successfully!"),
         child: Ink(
           decoration: BoxDecoration(
             color: Themes.kPrimaryColor,

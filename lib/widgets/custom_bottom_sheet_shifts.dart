@@ -231,9 +231,9 @@ class _CustomBottomSheetShiftsState extends State<CustomBottomSheetShifts> {
       child: InkWell(
         onTap: () {
           if (title == "Submit") {
-            Constants.showSnackBar(context, "Submit Successfully!");
+            Constants.showSnackBar(context, "SUCCESS", "Submit Successfully!");
           } else {
-            Constants.showSnackBar(context, "Print Successfully!");
+            Constants.showSnackBar(context, "SUCCESS", "Print Successfully!");
           }
           Get.back();
         },

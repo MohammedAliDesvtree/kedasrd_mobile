@@ -1,26 +1,22 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:kedasrd/routes/app_pages.dart';
 
 import 'package:kedasrd/utils/themes.dart';
+import 'package:kedasrd/utils/constants.dart';
 
 import 'package:kedasrd/widgets/custom_bottom_sheet_input.dart';
 
 class SuperMarketCartController extends GetxController {
   void onTappedSpecificView(String title, BuildContext context) {
     if (title == "Prepaid") {
-      showSnackBar(context);
+      Constants.showSnackBar(
+          context, "ERROR", "The selected customer has insufficient balance.");
     } else if (title == "Cash") {
       openCashModal(context);
     } else {
-      Get.toNamed('/keypad_screens', arguments: {"title": title});
+      Get.toNamed(Routes.KEYPAD_SCREENS, arguments: {"title": title});
     }
-  }
-
-  showSnackBar(context) {
-    var snackBar = const SnackBar(
-        content: Text('The selected customer has insufficient balance.'),
-        backgroundColor: Themes.kRedColor);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   dynamic openCashModal(context) {

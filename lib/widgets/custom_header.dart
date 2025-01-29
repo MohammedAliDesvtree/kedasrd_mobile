@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -60,7 +62,7 @@ class _CustomHeaderState extends State<CustomHeader> {
                 ? Row(
                     children: [
                       GestureDetector(
-                          onTap: () => Get.toNamed('/notifications'),
+                          onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
                           child: Stack(
                             clipBehavior: Clip.none,
                             children: [

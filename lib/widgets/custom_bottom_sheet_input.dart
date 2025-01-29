@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -143,7 +145,7 @@ class CustomBottomSheetInput extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Get.back();
-        Get.toNamed('/keypad_screens', arguments: {"title": "Cash"});
+        Get.toNamed(Routes.KEYPAD_SCREENS, arguments: {"title": "Cash"});
       },
       child: Text(
         title.toUpperCase(),
@@ -254,9 +256,9 @@ class CustomBottomSheetInput extends StatelessWidget {
         onTap: () {
           if (title == "More Options") {
             Get.back();
-            Get.toNamed('/keypad_screens', arguments: {"title": "Cash"});
+            Get.toNamed(Routes.KEYPAD_SCREENS, arguments: {"title": "Cash"});
           } else if (title == "Submit") {
-            Constants.showSnackBar(context, "Submit Successfully!");
+            Constants.showSnackBar(context, "SUCCESS", "Submit Successfully!");
             Get.back();
           } else {
             Get.back();

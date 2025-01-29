@@ -108,7 +108,8 @@ class _KitchenViewState extends State<KitchenView> {
             top: 24.0,
             right: -6.0,
             child: GestureDetector(
-              onTap: () => Constants.showSnackBar(context, "Printing..."),
+              onTap: () =>
+                  Constants.showSnackBar(context, "SUCCESS", "Printing..."),
               child: Image.asset(
                 Images.printer,
                 height: 22.0,
@@ -225,7 +226,7 @@ class _KitchenViewState extends State<KitchenView> {
                 onTap: () {
                   if (index % 2 != 0) {
                     Constants.showSnackBar(
-                        context, "Status Changes Successfully!");
+                        context, "SUCCESS", "Status Changes Successfully!");
                   }
                 },
                 borderRadius: BorderRadius.circular(100),

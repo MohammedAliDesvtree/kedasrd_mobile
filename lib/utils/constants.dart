@@ -24,8 +24,14 @@ class Constants {
   static String adminUser = "admin@gmail.com";
   static String adminPass = "admin";
 
-  static showSnackBar(context, msg) {
-    var snackBar = SnackBar(content: Text(msg));
+  static String otherUser = "other@gmail.com";
+  static String otherPass = "other";
+
+  static showSnackBar(context, type, msg) {
+    var snackBar = SnackBar(
+        content: Text(msg),
+        backgroundColor:
+            type == "ERROR" ? Themes.kRedColor : Themes.kGreenColor);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
@@ -78,9 +84,6 @@ class Constants {
       }),
     ).then((value) {
       // if (value != null) {
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     SnackBar(content: Text('Selected: Option $value')),
-      //   );
       // }
     });
   }
@@ -145,7 +148,7 @@ class Constants {
         title: 'Discard Order',
         msg: 'Are you sure or want to cancel your cart?',
         positiveAction: () {
-          Constants.showSnackBar(context, "Order Discarded!");
+          Constants.showSnackBar(context, "SUCCESS", "Order Discarded!");
           Get.back();
         },
       ),

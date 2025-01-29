@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:kedasrd/utils/themes.dart';
 
 import 'package:kedasrd/controllers/drawer_controller.dart';
+import 'package:kedasrd/controllers/auth/auth_controller.dart';
 
 class CustomDrawer extends StatefulWidget {
   final List<dynamic> items;
@@ -20,6 +21,7 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   final DrawerMenuController controller = Get.find<DrawerMenuController>();
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,17 +35,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
       child: SafeArea(
         child: Column(
           children: [
-            // Image.asset(Images.kedasLogo, height: 84.0),
+            const SizedBox(height: 16.0),
+            Obx(
+              () {
+                final user = authController.currentUser;
+                return Text(
+                  'Role: ${user?.role}',
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
+                    color: Themes.kWhiteColor,
+                  ),
+                );
+              },
+            ),
             widget.screenName != "Online Store"
                 ? Column(
                     children: [
-                      const SizedBox(height: 24.0),
+                      const SizedBox(height: 16.0),
                       Material(
                         color: Themes.kTransparent,
                         child: InkWell(
                           borderRadius: BorderRadius.circular(4.0),
                           onTap: () => controller.onCloseShiftTapped(
-                              context, size, isPortrait),
+                              context, size, isPortrait, authController),
                           child: Ink(
                             decoration: BoxDecoration(
                                 color: Themes.kWhiteColor,
@@ -86,7 +101,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       color: Themes.kTransparent,
                       child: InkWell(
                         onTap: () => controller.onMenuItemTapped(
-                            data["title"], index, context),
+                            data["title"], index, context, authController),
                         child: Ink(
                           child: Container(
                             color: controller.selectedIndex == index

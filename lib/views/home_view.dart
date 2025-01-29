@@ -4,12 +4,15 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/wrap_list.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/controllers/common_controller.dart';
+import 'package:kedasrd/controllers/auth/auth_controller.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -20,6 +23,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
   final CommonController commonController = Get.find<CommonController>();
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
             WrapList(
                 listData: DummyData.dashboardList,
                 onItemTap: (title) => commonController.onHomeItemTapped(
-                    context, size, isPortrait, title)),
+                    context, size, isPortrait, title, authController)),
           ],
         ),
       ),
@@ -58,7 +62,7 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
             Image.asset(Images.kedasPos, height: 20.0),
             const SizedBox(width: 16.0),
             GestureDetector(
-              onTap: () => Get.toNamed('/notifications'),
+              onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [

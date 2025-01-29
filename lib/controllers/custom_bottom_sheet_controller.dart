@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
@@ -44,13 +46,13 @@ class CustomBottomSheetController extends GetxController {
   void onTabTapped(String title, BuildContext context) {
     Get.back();
     if (title.contains("Items")) {
-      Get.toNamed('/all_items', arguments: {"title": "Items"});
+      Get.toNamed(Routes.ALL_ITEMS, arguments: {"title": "Items"});
     } else if (title.contains("Customers")) {
-      Get.toNamed('/all_items', arguments: {"title": "Customers"});
+      Get.toNamed(Routes.ALL_ITEMS, arguments: {"title": "Customers"});
     } else if (title.contains("Orders")) {
-      Get.toNamed('/all_orders', arguments: {"title": "Orders"});
+      Get.toNamed(Routes.ALL_ORDERS, arguments: {"title": "Orders"});
     } else if (title.contains("Save")) {
-      showSnackBar(context);
+      Constants.showSnackBar(context, "SUCCESS", "Save Order Successfully!");
     } else if (title.contains("Discard")) {
       Constants.discardOrder(context);
     } else if (title == "Discount") {
@@ -60,19 +62,13 @@ class CustomBottomSheetController extends GetxController {
 
   void onTappedSpecificView(String title, BuildContext context) {
     if (title.contains("Prepaid")) {
-      showSnackBar(context);
+      Constants.showSnackBar(
+          context, "ERROR", "The selected customer has insufficient balance.");
     } else if (title == "Cash") {
       openCashModal(context);
     } else {
-      Get.toNamed('/keypad_screens', arguments: {"title": title});
+      Get.toNamed(Routes.KEYPAD_SCREENS, arguments: {"title": title});
     }
-  }
-
-  showSnackBar(context) {
-    var snackBar = const SnackBar(
-        content: Text('The selected customer has insufficient balance.'),
-        backgroundColor: Themes.kRedColor);
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   dynamic openCashModal(context) {

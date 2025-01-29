@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   get: ^4.6.6
+  get_storage: ^2.1.1
   url_launcher: ^6.3.1
   animated_text_kit: ^4.2.2
   widget_and_text_animator: ^1.1.5

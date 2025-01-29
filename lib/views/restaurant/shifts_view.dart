@@ -217,7 +217,7 @@ class _ShiftsViewState extends State<ShiftsView> {
         borderRadius: BorderRadius.circular(5.0),
         onTap: () {
           if (title == "Print") {
-            Constants.showSnackBar(context, "Printing...");
+            Constants.showSnackBar(context, "SUCCESS", "Printing...");
           } else {
             closeShift(context);
           }

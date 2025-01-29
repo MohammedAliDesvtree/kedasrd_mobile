@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -83,8 +85,9 @@ class _PaymentInfoViewState extends State<PaymentInfoView> {
       color: Themes.kTransparent,
       child: InkWell(
         onTap: () {
-          Constants.showSnackBar(context, "Order Successfully Created!");
-          Get.offAllNamed("/home");
+          Constants.showSnackBar(
+              context, "SUCCESS", "Order Successfully Created!");
+          Get.offAllNamed(Routes.HOME);
         },
         child: Ink(
           decoration: BoxDecoration(

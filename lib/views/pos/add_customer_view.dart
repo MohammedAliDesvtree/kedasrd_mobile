@@ -90,7 +90,8 @@ class _AddCustomerViewState extends State<AddCustomerView> {
       color: Themes.kTransparent,
       child: InkWell(
         onTap: () {
-          Constants.showSnackBar(context, "Customer Added Successfully!");
+          Constants.showSnackBar(
+              context, "SUCCESS", "Customer Added Successfully!");
           Get.back();
         },
         child: Ink(

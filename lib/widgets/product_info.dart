@@ -178,7 +178,7 @@ class _ProductInfoState extends State<ProductInfo> {
           borderRadius: BorderRadius.circular(12.0),
           onTap: () {
             Get.back();
-            Constants.showSnackBar(context, "Item Added!");
+            Constants.showSnackBar(context, "SUCCESS", "Item Added!");
           },
           child: Ink(
             decoration: BoxDecoration(

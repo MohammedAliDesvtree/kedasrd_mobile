@@ -1,21 +1,16 @@
 import 'package:get/get.dart';
-// import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-// import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+
+import 'package:kedasrd/routes/app_pages.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
-// import 'package:kedasrd/widgets/custom_loader.dart';
 import 'package:kedasrd/widgets/product_info.dart';
 import 'package:kedasrd/widgets/custom_search_bar.dart';
-// import 'package:kedasrd/widgets/custom_dropdown.dart';
-// import 'package:kedasrd/widgets/custom_back_button.dart';
-
-// import 'package:kedasrd/views/fastfood/filter_view.dart';
 
 import 'package:kedasrd/controllers/online_store_controller.dart';
 
@@ -29,170 +24,6 @@ class OnlineStoreView extends StatefulWidget {
 class _OnlineStoreViewState extends State<OnlineStoreView> {
   OnlineStoreController controller = Get.put(OnlineStoreController());
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return AnnotatedRegion<SystemUiOverlayStyle>(
-  //     value: SystemUiOverlayStyle.light.copyWith(
-  //       statusBarColor: Themes.kTransparent,
-  //       systemNavigationBarColor: Themes.kTransparent,
-  //       systemNavigationBarDividerColor: Themes.kTransparent,
-  //     ),
-  //     child: Scaffold(
-  //       body: Obx(
-  //         () => Stack(
-  //           children: [
-  //             if (!controller.isLoading.value)
-  //               Container(
-  //                 decoration: const BoxDecoration(
-  //                   image: DecorationImage(
-  //                     image: AssetImage(Images.storeBG),
-  //                     fit: BoxFit.fill,
-  //                   ),
-  //                 ),
-  //               ),
-  //             Container(
-  //               height: Get.height,
-  //               width: Get.width,
-  //               decoration: BoxDecoration(
-  //                 gradient: LinearGradient(
-  //                     begin: Alignment.topCenter,
-  //                     end: Alignment.bottomCenter,
-  //                     colors: [
-  //                       Themes.kBlackColor.withOpacity(0.3),
-  //                       Themes.kBlackColor.withOpacity(0.3)
-  //                     ],
-  //                     stops: const [
-  //                       0.0,
-  //                       1.0
-  //                     ]),
-  //               ),
-  //             ),
-  //             Positioned(
-  //               top: 64.0,
-  //               left: 16.0,
-  //               right: 16.0,
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                 children: [
-  //                   const CustomBackButton(),
-  //                   Image.asset(
-  //                     Images.kedasLogo,
-  //                     height: 36.0,
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             Positioned(
-  //               top: 140.0,
-  //               left: 0.0,
-  //               right: 0.0,
-  //               child: Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.center,
-  //                 children: [
-  //                   const SizedBox(height: 28.0),
-  //                   Column(
-  //                     children: [
-  //                       WidgetAnimator(
-  //                         incomingEffect:
-  //                             WidgetTransitionEffects.incomingSlideInFromTop(),
-  //                         child: Text(
-  //                           "Order Here Please",
-  //                           textAlign: TextAlign.center,
-  //                           style: textStyle(),
-  //                         ),
-  //                       ),
-  //                       const SizedBox(height: 28.0),
-  //                       WidgetAnimator(
-  //                         incomingEffect:
-  //                             WidgetTransitionEffects.incomingSlideInFromTop(),
-  //                         child: SizedBox(
-  //                           width: Get.width / 1.9,
-  //                           child: Text(
-  //                             "Scan the QR code to order online now",
-  //                             textAlign: TextAlign.center,
-  //                             style: textStyle(),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                       const SizedBox(height: 28.0),
-  //                       AnimatedOpacity(
-  //                         opacity: controller.isVisible.value ? 1.0 : 0.0,
-  //                         duration: const Duration(milliseconds: 1000),
-  //                         child: Stack(
-  //                           alignment: Alignment.center,
-  //                           children: [
-  //                             Image.asset(
-  //                               Images.qrCode,
-  //                               height: 200.0,
-  //                               width: 200.0,
-  //                             ),
-  //                             Image.asset(
-  //                               Images.kedasLogo,
-  //                               height: 36.0,
-  //                               width: 84.0,
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                       const SizedBox(height: 28.0),
-  //                       WidgetAnimator(
-  //                         incomingEffect: WidgetTransitionEffects
-  //                             .incomingSlideInFromRight(),
-  //                         child: SizedBox(
-  //                           width: Get.width / 1.5,
-  //                           child: Text(
-  //                             "Or you can go to the website",
-  //                             textAlign: TextAlign.center,
-  //                             style: textStyle(),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                       const SizedBox(height: 16.0),
-  //                       Container(
-  //                         height: 36.0,
-  //                         color: Themes.kWhiteColor,
-  //                         alignment: Alignment.center,
-  //                         child: AnimatedTextKit(
-  //                           totalRepeatCount: 1,
-  //                           animatedTexts: [
-  //                             TypewriterAnimatedText(Constants.onlineStoreURL,
-  //                                 textAlign: TextAlign.center,
-  //                                 textStyle: const TextStyle(
-  //                                   fontSize: 12.0,
-  //                                   fontWeight: FontWeight.w500,
-  //                                   color: Themes.kPrimaryColor,
-  //                                   decoration: TextDecoration.underline,
-  //                                   decorationColor: Themes.kPrimaryColor,
-  //                                 ),
-  //                                 speed: const Duration(milliseconds: 80))
-  //                           ],
-  //                           onTap: () => controller.openOnlineStore(),
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //             if (controller.isLoading.value)
-  //               const Center(
-  //                 child: CustomLoader(),
-  //               )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // TextStyle textStyle() {
-  //   return const TextStyle(
-  //     fontSize: 22.0,
-  //     fontWeight: FontWeight.w700,
-  //     color: Themes.kWhiteColor,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final isPortrait =
@@ -200,9 +31,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
     Size size = MediaQuery.sizeOf(context);
 
     return Scaffold(
-      // key: fastFoodGlobalKey,
       backgroundColor: Themes.kWhiteColor,
-      // drawer: CustomDrawer(items: DummyData.onlineStoreDrawerItems),
       body: SafeArea(
         bottom: false,
         child: Stack(
@@ -210,8 +39,6 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
             Column(
               children: [
                 customHeader(),
-                // const SizedBox(height: 16.0),
-                // customTabList(),
                 tabList(),
                 const SizedBox(height: 16.0),
                 Obx(() => controller.isSearchVisible.value
@@ -226,44 +53,10 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                         ],
                       )
                     : const SizedBox.shrink()),
-                // Obx(() => controller.selectedItems.contains("Search Customer")
-                //     ? Column(
-                //         children: [
-                //  CustomSearchBar(isEnabled: false, title: "Price List"),
-                //           const SizedBox(height: 16.0),
-                //         ],
-                //       )
-                //     : const SizedBox.shrink()),
-                // Obx(() =>
-                //     controller.selectedItems.contains("Search Item by Name")
-                //         ? Column(
-                //             children: [
-                //  CustomSearchBar(isEnabled: true, title: "Search Item by Name"),
-                //               const SizedBox(height: 16.0),
-                //             ],
-                //           )
-                //         : const SizedBox.shrink()),
-                // Obx(() => controller.selectedItems.contains("Select Currency")
-                //     ? Column(
-                //         children: [
-                //           Padding(
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 16.0),
-                //               child: CustomDropdowns(
-                //                 listData: DummyData.currencyItems,
-                //                 hintText: "Select Currency",
-                //                 borderRadius: 100.0,
-                //                 isShadow: true,
-                //               )),
-                //           const SizedBox(height: 16.0),
-                //         ],
-                //       )
-                //     : const SizedBox.shrink()),
                 productList(isPortrait, size),
                 const SizedBox(height: 24.0),
               ],
             ),
-            // viewCartButton(),
           ],
         ),
       ),
@@ -322,7 +115,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                 color: Themes.kTransparent,
                 child: InkWell(
                   borderRadius: BorderRadius.circular(12.0),
-                  onTap: () => Get.toNamed("/fast_food_cart",
+                  onTap: () => Get.toNamed(Routes.FAST_FOOD_CART,
                       arguments: {"title": "Online Store"}),
                   child: Ink(
                     decoration: BoxDecoration(
@@ -653,23 +446,6 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
             ),
             Row(
               children: [
-                // GestureDetector(
-                //   onTap: () => showModalBottomSheet(
-                //     context: context,
-                //     isDismissible: false,
-                //     enableDrag: false,
-                //     isScrollControlled: true, // To allow full screen dragging
-                //     backgroundColor: Themes.kTransparent,
-                //     builder: (context) {
-                //       return const FilterView();
-                //     },
-                //   ),
-                //   child: Image.asset(
-                //     Images.filter,
-                //     height: 20.0,
-                //     color: Themes.kBlackColor,
-                //   ),
-                // ),
                 GestureDetector(
                   onTap: () => controller.isSearchVisible.value =
                       !controller.isSearchVisible.value,
@@ -681,7 +457,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                 ),
                 const SizedBox(width: 16.0),
                 GestureDetector(
-                  onTap: () => Get.toNamed("/fast_food_cart",
+                  onTap: () => Get.toNamed(Routes.FAST_FOOD_CART,
                       arguments: {"title": "Online Store"}),
                   child: Stack(
                     clipBehavior: Clip.none,
@@ -704,48 +480,41 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                       Image.asset(
                         Images.shoppingCart,
                         height: 20.0,
-                        color:
-                            // cartController.cartItems.isNotEmpty
-                            //     ? Themes.kRedColor
-                            //     :
-                            Themes.kRedColor,
+                        color: Themes.kRedColor,
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 16.0),
                 GestureDetector(
-                    onTap: () => Get.toNamed('/notifications'),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Image.asset(Images.notification, height: 22.0),
-                        Positioned(
-                          top: -4.0,
-                          right: -4.0,
-                          child: Container(
-                            height: 16.0,
-                            width: 16.0,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Themes.kRedColor,
-                                borderRadius: BorderRadius.circular(16.0)),
-                            child: const Text(
-                              "2",
-                              style: TextStyle(
-                                fontSize: 10.0,
-                                fontWeight: FontWeight.bold,
-                                color: Themes.kWhiteColor,
-                              ),
+                  onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Image.asset(Images.notification, height: 22.0),
+                      Positioned(
+                        top: -4.0,
+                        right: -4.0,
+                        child: Container(
+                          height: 16.0,
+                          width: 16.0,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Themes.kRedColor,
+                              borderRadius: BorderRadius.circular(16.0)),
+                          child: const Text(
+                            "2",
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              color: Themes.kWhiteColor,
                             ),
                           ),
                         ),
-                      ],
-                    )),
-                // GestureDetector(
-                //   onTap: () => fastFoodGlobalKey.currentState!.openDrawer(),
-                //   child: Image.asset(Images.menu, height: 22.0),
-                // ),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ],

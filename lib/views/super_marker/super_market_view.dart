@@ -6,6 +6,8 @@ import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_dropdown.dart';
 import 'package:kedasrd/widgets/custom_search_bar.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -190,7 +192,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(50.0),
                     onTap: () => Constants.openBottomSheet(context,
-                        "Super Market Tabs", DummyData.superMarketButtonItems),
+                        "Super Market", DummyData.superMarketButtonItems),
                     child: Ink(
                       decoration: BoxDecoration(
                           color: Themes.kPrimaryColor,
@@ -243,8 +245,8 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   GestureDetector(
-                    onTap: () =>
-                        Constants.showSnackBar(context, "Item Removed!"),
+                    onTap: () => Constants.showSnackBar(
+                        context, "SUCCESS", "Item Removed!"),
                     child: Image.asset(
                       Images.delete,
                       height: 16.0,
@@ -481,7 +483,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
             child: Material(
               color: Themes.kTransparent,
               child: InkWell(
-                onTap: () => controller.onTabTapped(data["title"], context),
+                onTap: () {},
                 child: Ink(
                   decoration: BoxDecoration(color: data["color"]),
                   child: Container(
@@ -782,7 +784,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                   //     ? WidgetRestingEffects.swing()
                   //     : null,
                   child: GestureDetector(
-                    onTap: () => Get.toNamed('/super_market_cart'),
+                    onTap: () => Get.toNamed(Routes.SUPER_MARKET_CART),
                     child: Stack(
                       clipBehavior: Clip.none,
                       alignment: Alignment.center,
@@ -816,7 +818,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                 ),
                 const SizedBox(width: 16.0),
                 GestureDetector(
-                    onTap: () => Get.toNamed('/notifications'),
+                    onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
                     child: Stack(
                       clipBehavior: Clip.none,
                       children: [

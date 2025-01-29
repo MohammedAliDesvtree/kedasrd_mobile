@@ -21,11 +21,6 @@ class AllItemsView extends StatefulWidget {
 class _AllItemsViewState extends State<AllItemsView> {
   dynamic data = Get.arguments;
 
-  void showSnackBar(context, String msg) {
-    var snackBar = SnackBar(content: Text(msg));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
   @override
   Widget build(BuildContext context) {
     final isPortrait =
@@ -96,7 +91,8 @@ class _AllItemsViewState extends State<AllItemsView> {
 
   Widget customerView(Size size, int index, double itemWidth) {
     return GestureDetector(
-      onTap: () => showSnackBar(context, "Customer Selected"),
+      onTap: () =>
+          Constants.showSnackBar(context, "SUCCESS", "Customer Selected"),
       child: Container(
         // height: 56.0,
         width: itemWidth,
@@ -254,7 +250,8 @@ class _AllItemsViewState extends State<AllItemsView> {
                 topLeft: Radius.circular(10.0),
                 bottomRight: Radius.circular(10.0),
               ),
-              onTap: () => showSnackBar(context, "Item added successfully!"),
+              onTap: () => Constants.showSnackBar(
+                  context, "SUCCESS", "Item added successfully!"),
               child: Ink(
                 decoration: const BoxDecoration(
                   color: Themes.kPrimaryColor,
@@ -348,7 +345,8 @@ class _AllItemsViewState extends State<AllItemsView> {
                   ),
                   const SizedBox(width: 16.0),
                   GestureDetector(
-                    onTap: () => showSnackBar(context, "Add Product"),
+                    onTap: () => Constants.showSnackBar(
+                        context, "SUCCESS", "Add Product"),
                     child: Image.asset(Images.add, height: 14.0),
                   ),
                 ],

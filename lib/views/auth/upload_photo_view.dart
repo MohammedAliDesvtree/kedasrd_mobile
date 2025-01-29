@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -78,8 +80,8 @@ class UploadPhotoView extends StatelessWidget {
               color: Themes.kTransparent,
               child: InkWell(
                 borderRadius: BorderRadius.circular(1.5),
-                onTap: () =>
-                    Constants.showSnackBar(context, "Picture Selected"),
+                onTap: () => Constants.showSnackBar(
+                    context, "SUCCESS", "Picture Selected"),
                 child: Ink(
                   decoration: BoxDecoration(
                     color: Themes.kPrimaryColor,
@@ -114,7 +116,7 @@ class UploadPhotoView extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.0),
         onTap: () {
           if (title == "Submit") {
-            Get.toNamed("/restaurant");
+            Get.toNamed(Routes.RESTAURANT);
           } else {}
         },
         child: Ink(

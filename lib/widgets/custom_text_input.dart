@@ -4,11 +4,16 @@ import 'package:kedasrd/utils/themes.dart';
 
 class CustomTextInput extends StatelessWidget {
   final String hintText;
-  final bool isNumber;
+  final bool isNumber, isSecure;
+  final bool? isEmail;
+  final TextEditingController? controller;
   const CustomTextInput({
     super.key,
     required this.hintText,
     required this.isNumber,
+    this.isEmail,
+    this.controller,
+    this.isSecure = false,
   });
 
   @override
@@ -16,10 +21,15 @@ class CustomTextInput extends StatelessWidget {
     return TextFormField(
       autofocus: true,
       readOnly: hintText.contains("Expire") ? true : false,
-      // controller:
-      //     TextEditingController(text: hintText == "Amount" ? "\$120.87" : ""),
-      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-      initialValue: hintText == "Amount" ? "\$120.87" : "",
+      controller: controller,
+      obscureText: isSecure,
+      keyboardType: isNumber
+          ? TextInputType.number
+          : (isEmail != null && isEmail == true)
+              ? TextInputType.emailAddress
+              : TextInputType.text,
+      initialValue:
+          controller == null ? (hintText == "Amount" ? "\$120.87" : "") : null,
       // style: const TextStyle(
       //   fontSize: 14.0,
       //   fontWeight: FontWeight.w500,

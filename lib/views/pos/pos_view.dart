@@ -6,6 +6,8 @@ import 'package:kedasrd/widgets/custom_header.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_search_bar.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
@@ -115,7 +117,7 @@ class _POSViewState extends State<POSView> {
                             color: Themes.kTransparent,
                             child: InkWell(
                               borderRadius: BorderRadius.circular(12.0),
-                              onTap: () => Get.toNamed("/cart"),
+                              onTap: () => Get.toNamed(Routes.CART),
                               child: Ink(
                                 decoration: BoxDecoration(
                                   color: Themes.kPrimaryColor,

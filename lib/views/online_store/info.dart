@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 import 'package:kedasrd/utils/themes.dart';
-// import 'package:kedasrd/utils/dummy_data.dart';
+
+import 'package:kedasrd/routes/app_pages.dart';
 
 import 'package:kedasrd/widgets/custom_header.dart';
 import 'package:kedasrd/widgets/custom_text_input.dart';
-// import 'package:kedasrd/widgets/custom_dropdown.dart';
 
 import 'package:kedasrd/views/online_store/payment_info_view.dart';
 
@@ -47,10 +47,6 @@ class _InfoState extends State<Info> {
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
                   child: Column(
                     children: [
-                      // CustomDropdowns(
-                      //     listData: DummyData.countryItems,
-                      //     hintText: "Select Country"),
-                      // const SizedBox(height: 14.0),
                       isPortrait
                           ? const Column(
                               children: [
@@ -98,23 +94,6 @@ class _InfoState extends State<Info> {
                                 SizedBox(height: 14.0),
                               ],
                             ),
-
-                      // inputView("Phone Number"),
-                      // const SizedBox(height: 14.0),
-                      // inputView("Email Address"),
-                      // const SizedBox(height: 14.0),
-                      // inputView("Address"),
-                      // const SizedBox(height: 14.0),
-                      // inputView("Landmark (Optional)"),
-                      // const SizedBox(height: 14.0),
-                      // CustomDropdowns(
-                      //     listData: DummyData.stateItems,
-                      //     hintText: "Select State"),
-                      // const SizedBox(height: 14.0),
-                      // inputView("Town/City"),
-                      // const SizedBox(height: 14.0),
-                      // inputView("Pincode"),
-                      // const SizedBox(height: 14.0),
                     ],
                   ),
                 ),
@@ -144,7 +123,7 @@ class _InfoState extends State<Info> {
               },
             );
           } else {
-            Get.toNamed("/onlineStore");
+            Get.toNamed(Routes.ONLINE_STORE);
           }
         },
         child: Ink(

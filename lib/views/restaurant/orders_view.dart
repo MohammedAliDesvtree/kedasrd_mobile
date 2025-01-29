@@ -1,10 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:kedasrd/utils/constants.dart';
-import 'package:kedasrd/utils/dummy_data.dart';
+import 'package:flutter/material.dart';
+import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
-import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+import 'package:kedasrd/utils/dummy_data.dart';
+import 'package:kedasrd/utils/constants.dart';
 
 class OrdersView extends StatefulWidget {
   const OrdersView({super.key});
@@ -58,7 +61,7 @@ class _OrdersViewState extends State<OrdersView> {
   Widget ordersItem(dynamic data, Size size, double itemWidth) {
     return GestureDetector(
       onTap: () =>
-          Get.toNamed('/all_orders', arguments: {"title": data["title"]}),
+          Get.toNamed(Routes.ALL_ORDERS, arguments: {"title": data["title"]}),
       child: Container(
         height: 52.0,
         width: itemWidth,

@@ -29,8 +29,7 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
 
     double modalSize = !isPortrait
         ? 0.6
-        : (widget.title.contains("Payment") ||
-                widget.title == "Super Market Tabs")
+        : (widget.title.contains("Payment") || widget.title == "Super Market")
             ? 0.4
             : widget.title.contains("Item")
                 ? 0.25
@@ -96,15 +95,17 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                     child: InkWell(
                       onTap: () {
                         if (widget.title == "Export") {
-                          Constants.showSnackBar(context, "Exporting...");
+                          Constants.showSnackBar(
+                              context, "SUCCESS", "Exporting...");
                           controller.selectFilter(index);
                         } else if (widget.title == "Share") {
-                          Constants.showSnackBar(context, "Sharing...");
+                          Constants.showSnackBar(
+                              context, "SUCCESS", "Sharing...");
                           controller.selectFilter(index);
                         } else if (widget.title.contains("Payment")) {
                           Get.back();
                           controller.onTappedSpecificView(data, context);
-                        } else if (widget.title == "Super Market Tabs") {
+                        } else if (widget.title == "Super Market") {
                           controller.onTabTapped(data["title"], context);
                         } else {
                           controller.selectFilter(index);
@@ -113,21 +114,24 @@ class _CustomBottomSheetState extends State<CustomBottomSheet> {
                       borderRadius: BorderRadius.circular(4.0),
                       child: Ink(
                         decoration: BoxDecoration(
-                            color: controller.selectedIndex.value == index
-                                ? Themes.kPrimaryColor
-                                : Themes.kPrimaryColor.withOpacity(0.1),
+                            color: widget.title == "Super Market"
+                                ? data["color"]
+                                : controller.selectedIndex.value == index
+                                    ? Themes.kPrimaryColor
+                                    : Themes.kPrimaryColor.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(4.0)),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 12.0),
                           child: Text(
-                            widget.title == "Super Market Tabs"
+                            widget.title == "Super Market"
                                 ? data["title"]
                                 : data,
                             style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w600,
-                              color: controller.selectedIndex.value == index
+                              color: (controller.selectedIndex.value == index ||
+                                      widget.title == "Super Market")
                                   ? Themes.kWhiteColor
                                   : Themes.kBlackColor,
                             ),

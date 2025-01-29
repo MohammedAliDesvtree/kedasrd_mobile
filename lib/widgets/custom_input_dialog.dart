@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'package:kedasrd/widgets/custom_dialog.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -166,11 +168,11 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
             if (widget.screen == "Home") {
               controlAlert(context);
             } else if (widget.screen == "FastFood") {
-              Get.toNamed('/invoice');
+              Get.toNamed(Routes.INVOICE);
             } else if (widget.screen == "New Order") {
-              Get.toNamed('/tables', arguments: {"title": "Tables"});
+              Get.toNamed(Routes.TABLES, arguments: {"title": "Tables"});
             } else if (widget.screen == "Cart") {
-              Constants.showSnackBar(context, "Item Removed!");
+              Constants.showSnackBar(context, "SUCCESS", "Item Removed!");
             } else if (widget.screen == "Drawer") {
               Constants.closeShift(context);
             }
@@ -222,7 +224,7 @@ class _CustomInputDialogState extends State<CustomInputDialog> {
         negativeBtn: "Cancel",
         positiveAction: () => {
           Get.back(),
-          Get.toNamed('/entry_log'),
+          Get.toNamed(Routes.ENTRY_LOG),
         },
       ),
     );

@@ -6,6 +6,8 @@ import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
@@ -13,6 +15,7 @@ import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/views/pos/add_customer_view.dart';
 
+import 'package:kedasrd/controllers/auth/auth_controller.dart';
 import 'package:kedasrd/controllers/fastfood/fast_food_cart_controller.dart';
 
 class FastFoodCart extends StatefulWidget {
@@ -26,6 +29,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
   dynamic data = Get.arguments;
   final GlobalKey<ScaffoldState> fastFoodCartGlobalKey = GlobalKey();
   FastFoodCartController controller = Get.put(FastFoodCartController());
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +47,15 @@ class _FastFoodCartState extends State<FastFoodCart> {
               : DummyData.fastFoodDrawerItems),
       bottomNavigationBar: data["title"] == "Online Store"
           ? SafeArea(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  checkoutButton("Discard Order", size),
-                  checkoutButton("Confirm Order", size),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.only(top: 6.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    checkoutButton("Discard Order", size),
+                    checkoutButton("Confirm Order", size),
+                  ],
+                ),
               ),
             )
           : Container(
@@ -155,22 +162,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
               ),
             ),
             // : emptySection(),
-            data["title"] == "Online Store"
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      children: [
-                        digitSection(
-                            "Subtotal (Items - 1)", "DOP \$22.00", 100),
-                        const SizedBox(height: 6.0),
-                        digitSection("Tax", "DOP \$0.00", 200),
-                        const SizedBox(height: 6.0),
-                        digitSection("Total", "DOP \$22.00", 300),
-                        const SizedBox(height: 6.0),
-                      ],
-                    ),
-                  )
-                : totalView(),
+            totalView(),
             const SizedBox(height: 4.0),
             Obx(() {
               if (controller.isDigitsViewVisible.value) {
@@ -351,14 +343,9 @@ class _FastFoodCartState extends State<FastFoodCart> {
             title: 'Are you sure?',
             msg: 'This order will be cancelled.',
             positiveAction: () => {
-                  showSnackBar(context, "Order Cancelled"),
+                  Constants.showSnackBar(context, "SUCCESS", "Order Cancelled"),
                   Get.back(),
                 }));
-  }
-
-  showSnackBar(context, msg) {
-    var snackBar = SnackBar(content: Text(msg));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   Widget emptySection() {
@@ -421,11 +408,18 @@ class _FastFoodCartState extends State<FastFoodCart> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         GestureDetector(
-                          onTap: () => Constants.enterAuthCode(
-                              context: context,
-                              isPortrait: isPortrait,
-                              size: size,
-                              screen: "Cart"),
+                          onTap: () {
+                            if (authController.isAdmin) {
+                              Constants.showSnackBar(
+                                  context, "SUCCESS", "Item Removed!");
+                            } else {
+                              Constants.enterAuthCode(
+                                  context: context,
+                                  isPortrait: isPortrait,
+                                  size: size,
+                                  screen: "Cart");
+                            }
+                          },
                           child: Image.asset(
                             Images.delete,
                             height: 16.0,
@@ -584,7 +578,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
         borderRadius: BorderRadius.circular(8.0),
         onTap: () {
           if (title.contains("Confirm")) {
-            Get.toNamed("/info");
+            Get.toNamed(Routes.INFO);
           } else {
             Constants.discardOrder(context);
           }
@@ -656,13 +650,18 @@ class _FastFoodCartState extends State<FastFoodCart> {
         child: InkWell(
           onTap: () {
             if (title.contains("Send")) {
-              Constants.enterAuthCode(
-                  context: context,
-                  isPortrait: isPortrait,
-                  size: size,
-                  screen: "FastFood");
+              if (authController.isAdmin) {
+                Get.toNamed(Routes.INVOICE);
+              } else {
+                Constants.enterAuthCode(
+                    context: context,
+                    isPortrait: isPortrait,
+                    size: size,
+                    screen: "FastFood");
+              }
             } else {
-              showSnackBar(context, "Save Order Successfully!");
+              Constants.showSnackBar(
+                  context, "SUCCESS", "Save Order Successfully!");
             }
           },
           child: Ink(
@@ -719,23 +718,30 @@ class _FastFoodCartState extends State<FastFoodCart> {
           ),
         ],
       ),
-      child: Column(
-        children: [
-          digitSection("Subtotal", "DOP \$847.46", 200),
-          const SizedBox(height: 6.0),
-          // if (data["title"] == "Delivery")
-          digitSection("Tax", "DOP \$152.54", 400),
-          const SizedBox(height: 6.0),
-          // if (data["title"] == "Delivery")
-          digitSection("Tips Tax", "\$24.32", 600),
-          const SizedBox(height: 6.0),
-          // if (data["title"] == "Delivery")
-          Obx(() =>
-              digitSection("Discount", "\$${controller.qty.value}.00", 800)),
-          const SizedBox(height: 6.0),
-          digitSection("Total", "DOP \$1,024.32", 1000),
-        ],
-      ),
+      child: data["title"] != "Online Store"
+          ? Column(
+              children: [
+                digitSection("Subtotal", "DOP \$847.46", 200),
+                const SizedBox(height: 6.0),
+                digitSection("Tax", "DOP \$152.54", 400),
+                const SizedBox(height: 6.0),
+                digitSection("Tips Tax", "\$24.32", 600),
+                const SizedBox(height: 6.0),
+                Obx(() => digitSection(
+                    "Discount", "\$${controller.qty.value}.00", 800)),
+                const SizedBox(height: 6.0),
+                digitSection("Total", "DOP \$1,024.32", 1000),
+              ],
+            )
+          : Column(
+              children: [
+                digitSection("Subtotal", "DOP \$22.00", 150),
+                const SizedBox(height: 6.0),
+                digitSection("Tax", "DOP \$0.00", 300),
+                const SizedBox(height: 6.0),
+                digitSection("Total", "DOP \$22.00", 450),
+              ],
+            ),
     );
   }
 
