@@ -100,7 +100,7 @@ class _TablesViewState extends State<TablesView> {
         title: "Enter Code to\nContinue",
         btnText1: "Submit",
         scroll: const AlwaysScrollableScrollPhysics(),
-        height: isPortrait ? size.height / 3.2 : 0,
+        height: isPortrait ? size.height / 2.8 : 0,
         child: const CustomTextInput(hintText: "Enter Code", isNumber: true),
       ),
       child: Container(

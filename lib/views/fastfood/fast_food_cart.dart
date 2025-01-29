@@ -59,9 +59,9 @@ class _FastFoodCartState extends State<FastFoodCart> {
               ),
             )
           : Container(
-              height: 124.0,
+              height: 84.0,
               padding:
-                  const EdgeInsets.symmetric(vertical: 14.0, horizontal: 16.0),
+                  const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Themes.kWhiteColor,
@@ -77,27 +77,6 @@ class _FastFoodCartState extends State<FastFoodCart> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Material(
-                    color: Themes.kTransparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24.0),
-                      onTap: () => clearOrder(context),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                            color: Themes.kGreyColor[300],
-                            borderRadius: BorderRadius.circular(24.0)),
-                        child: Container(
-                          height: 24.0,
-                          width: 24.0,
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            Images.close,
-                            color: Themes.kRedColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 6.0),
                   bottomButtons(isPortrait, size),
                 ],
@@ -633,12 +612,42 @@ class _FastFoodCartState extends State<FastFoodCart> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            customButton(isPortrait, size, "Send Order To Kitchen"),
+            Row(
+              children: [
+                customButton(isPortrait, size, "Save Item"),
+                const SizedBox(width: 8.0),
+                closeButton(),
+              ],
+            ),
             const SizedBox(height: 6.0),
-            customButton(isPortrait, size, "Save Item")
+            customButton(isPortrait, size, "Send Order To Kitchen"),
           ],
         ),
       ],
+    );
+  }
+
+  Widget closeButton() {
+    return Material(
+      color: Themes.kTransparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(3.0),
+        onTap: () => clearOrder(context),
+        child: Ink(
+          decoration: BoxDecoration(
+              color: Themes.kGreyColor[300],
+              borderRadius: BorderRadius.circular(3.0)),
+          child: Container(
+            height: 26.0,
+            width: 26.0,
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              Images.close,
+              color: Themes.kRedColor,
+            ),
+          ),
+        ),
+      ),
     );
   }
 

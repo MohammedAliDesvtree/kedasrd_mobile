@@ -5,6 +5,7 @@ import 'package:kedasrd/controllers/drawer_controller.dart';
 import 'package:kedasrd/controllers/pos/pos_controller.dart';
 import 'package:kedasrd/controllers/pos/cart_controller.dart';
 import 'package:kedasrd/controllers/pos/filter_controller.dart';
+import 'package:kedasrd/controllers/auth/sign_in_controller.dart';
 import 'package:kedasrd/controllers/restaurant/tables_controller.dart';
 import 'package:kedasrd/controllers/restaurant/dine_in_controller.dart';
 import 'package:kedasrd/controllers/fastfood/fast_food_controller.dart';
@@ -14,6 +15,7 @@ import 'package:kedasrd/controllers/super_market/super_market_controller.dart';
 class AppBindings extends Bindings {
   @override
   void dependencies() {
+    Get.put(SignInController());
     Get.put(CommonController());
     Get.put(CartController());
     Get.put(POSController());
