@@ -57,9 +57,8 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                              child: const Text(
+                              padding: EdgeInsets.only(left: 8.0, bottom: 4.0),
+                              child: Text(
                                 "Search by :",
                                 style: TextStyle(
                                   fontSize: 12.0,
@@ -200,7 +199,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                       child: const SizedBox(
                         height: 44.0,
                         width: 44.0,
-                        child: const Icon(
+                        child: Icon(
                           Icons.menu,
                           size: 24.0,
                           color: Themes.kWhiteColor,

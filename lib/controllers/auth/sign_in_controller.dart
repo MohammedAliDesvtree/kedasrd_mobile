@@ -10,7 +10,7 @@ class SignInController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void handleLogin(BuildContext context, dynamic authController) async {
+  void handleLogin(context, dynamic authController) async {
     final success = await authController.login(
       emailController.text,
       passwordController.text,

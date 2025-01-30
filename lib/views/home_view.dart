@@ -61,34 +61,48 @@ class _HomeViewState extends State<HomeView> with WidgetsBindingObserver {
           children: [
             Image.asset(Images.kedasPos, height: 20.0),
             const SizedBox(width: 16.0),
-            GestureDetector(
-              onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  Image.asset(Images.notification, height: 22.0),
-                  Positioned(
-                    top: -4.0,
-                    right: -4.0,
-                    child: Container(
-                      height: 16.0,
-                      width: 16.0,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: Themes.kRedColor,
-                          borderRadius: BorderRadius.circular(16.0)),
-                      child: const Text(
-                        "2",
-                        style: TextStyle(
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.bold,
-                          color: Themes.kWhiteColor,
+            Row(
+              children: [
+                GestureDetector(
+                  onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Image.asset(Images.notification, height: 22.0),
+                      Positioned(
+                        top: -4.0,
+                        right: -4.0,
+                        child: Container(
+                          height: 16.0,
+                          width: 16.0,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Themes.kRedColor,
+                              borderRadius: BorderRadius.circular(16.0)),
+                          child: const Text(
+                            "2",
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              color: Themes.kWhiteColor,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(width: 16.0),
+                GestureDetector(
+                  onTap: () =>
+                      Constants.logout(context, authController, "Logout"),
+                  child: Image.asset(
+                    Images.exit,
+                    height: 20.0,
+                    color: Themes.kBlackColor,
+                  ),
+                ),
+              ],
             ),
           ],
         ),

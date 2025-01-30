@@ -117,7 +117,7 @@ class _ProductInfoState extends State<ProductInfo> {
                             const SizedBox(width: 12.0),
                             const Text(
                               "1",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w500,
                                 color: Themes.kBlackColor,

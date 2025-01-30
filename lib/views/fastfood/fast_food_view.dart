@@ -56,9 +56,8 @@ class _FastFoodViewState extends State<FastFoodView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 12.0, bottom: 4.0),
-                              child: const Text(
+                              padding: EdgeInsets.only(left: 12.0, bottom: 4.0),
+                              child: Text(
                                 "Search by :",
                                 style: TextStyle(
                                   fontSize: 12.0,

@@ -33,8 +33,8 @@ class _EntryLogViewState extends State<EntryLogView> {
             customHeader(),
             const SizedBox(height: 28.0),
             const Padding(
-              padding: const EdgeInsets.only(left: 28.0),
-              child: const Text(
+              padding: EdgeInsets.only(left: 28.0),
+              child: Text(
                 "Employees Entry Log",
                 style: TextStyle(
                   fontSize: 24.0,

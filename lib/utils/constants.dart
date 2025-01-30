@@ -9,6 +9,8 @@ import 'package:kedasrd/widgets/custom_bottom_sheet.dart';
 import 'package:kedasrd/widgets/custom_bottom_sheet_input.dart';
 import 'package:kedasrd/widgets/custom_bottom_sheet_shifts.dart';
 
+import 'package:kedasrd/routes/app_pages.dart';
+
 import 'package:kedasrd/utils/themes.dart';
 
 class Constants {
@@ -215,6 +217,25 @@ class Constants {
         hintText: "Observations",
         btnText1: "Submit",
         btnText2: "Close and Print",
+      ),
+    );
+  }
+
+  static dynamic logout(
+      BuildContext context, dynamic authController, String type) {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => CustomDialog(
+        title: "Confirmation",
+        msg: "Are you sure you want to ${type == "Exit" ? "exit" : "logout"} ?",
+        positiveAction: () {
+          if (type == "Logout") {
+            authController.logout();
+          } else {
+            Get.offAllNamed(Routes.HOME);
+          }
+        },
       ),
     );
   }

@@ -93,7 +93,7 @@ class UploadPhotoView extends StatelessWidget {
                     alignment: Alignment.center,
                     child: const Text(
                       "Select File...",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w600,
                         color: Themes.kWhiteColor,

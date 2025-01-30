@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-import 'package:kedasrd/widgets/custom_dialog.dart';
-
 import 'package:kedasrd/routes/app_pages.dart';
 
 import 'package:kedasrd/utils/constants.dart';
@@ -52,9 +50,9 @@ class DrawerMenuController extends GetxController {
     } else if (title.contains("Discard")) {
       Constants.discardOrder(context);
     } else if (title == "Exit") {
-      logout(context, authController, "Exit");
+      Constants.logout(context, authController, "Exit");
     } else if (title == "Logout") {
-      logout(context, authController, "Logout");
+      Constants.logout(context, authController, "Logout");
     }
   }
 
@@ -70,23 +68,5 @@ class DrawerMenuController extends GetxController {
           size: size,
           screen: "Drawer");
     }
-  }
-
-  dynamic logout(BuildContext context, dynamic authController, String type) {
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) => CustomDialog(
-        title: "Confirmation",
-        msg: "Are you sure you want to ${type == "Exit" ? "exit" : "logout"} ?",
-        positiveAction: () {
-          if (type == "Logout") {
-            authController.logout();
-          } else {
-            Get.offAllNamed(Routes.HOME);
-          }
-        },
-      ),
-    );
   }
 }
