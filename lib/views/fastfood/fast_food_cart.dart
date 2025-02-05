@@ -690,6 +690,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
           borderRadius: BorderRadius.circular(4.0),
           border: Border.all(color: Themes.kPrimaryColor)),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           updatedCustomButton(
             size: size,

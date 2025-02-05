@@ -35,8 +35,9 @@ class _FilterViewState extends State<FilterView> {
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
+    Size size = MediaQuery.sizeOf(context);
 
-    double modalSize = isPortrait ? 0.5 : 0.75;
+    double modalSize = isPortrait ? 0.9 : 0.75;
 
     return DraggableScrollableSheet(
       initialChildSize: modalSize, // Opens at 1/3 screen height
@@ -72,7 +73,7 @@ class _FilterViewState extends State<FilterView> {
                 ),
               ),
               closeButton(),
-              filterList(),
+              filterList(size),
             ],
           ),
         );
@@ -80,15 +81,15 @@ class _FilterViewState extends State<FilterView> {
     );
   }
 
-  Widget filterList() {
+  Widget filterList(Size size) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.only(top: 74.0, left: 16.0, right: 16.0),
         child: SingleChildScrollView(
           child: Obx(
             () => Wrap(
-              runSpacing: 16.0,
-              spacing: 16.0,
+              runSpacing: 8.0,
+              spacing: 8.0,
               children: List.generate(DummyData.filterItems.length, (index) {
                 var data = DummyData.filterItems[index];
                 return AnimatedOpacity(
@@ -100,6 +101,8 @@ class _FilterViewState extends State<FilterView> {
                       onTap: () => controller.selectFilter(index),
                       borderRadius: BorderRadius.circular(4.0),
                       child: Ink(
+                        height: 58.0,
+                        width: size.width / 2.3,
                         decoration: BoxDecoration(
                             color: controller.selectedIndex.value == index
                                 ? Themes.kPrimaryColor
@@ -108,10 +111,11 @@ class _FilterViewState extends State<FilterView> {
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 12.0),
+                          alignment: Alignment.center,
                           child: Text(
                             data,
                             style: TextStyle(
-                              fontSize: 14.0,
+                              fontSize: 16.0,
                               fontWeight: FontWeight.w600,
                               color: controller.selectedIndex.value == index
                                   ? Themes.kWhiteColor
