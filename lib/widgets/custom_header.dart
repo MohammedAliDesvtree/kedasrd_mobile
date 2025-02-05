@@ -24,6 +24,7 @@ class _CustomHeaderState extends State<CustomHeader> {
         widget.title == "Restaurant" ||
         widget.title == "Cart" ||
         widget.title == "Kitchen" ||
+        widget.title == "Bar" ||
         widget.title == "Active Orders" ||
         widget.title == "Active Tables" ||
         widget.title == "Tables" ||

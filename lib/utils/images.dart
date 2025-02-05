@@ -82,4 +82,6 @@ class Images {
 
   static const String passShow = "lib/assets/icons/show.png";
   static const String passHide = "lib/assets/icons/hide.png";
+
+  static const String bar = "lib/assets/icons/cutlery.png";
 }

@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_dropdown.dart';
+import 'package:kedasrd/widgets/custom_tabs_list.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
+
+import 'package:kedasrd/controllers/restaurant/tables_controller.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -17,8 +20,7 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  // Initial Selected Value
-  String dropdownValue = 'Item 1';
+  final TablesController controller = Get.find<TablesController>();
 
   @override
   Widget build(BuildContext context) {
@@ -30,17 +32,19 @@ class _SettingsViewState extends State<SettingsView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             customHeader(),
+            CustomTabsList(data: DummyData.settingTabs, type: "Setting"),
+            const SizedBox(height: 16.0),
             Expanded(
               child: ListView(
                 children: [
-                  bodyView(),
-                  // const Spacer(),
-                  const SizedBox(height: 28.0),
+                  Obx(() => buildSelectedView(DummyData
+                      .settingTabs[controller.selectedTabIndex.value])),
+                  const SizedBox(height: 16.0),
                 ],
               ),
             ),
             submitButton(),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 24.0),
           ],
         ),
       ),
@@ -76,38 +80,166 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
+  Widget buildSelectedView(String title) {
+    return WidgetAnimator(
+      key: ValueKey(title),
+      incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
+          delay: const Duration(milliseconds: 150)),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: switch (title) {
+          "General" => generalView(),
+          "Orders" => ordersView(),
+          "Kitchen" => kitchenView(),
+          "Tables" => tablesView(),
+          "Printer" => printerView(),
+          _ => taxesView()
+        },
+      ),
+    );
+  }
+
   Widget bodyView() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
-        children: [
-          CustomDropdowns(listData: DummyData.ncfItems, hintText: "NCF"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.bankAccountItems, hintText: "Bank Account"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.walletBankAccountItems,
-              hintText: "Wallet Bank Account"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.templateItems, hintText: "Template"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.templateSelectionItems,
-              hintText: "Template Selection"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.tableModeItems, hintText: "Table Mode"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.printerItems, hintText: "Default Printer"),
-          const SizedBox(height: 14.0),
-          CustomDropdowns(
-              listData: DummyData.orderOfShowingItems,
-              hintText: "Order of showing"),
-        ],
+        children: List.generate(DummyData.settingTabs.length, (index) {
+          String title = DummyData.settingTabs[index];
+          return Obx(() {
+            return title == "General"
+                ? generalView()
+                : title == "Orders"
+                    ? ordersView()
+                    : title == "Kitchen"
+                        ? kitchenView()
+                        : title == "Tables"
+                            ? tablesView()
+                            : title == "Printer"
+                                ? printerView()
+                                : taxesView();
+          });
+        }),
       ),
+    );
+  }
+
+  Widget generalView() {
+    return Column(
+      children: [
+        CustomDropdowns(
+            listData: DummyData.bankAccountItems,
+            hintText: "Bank Account",
+            onChanged: (value) =>
+                controller.setDropdownValue('bankAccount', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.walletBankAccountItems,
+            hintText: "Wallet Bank Account",
+            onChanged: (value) =>
+                controller.setDropdownValue('walletAccount', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.agentsItems,
+            hintText: "Select Agent",
+            onChanged: (value) =>
+                controller.setDropdownValue('selectAgent', value)),
+      ],
+    );
+  }
+
+  Widget ordersView() {
+    return Column(
+      children: [
+        CustomDropdowns(
+            listData: DummyData.orderFlowItems,
+            hintText: "Order Flow",
+            onChanged: (value) =>
+                controller.setDropdownValue('orderFlow', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.templateItems,
+            hintText: "Template",
+            onChanged: (value) =>
+                controller.setDropdownValue('template', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.selectMsgItems,
+            hintText: "Select Message",
+            onChanged: (value) =>
+                controller.setDropdownValue('selectMessage', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.templateSelectionItems,
+            hintText: "Template Selection",
+            onChanged: (value) =>
+                controller.setDropdownValue('templateSelection', value)),
+      ],
+    );
+  }
+
+  Widget kitchenView() {
+    return Column(
+      children: [
+        CustomDropdowns(
+            listData: DummyData.orderOfShowingItems,
+            hintText: "Order of showing",
+            onChanged: (value) =>
+                controller.setDropdownValue('orderOfShowing', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.orderStatusItems,
+            hintText: "Order View Status",
+            onChanged: (value) =>
+                controller.setDropdownValue('orderViewStatus', value)),
+      ],
+    );
+  }
+
+  Widget tablesView() {
+    return Column(
+      children: [
+        CustomDropdowns(
+            listData: DummyData.tableModeItems,
+            hintText: "Table Mode",
+            onChanged: (value) =>
+                controller.setDropdownValue('tableMode', value)),
+      ],
+    );
+  }
+
+  Widget printerView() {
+    return Column(
+      children: [
+        CustomDropdowns(
+            listData: DummyData.printerItems,
+            hintText: "Default Printer",
+            onChanged: (value) =>
+                controller.setDropdownValue('defaultPrinter', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.printerList,
+            hintText: "Kitchen Printer",
+            onChanged: (value) =>
+                controller.setDropdownValue('kitchenPrinter', value)),
+        const SizedBox(height: 14.0),
+        CustomDropdowns(
+            listData: DummyData.printerList,
+            hintText: "Bar Printer",
+            onChanged: (value) =>
+                controller.setDropdownValue('barPrinter', value)),
+      ],
+    );
+  }
+
+  Widget taxesView() {
+    return Column(
+      children: [
+        CustomDropdowns(
+            listData: DummyData.tipTaxList,
+            hintText: "Tips Tax",
+            onChanged: (value) =>
+                controller.setDropdownValue('tipsTax', value)),
+      ],
     );
   }
 

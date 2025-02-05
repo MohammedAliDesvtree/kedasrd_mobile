@@ -143,6 +143,7 @@ class DummyData {
   static List<dynamic> activeOrderList = [
     {"image": Images.dineIn, "title": "Dine In"},
     {"image": Images.delivery, "title": "Delivery"},
+    {"image": Images.pickUp, "title": "Pickup"},
   ];
 
   static List<String> filterItems = [
@@ -215,6 +216,15 @@ class DummyData {
     'Near Balcony'
   ];
 
+  static List<dynamic> settingTabs = [
+    'General',
+    'Orders',
+    'Kitchen',
+    'Tables',
+    'Printer',
+    'Taxes',
+  ];
+
   static List<dynamic> ordersItems = [
     {"icon": Images.draft, "title": "Draft"},
     {"icon": Images.orders, "title": "All Orders"},
@@ -233,6 +243,7 @@ class DummyData {
     {"icon": Images.checkout, "title": "Active Order"},
     {"icon": Images.newOrderIc, "title": "New Order"},
     {"icon": Images.kitchenIc, "title": "Kitchen"},
+    {"icon": Images.bar, "title": "Bar"},
     {"icon": Images.table, "title": "Table"},
     {"icon": Images.category, "title": "Categories"},
     {"icon": Images.list, "title": "Orders"},
@@ -319,6 +330,61 @@ class DummyData {
 
   static List<String> agentsItems = [
     "Sirena",
+  ];
+
+  static List<String> orderFlowItems = [
+    "Short",
+    "Advance",
+  ];
+
+  static List<String> selectMsgItems = [
+    "DESPEDIDA",
+    "Despedida",
+  ];
+
+  static List<String> orderStatusItems = [
+    "Keep After Printed",
+    "Clean After Printed",
+  ];
+
+  static List<String> printerList = [
+    "POS80 Printer",
+    "TSC TE244",
+    "POS-58-Series",
+    "Microsoft Print to PDF",
+    "EPSON TM-T82X Receipt (1)",
+    "Fax",
+    "XP-80C AOKIA",
+    "OneNote (Desktop)",
+    "NPIA6FAD8 (HP LaserJet MFP M227fdw)",
+    "Microsoft XPS Document Writer",
+    "HPB0227A55598A8 (HP Laser MFP 131 133 135-138)",
+    "EPSON TM-T88IV Receipt",
+    "EPSON L3250 Series",
+    "Epson 80MM",
+    "AnyDesk Printer",
+    "Nitro PDF Creator",
+    "2C-POS80-01-V7 Printer(3)",
+    "XP-80C",
+    "OneNote for Windows 10",
+    "PRINTER COCINA (KITCHEN)",
+    "Enviar a OneNote 16",
+    "2C-POS80-01-V7 Printer Cashier",
+    "XP-80",
+    "Brother MFC-J1010DW Printer",
+    "80mm Series Printer",
+  ];
+
+  static List<String> tipTaxList = [
+    "Custom (0%)",
+    "Propina de Ley (10%)",
+    "ITBIS + (18%)",
+    "ITBIS (18%)",
+    "AFP (2.87%)",
+    "SFS (3.04%)",
+    "ITBIS 2 (18%)",
+    "CDT (2%)",
+    "ISC (10%)",
   ];
 
   static List<String> taxItems = [

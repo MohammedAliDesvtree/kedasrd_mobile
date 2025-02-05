@@ -21,6 +21,7 @@ abstract class Routes {
   static const NEW_ORDER = '/new_order';
   static const TABLES = '/tables';
   static const KITCHEN = '/kitchen';
+  static const BAR = '/bar';
   static const ORDERS = '/orders';
   static const ALL_ORDERS = '/all_orders';
   static const SHIFTS = '/shifts';

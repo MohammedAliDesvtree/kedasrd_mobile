@@ -4,6 +4,7 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
+import 'package:kedasrd/widgets/custom_tabs_list.dart';
 import 'package:kedasrd/widgets/custom_text_input.dart';
 
 import 'package:kedasrd/utils/images.dart';
@@ -44,7 +45,7 @@ class _TablesViewState extends State<TablesView> {
             CustomHeader(
                 title: data["title"],
                 onMenuTapped: () => tablesGlobalKey.currentState!.openDrawer()),
-            tabList(),
+            CustomTabsList(data: DummyData.tableTabs, type: "Tables"),
             const SizedBox(height: 16.0),
             Obx(() {
               int tableLength = controller.selectedTabIndex.value == 0
@@ -173,58 +174,6 @@ class _TablesViewState extends State<TablesView> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget tabList() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: List.generate(DummyData.tableTabs.length, (index) {
-          String title = DummyData.tableTabs[index];
-          return WidgetAnimator(
-            incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                delay: Duration(milliseconds: index * 200)),
-            child: Padding(
-              padding:
-                  EdgeInsets.only(left: index == 0 ? 12.0 : 0.0, right: 12.0),
-              child: Material(
-                color: Themes.kTransparent,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(48.0),
-                  onTap: () => controller.selectTab(index),
-                  child: Obx(
-                    () => Ink(
-                      decoration: BoxDecoration(
-                          color: controller.selectedTabIndex.value == index
-                              ? Themes.kPrimaryColor // Selected color
-                              : Themes.kWhiteColor, // Unselected color
-                          border: Border.all(
-                              width: 0.5, color: Themes.kPrimaryColor),
-                          borderRadius: BorderRadius.circular(48.0)),
-                      child: Container(
-                        height: 42.0,
-                        width: 136.0,
-                        alignment: Alignment.center,
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: controller.selectedTabIndex.value == index
-                                ? Themes.kWhiteColor
-                                : Themes.kGreyColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        }),
       ),
     );
   }

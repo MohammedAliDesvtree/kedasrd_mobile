@@ -20,6 +20,7 @@ import 'package:kedasrd/views/online_store/online_store_view.dart';
 import 'package:kedasrd/views/pos/pos_view.dart';
 import 'package:kedasrd/views/pos/cart_view.dart';
 
+import 'package:kedasrd/views/restaurant/bar_view.dart';
 import 'package:kedasrd/views/restaurant/shifts_view.dart';
 import 'package:kedasrd/views/restaurant/tables_view.dart';
 import 'package:kedasrd/views/restaurant/orders_view.dart';
@@ -112,6 +113,10 @@ class AppPages {
     GetPage(
       name: Routes.KITCHEN,
       page: () => const KitchenView(),
+    ),
+    GetPage(
+      name: Routes.BAR,
+      page: () => const BarView(),
     ),
     GetPage(
       name: Routes.ORDERS,

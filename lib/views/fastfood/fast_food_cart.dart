@@ -59,7 +59,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
               ),
             )
           : Container(
-              height: 84.0,
+              height: 164.0,
               padding:
                   const EdgeInsets.symmetric(vertical: 6.0, horizontal: 16.0),
               alignment: Alignment.center,
@@ -78,7 +78,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(height: 6.0),
-                  bottomButtons(isPortrait, size),
+                  updatedBottomButtons(isPortrait, size),
                 ],
               ),
             ),
@@ -135,7 +135,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
             Expanded(
               child: Column(
                 children: [
-                  cartItems(size, isPortrait),
+                  updatedCartItems(size, isPortrait),
                   // const Spacer(),
                 ],
               ),
@@ -355,11 +355,95 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
+  Widget updatedCartItems(Size size, bool isPortrait) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children:
+              List.generate(DummyData.productList.take(8).length, (index) {
+            var data = DummyData.productList[index];
+            return WidgetAnimator(
+              incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
+                  delay: const Duration(milliseconds: 150)),
+              child: Container(
+                margin: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 16.0, top: 4.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                decoration: BoxDecoration(
+                  color: Themes.kWhiteColor,
+                  borderRadius: BorderRadius.circular(8.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Themes.kBlackColor.withOpacity(0.20),
+                      blurRadius: 8.0,
+                      spreadRadius: -3,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        data["title"],
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Themes.kBlackColor,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    qtyView(),
+                    const SizedBox(width: 16.0),
+                    const Column(
+                      children: [
+                        Text(
+                          "\$500",
+                          style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w400,
+                              color: Themes.kGreyColor,
+                              height: 0.0,
+                              decoration: TextDecoration.lineThrough),
+                        ),
+                        Text(
+                          "\$300",
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: Themes.kBlackColor,
+                            height: 0.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 12.0),
+                    GestureDetector(
+                      onTapDown: (details) => Constants.openPopupMenu(context,
+                          details, DummyData.cartSingleItems, "Regular - Item"),
+                      child: Image.asset(
+                        Images.more,
+                        height: 14.0,
+                        color: Themes.kBlackColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+
   Widget cartItems(Size size, bool isPortrait) {
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
-          children: List.generate(1, (index) {
+          children: List.generate(2, (index) {
             return WidgetAnimator(
               incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
                   delay: const Duration(milliseconds: 150)),
@@ -586,6 +670,50 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
+  Widget updatedBottomButtons(bool isPortrait, Size size) {
+    return Column(
+      children: [
+        updatedCustomButton(size: size, title: "Pay \$1024.32"),
+        const SizedBox(height: 8.0),
+        centerButtons(isPortrait, size),
+        const SizedBox(height: 8.0),
+        updatedCustomButton(size: size, title: "Send order to Kitchen/Bar"),
+      ],
+    );
+  }
+
+  Widget centerButtons(bool isPortrait, Size size) {
+    return Container(
+      height: 36.0,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4.0),
+          border: Border.all(color: Themes.kPrimaryColor)),
+      child: Row(
+        children: [
+          updatedCustomButton(
+            size: size,
+            title: "Save Order",
+            color: Themes.kTransparent,
+            width: size.width / 3.7,
+          ),
+          updatedCustomButton(
+            size: size,
+            title: "Print Bill",
+            color: Themes.kTransparent,
+            width: size.width / 3.7,
+          ),
+          updatedCustomButton(
+            size: size,
+            title: "Cancel",
+            color: Themes.kTransparent,
+            width: size.width / 3.7,
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget bottomButtons(bool isPortrait, Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -651,6 +779,63 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
+  Widget updatedCustomButton({
+    bool? isPortrait,
+    required Size size,
+    required String title,
+    double? width,
+    Color? color,
+  }) {
+    return Material(
+      color: Themes.kTransparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(4.0),
+        onTap: () {
+          if (title.contains("Send")) {
+            if (authController.isAdmin) {
+              Get.toNamed(Routes.INVOICE);
+            } else {
+              Constants.enterAuthCode(
+                  context: context,
+                  isPortrait: isPortrait,
+                  size: size,
+                  screen: "FastFood");
+            }
+          } else if (title.contains("Pay")) {
+            Constants.openBottomSheet(
+                context, "Payment Options", DummyData.payItems);
+          } else if (title.contains("Save")) {
+            Constants.showSnackBar(
+                context, "SUCCESS", "Save Order Successfully!");
+          } else if (title.contains("Print")) {
+            Constants.showSnackBar(context, "SUCCESS", "Printing...!");
+          } else {
+            clearOrder(context);
+          }
+        },
+        child: Ink(
+          decoration: BoxDecoration(
+              color: color ?? Themes.kPrimaryColor,
+              borderRadius: BorderRadius.circular(4.0)),
+          child: Container(
+            height: 36.0,
+            width: width ?? size.width,
+            alignment: Alignment.center,
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                color:
+                    color != null ? Themes.kPrimaryColor : Themes.kWhiteColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget customButton(bool isPortrait, Size size, String title) {
     return WidgetAnimator(
       incomingEffect: WidgetTransitionEffects.incomingSlideInFromBottom(),
@@ -697,7 +882,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                   Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 13.0,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.w500,
                       color: Themes.kWhiteColor,
                     ),

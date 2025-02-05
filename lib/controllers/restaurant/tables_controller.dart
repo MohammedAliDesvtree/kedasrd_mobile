@@ -5,8 +5,21 @@ class TablesController extends GetxController {
   RxList<int> randomNumbers = <int>[].obs;
   RxInt selectedTabIndex = 0.obs;
 
+  // Add observable strings for each dropdown
+  final RxMap<String, String> dropdownValues = <String, String>{}.obs;
+
   void selectTab(int index) {
     selectedTabIndex.value = index;
+    // Clear all dropdown selections
+    dropdownValues.clear();
+  }
+
+  void setDropdownValue(String key, String value) {
+    dropdownValues[key] = value;
+  }
+
+  String? getDropdownValue(String key) {
+    return dropdownValues[key];
   }
 
   void updateRandomNumbers(int tableLength) {

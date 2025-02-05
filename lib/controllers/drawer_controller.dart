@@ -27,6 +27,8 @@ class DrawerMenuController extends GetxController {
       Get.toNamed(Routes.NEW_ORDER);
     } else if (title == "Kitchen") {
       Get.toNamed(Routes.KITCHEN);
+    } else if (title == "Bar") {
+      Get.toNamed(Routes.BAR);
     } else if (title == "Table") {
       Get.toNamed(Routes.TABLES, arguments: {"title": "Tables"});
     } else if (title == "Categories") {

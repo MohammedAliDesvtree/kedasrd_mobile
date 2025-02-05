@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
-import 'package:widget_and_text_animator/widget_and_text_animator.dart';
+import 'package:kedasrd/widgets/custom_tabs_list.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
@@ -36,7 +37,7 @@ class _DineInOrderViewState extends State<DineInOrderView> {
                 title: "Active Tables",
                 onMenuTapped: () =>
                     dineInOrderGlobalKey.currentState!.openDrawer()),
-            tabList(),
+            CustomTabsList(data: DummyData.tableTabs, type: "Tables"),
             const SizedBox(height: 16.0),
             Obx(
               () => controller.selectedTabIndex.value == 0

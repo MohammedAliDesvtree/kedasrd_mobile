@@ -62,8 +62,10 @@ class CommonController extends GetxController {
   void onActiveOrderItemTapped(String title) {
     if (title.contains("Dine")) {
       Get.toNamed(Routes.TABLES, arguments: {"title": "Active Tables"});
-    } else {
+    } else if (title == "Delivery") {
       Get.toNamed(Routes.DELIVERY);
+    } else {
+      Get.toNamed(Routes.FAST_FOOD, arguments: {"title": "Delivery"});
     }
   }
 
