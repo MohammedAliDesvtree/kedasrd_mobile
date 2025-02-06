@@ -471,4 +471,13 @@ class DummyData {
     "Only Table by Section",
     "All Tables",
   ];
+
+  static List<dynamic> settingItems = [
+    {"icon": Images.general, "title": "General"},
+    {"icon": Images.orders, "title": "Orders"},
+    {"icon": Images.kitchenIc, "title": "Kitchen"},
+    {"icon": Images.chair, "title": "Tables"},
+    {"icon": Images.printer, "title": "Printer"},
+    {"icon": Images.taxes, "title": "Taxes"},
+  ];
 }

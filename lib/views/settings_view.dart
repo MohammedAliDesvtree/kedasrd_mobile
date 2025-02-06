@@ -32,7 +32,68 @@ class _SettingsViewState extends State<SettingsView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             customHeader(),
-            CustomTabsList(data: DummyData.settingTabs, type: "Setting"),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: List.generate(DummyData.settingItems.length, (index) {
+                  var data = DummyData.settingItems[index];
+                  return Column(
+                    children: [
+                      Material(
+                        color: Themes.kTransparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(52.0),
+                          onTap: () => controller.selectTab(index),
+                          child: Obx(
+                            () {
+                              return Ink(
+                                decoration: BoxDecoration(
+                                    color: controller.selectedTabIndex.value ==
+                                            index
+                                        ? Themes.kPrimaryColor
+                                        : Themes.kTransparent,
+                                    border: Border.all(
+                                        color: Themes.kPrimaryColor,
+                                        width: 2.0),
+                                    borderRadius: BorderRadius.circular(48.0)),
+                                child: Container(
+                                  height: 48.0,
+                                  width: 48.0,
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Image.asset(
+                                    data["icon"],
+                                    height: 24.0,
+                                    width: 24.0,
+                                    color: controller.selectedTabIndex.value ==
+                                            index
+                                        ? Themes.kWhiteColor
+                                        : Themes.kPrimaryColor,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      Obx(
+                        () => Text(
+                          data["title"],
+                          style: TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w500,
+                            color: controller.selectedTabIndex.value == index
+                                ? Themes.kPrimaryColor
+                                : Themes.kGreyColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+              ),
+            ),
             const SizedBox(height: 16.0),
             Expanded(
               child: ListView(

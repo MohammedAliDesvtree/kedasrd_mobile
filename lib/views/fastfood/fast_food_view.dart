@@ -30,6 +30,14 @@ class _FastFoodViewState extends State<FastFoodView> {
   final FastFoodController controller = Get.find<FastFoodController>();
 
   @override
+  void initState() {
+    super.initState();
+    for (int i = 0; i < DummyData.productList.length; i++) {
+      controller.expandedItems[i] = false;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
@@ -246,7 +254,7 @@ class _FastFoodViewState extends State<FastFoodView> {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 84.0),
+          padding: const EdgeInsets.only(bottom: 100.0),
           child: Wrap(
               spacing: 16.0,
               runSpacing: 16.0,
@@ -263,7 +271,7 @@ class _FastFoodViewState extends State<FastFoodView> {
                       WidgetTransitionEffects.incomingSlideInFromRight(
                           delay: Duration(milliseconds: index * 150)),
                   child: Container(
-                    height: 84.0,
+                    height: 124.0,
                     width: itemWidth,
                     decoration: BoxDecoration(
                       color: Themes.kWhiteColor,
@@ -291,9 +299,8 @@ class _FastFoodViewState extends State<FastFoodView> {
                                       left: -74.0,
                                       child: ClipRRect(
                                         borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(100.0),
-                                            bottomRight:
-                                                Radius.circular(100.0)),
+                                            topRight: Radius.circular(68.0),
+                                            bottomRight: Radius.circular(68.0)),
                                         child: Image.asset(
                                           data["image"],
                                           height: 124.0,
@@ -325,63 +332,138 @@ class _FastFoodViewState extends State<FastFoodView> {
                                       color: Themes.kBlackColor,
                                     ),
                                   ),
+                                  Container(
+                                    // width: size.width / 1.7,
+                                    margin: const EdgeInsets.only(top: 6.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Obx(() {
+                                          if (controller.expandedItems[index] ==
+                                              true) {
+                                            return SizedBox(
+                                              width: 84.0,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  qtyButton(
+                                                      Images.less, "Increase"),
+                                                  const Text(
+                                                    "1",
+                                                    style: TextStyle(
+                                                      fontSize: 15.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Themes.kBlackColor,
+                                                    ),
+                                                  ),
+                                                  qtyButton(
+                                                      Images.add, "Decrease"),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return const SizedBox
+                                                .shrink(); // Hide controls if not in cart
+                                          }
+                                        }),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
                           ),
-                          Positioned(
-                            bottom: 0.0,
-                            right: 0.0,
-                            child: Material(
-                              color: Themes.kTransparent,
-                              child: InkWell(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(13.0),
-                                  bottomRight: Radius.circular(8.0),
-                                ),
-                                onTap: () => Constants.showSnackBar(
-                                    context, "SUCCESS", "Item Added!"),
-                                child: Ink(
-                                  decoration: const BoxDecoration(
-                                    color: Themes.kPrimaryColor,
-                                    borderRadius: BorderRadius.only(
+                          Obx(() {
+                            if (controller.expandedItems[index] == false) {
+                              return Positioned(
+                                bottom: 0.0,
+                                right: 0.0,
+                                child: Material(
+                                  color: Themes.kTransparent,
+                                  child: InkWell(
+                                    borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(13.0),
                                       bottomRight: Radius.circular(8.0),
                                     ),
-                                  ),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 16.0),
-                                    child: Row(
-                                      children: [
-                                        Image.asset(
-                                          Images.add,
-                                          height: 10.0,
-                                          width: 10.0,
-                                          color: Themes.kWhiteColor,
+                                    onTap: () =>
+                                        controller.toggleItemExpansion(index),
+                                    // Constants.showSnackBar(
+                                    //     context, "SUCCESS", "Item Added!"),
+                                    child: Ink(
+                                      decoration: const BoxDecoration(
+                                        color: Themes.kPrimaryColor,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(13.0),
+                                          bottomRight: Radius.circular(8.0),
                                         ),
-                                        const SizedBox(width: 8.0),
-                                        Text(
-                                          "Add".toUpperCase(),
-                                          style: const TextStyle(
-                                            fontSize: 13.0,
-                                            fontWeight: FontWeight.w700,
-                                            color: Themes.kWhiteColor,
-                                          ),
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0, horizontal: 16.0),
+                                        child: Row(
+                                          children: [
+                                            Image.asset(
+                                              Images.add,
+                                              height: 10.0,
+                                              width: 10.0,
+                                              color: Themes.kWhiteColor,
+                                            ),
+                                            const SizedBox(width: 8.0),
+                                            Text(
+                                              "Add".toUpperCase(),
+                                              style: const TextStyle(
+                                                fontSize: 13.0,
+                                                fontWeight: FontWeight.w700,
+                                                color: Themes.kWhiteColor,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          ),
+                              );
+                            } else {
+                              return const SizedBox.shrink();
+                            }
+                          }),
                         ],
                       ),
                     ),
                   ),
                 );
               })),
+        ),
+      ),
+    );
+  }
+
+  Widget qtyButton(String image, String type) {
+    return Material(
+      color: Themes.kTransparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(7.0),
+        onTap: () {
+          if (type == "Decrease") {
+          } else {}
+        },
+        child: Ink(
+          decoration: BoxDecoration(
+              color: Themes.kPrimaryColor,
+              borderRadius: BorderRadius.circular(7.0)),
+          child: Container(
+            height: 25.0,
+            width: 26.0,
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(image, color: Themes.kWhiteColor),
+          ),
         ),
       ),
     );

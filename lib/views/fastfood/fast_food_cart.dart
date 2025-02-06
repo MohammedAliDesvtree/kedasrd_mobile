@@ -360,76 +360,109 @@ class _FastFoodCartState extends State<FastFoodCart> {
       child: SingleChildScrollView(
         child: Column(
           children:
-              List.generate(DummyData.productList.take(8).length, (index) {
+              List.generate(DummyData.productList.take(12).length, (index) {
             var data = DummyData.productList[index];
             return WidgetAnimator(
               incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
                   delay: const Duration(milliseconds: 150)),
-              child: Container(
-                margin: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 16.0, top: 4.0),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-                decoration: BoxDecoration(
-                  color: Themes.kWhiteColor,
-                  borderRadius: BorderRadius.circular(8.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Themes.kBlackColor.withOpacity(0.20),
-                      blurRadius: 8.0,
-                      spreadRadius: -3,
-                      offset: const Offset(0, 0),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        data["title"],
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: Themes.kBlackColor,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 8.0, top: 4.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 8.0),
+                  decoration: BoxDecoration(
+                    color: Themes.kWhiteColor,
+                    borderRadius: BorderRadius.circular(8.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Themes.kBlackColor.withOpacity(0.20),
+                        blurRadius: 8.0,
+                        spreadRadius: -3,
+                        offset: const Offset(0, 0),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      // Title row with tap gesture
+                      GestureDetector(
+                        onTap: () => controller.toggleItemExpansion(index),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Image.asset(
+                            //   Images.downArrow,
+                            //   height: 14.0,
+                            //   width: 14.0,
+                            //   color: Themes.kPrimaryColor,
+                            // ),
+                            // const SizedBox(width: 8.0),
+                            Expanded(
+                              child: Text(
+                                data["title"],
+                                // index % 2 == 0
+                                //     ? "Cerveza Presidente"
+                                //     : "Cerveza Presidente\n(Light Jumbo)",
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Themes.kBlackColor,
+                                ),
+                              ),
+                            ),
+                            // const SizedBox(width: 8.0),
+                            // Image.asset(
+                            //   Images.downArrow,
+                            //   height: 14.0,
+                            //   width: 14.0,
+                            //   color: Themes.kPrimaryColor,
+                            // ),
+                            const SizedBox(width: 16.0),
+                            qtyView(),
+                            const SizedBox(width: 16.0),
+                            const Text(
+                              "\$500",
+                              style: TextStyle(
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w400,
+                                color: Themes.kBlackColor,
+                                height: 0.0,
+                              ),
+                            ),
+                            const SizedBox(width: 8.0),
+                            GestureDetector(
+                              onTapDown: (details) => Constants.openPopupMenu(
+                                  context,
+                                  details,
+                                  DummyData.cartSingleItems,
+                                  "Regular - Item"),
+                              child: Image.asset(
+                                Images.more,
+                                height: 14.0,
+                                color: Themes.kBlackColor,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 16.0),
-                    qtyView(),
-                    const SizedBox(width: 16.0),
-                    const Column(
-                      children: [
-                        Text(
-                          "\$500",
-                          style: TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
-                              color: Themes.kGreyColor,
-                              height: 0.0,
-                              decoration: TextDecoration.lineThrough),
-                        ),
-                        Text(
-                          "\$300",
-                          style: TextStyle(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w400,
-                            color: Themes.kBlackColor,
-                            height: 0.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(width: 12.0),
-                    GestureDetector(
-                      onTapDown: (details) => Constants.openPopupMenu(context,
-                          details, DummyData.cartSingleItems, "Regular - Item"),
-                      child: Image.asset(
-                        Images.more,
-                        height: 14.0,
-                        color: Themes.kBlackColor,
-                      ),
-                    ),
-                  ],
+                      // Expandable section
+                      //  Obx(() => controller.expandedItems[index] == true
+                      Obx(() => controller.expandedIndex.value == index
+                          ? Column(
+                              children: [
+                                const SizedBox(height: 8.0),
+                                cartBullet("Disc %", "0"),
+                                const SizedBox(height: 4.0),
+                                Constants.divider(size),
+                                const SizedBox(height: 4.0),
+                                cartBullet("Total", "DOP \$300.00"),
+                                const SizedBox(height: 8.0),
+                              ],
+                            )
+                          : const SizedBox.shrink()),
+                    ],
+                  ),
                 ),
               ),
             );

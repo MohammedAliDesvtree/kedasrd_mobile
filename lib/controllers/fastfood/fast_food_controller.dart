@@ -13,4 +13,15 @@ class FastFoodController extends GetxController {
       selectedItems.add(item);
     }
   }
+
+  // Add this to track expanded items
+  final RxMap<int, bool> expandedItems = <int, bool>{}.obs;
+
+  void toggleItemExpansion(int index) {
+    if (expandedItems.containsKey(index)) {
+      expandedItems[index] = !expandedItems[index]!;
+    } else {
+      expandedItems[index] = true;
+    }
+  }
 }
