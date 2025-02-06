@@ -48,15 +48,16 @@ class _SettingsViewState extends State<SettingsView> {
                           child: Obx(
                             () {
                               return Ink(
-                                decoration: BoxDecoration(
-                                    color: controller.selectedTabIndex.value ==
-                                            index
-                                        ? Themes.kPrimaryColor
-                                        : Themes.kTransparent,
-                                    border: Border.all(
-                                        color: Themes.kPrimaryColor,
-                                        width: 2.0),
-                                    borderRadius: BorderRadius.circular(48.0)),
+                                // decoration: BoxDecoration(
+                                // color:
+                                //     controller.selectedTabIndex.value == index
+                                //         ? Themes.kPrimaryColor
+                                //         : Themes.kTransparent,
+                                // border: Border.all(
+                                //     color: Themes.kPrimaryColor,
+                                //     width: 2.0),
+                                // borderRadius: BorderRadius.circular(48.0)
+                                // ),
                                 child: Container(
                                   height: 48.0,
                                   width: 48.0,
@@ -67,8 +68,8 @@ class _SettingsViewState extends State<SettingsView> {
                                     width: 24.0,
                                     color: controller.selectedTabIndex.value ==
                                             index
-                                        ? Themes.kWhiteColor
-                                        : Themes.kPrimaryColor,
+                                        ? Themes.kPrimaryColor
+                                        : Themes.kGreyColor,
                                   ),
                                 ),
                               );
@@ -76,7 +77,7 @@ class _SettingsViewState extends State<SettingsView> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 8.0),
+                      const SizedBox(height: 0.0),
                       Obx(
                         () => Text(
                           data["title"],
