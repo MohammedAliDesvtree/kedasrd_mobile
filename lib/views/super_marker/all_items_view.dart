@@ -11,6 +11,8 @@ import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 
+import 'package:kedasrd/controllers/common_controller.dart';
+
 class AllItemsView extends StatefulWidget {
   const AllItemsView({super.key});
 
@@ -19,6 +21,7 @@ class AllItemsView extends StatefulWidget {
 }
 
 class _AllItemsViewState extends State<AllItemsView> {
+  final CommonController commonController = Get.find<CommonController>();
   dynamic data = Get.arguments;
 
   @override
@@ -61,8 +64,8 @@ class _AllItemsViewState extends State<AllItemsView> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Wrap(
-                    spacing: 16.0,
-                    runSpacing: 16.0,
+                    spacing: 8.0,
+                    runSpacing: 8.0,
                     children: List.generate(5, (index) {
                       // Calculate item width based on orientation
                       final itemWidth = isPortrait
@@ -90,205 +93,208 @@ class _AllItemsViewState extends State<AllItemsView> {
   }
 
   Widget customerView(Size size, int index, double itemWidth) {
-    return GestureDetector(
-      onTap: () =>
-          Constants.showSnackBar(context, "SUCCESS", "Customer Selected"),
-      child: Container(
-        // height: 56.0,
-        width: itemWidth,
-        decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: Themes.kBlackColor.withOpacity(0.20),
-              blurRadius: 8.0,
-              spreadRadius: -3,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      itemBullet("Name", "Key"),
-                      itemBullet("Paloma Medrano", "Value"),
-                    ],
-                  ),
-                  Constants.divider(size),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      itemBullet("Phone No.", "Key"),
-                      itemBullet("0276744518", "Value"),
-                    ],
-                  ),
-                  Constants.divider(size),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      itemBullet("Mobile", "Key"),
-                      itemBullet("9856320147", "Value"),
-                    ],
-                  ),
-                  Constants.divider(size),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      itemBullet("Email", "Key"),
-                      itemBullet("mesa10@kedas.com", "Value"),
-                    ],
-                  ),
-                  Constants.divider(size),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      itemBullet("Tax ID", "Key"),
-                      itemBullet("131174884", "Value"),
-                    ],
-                  ),
-                  Constants.divider(size),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      itemBullet("Balance", "Key"),
-                      itemBullet("0.00000", "Value"),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget itemView(Size size, int index, double itemWidth) {
     return Container(
-      // height: 56.0,
       width: itemWidth,
+      margin: const EdgeInsets.only(top: 4.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8.0),
         boxShadow: [
           BoxShadow(
             color: Themes.kBlackColor.withOpacity(0.20),
             blurRadius: 8.0,
             spreadRadius: -3,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 0),
           ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          // Title row with tap gesture
+          GestureDetector(
+            onTap: () => commonController.toggleItemExpansion(index),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    itemBullet("Item Description", "Key"),
-                    itemBullet("Nachitos Ricos", "Value"),
-                  ],
+                Expanded(
+                  child: Text(
+                    index % 2 == 0
+                        ? "Empresa Distribuidora De Electricidad Del"
+                        : "Paloma Medrano",
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Themes.kBlackColor,
+                    ),
+                  ),
                 ),
-                Constants.divider(size),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    itemBullet("Code", "Key"),
-                    itemBullet("64913826", "Value"),
-                  ],
+                const SizedBox(width: 16.0),
+                const Text(
+                  "\$0.00",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: Themes.kBlackColor,
+                    height: 0.0,
+                  ),
                 ),
-                Constants.divider(size),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    itemBullet("Price", "Key"),
-                    itemBullet("DOP \$512.16", "Value"),
-                  ],
-                ),
-                Constants.divider(size),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    itemBullet("Status", "Key"),
-                    itemBullet(
-                        index % 3 != 1 ? "In Stock" : "Out Of Stock", "Value"),
-                  ],
-                ),
-                Constants.divider(size),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    itemBullet("Discount", "Key"),
-                    itemBullet("\$0.00", "Value"),
-                  ],
+                const SizedBox(width: 8.0),
+                GestureDetector(
+                  onTap: () => Constants.showSnackBar(
+                      context, "SUCCESS", "Customer Selected"),
+                  child: Image.asset(
+                    Images.touchscreen,
+                    height: 16.0,
+                    width: 16.0,
+                    color: Themes.kPrimaryColor,
+                  ),
                 ),
               ],
             ),
           ),
-          Material(
-            color: Themes.kTransparent,
-            child: InkWell(
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                bottomRight: Radius.circular(10.0),
-              ),
-              onTap: () => Constants.showSnackBar(
-                  context, "SUCCESS", "Item added successfully!"),
-              child: Ink(
-                decoration: const BoxDecoration(
-                  color: Themes.kPrimaryColor,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                  ),
-                ),
-                child: Container(
-                  width: 80.0,
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 16.0),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        Images.add,
-                        height: 10.0,
-                        width: 10.0,
-                        color: Themes.kWhiteColor,
-                      ),
-                      const SizedBox(width: 8.0),
-                      Text(
-                        "Add".toUpperCase(),
-                        style: const TextStyle(
-                          fontSize: 13.0,
-                          fontWeight: FontWeight.w700,
-                          color: Themes.kWhiteColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+          // Expandable section
+          Obx(() => commonController.expandedIndex.value == index
+              ? Column(
+                  children: [
+                    const SizedBox(height: 8.0),
+                    cartBullet("Phone No.", "0276744518"),
+                    spaceBetween(size),
+                    cartBullet("Mobile", "9856320147"),
+                    spaceBetween(size),
+                    cartBullet("Email", "mesa10@kedas.com"),
+                    spaceBetween(size),
+                    cartBullet("Tax ID", "131174884"),
+                    const SizedBox(height: 8.0),
+                  ],
+                )
+              : const SizedBox.shrink()),
+        ],
+      ),
+    );
+  }
+
+  Widget spaceBetween(size) {
+    return Column(
+      children: [
+        const SizedBox(height: 4.0),
+        Constants.divider(size),
+        const SizedBox(height: 4.0),
+      ],
+    );
+  }
+
+  Widget itemView(Size size, int index, double itemWidth) {
+    return Container(
+      width: itemWidth,
+      margin: const EdgeInsets.only(top: 4.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Themes.kWhiteColor,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Themes.kBlackColor.withOpacity(0.20),
+            blurRadius: 8.0,
+            spreadRadius: -3,
+            offset: const Offset(0, 0),
           ),
         ],
       ),
+      child: Column(
+        children: [
+          // Title row with tap gesture
+          GestureDetector(
+            onTap: () => commonController.toggleItemExpansion(index),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    index % 3 != 1
+                        ? "Nachitos Ricos"
+                        : "Salted Tahini Chocolate Chunk (1 ud)",
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Themes.kBlackColor,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16.0),
+                Text(
+                  index % 3 != 1 ? "In Stock" : "Out Of Stock",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: index % 3 != 1
+                        ? Themes.kGreenColor
+                        : Themes.kOrangeColor,
+                    height: 0.0,
+                  ),
+                ),
+                const SizedBox(width: 16.0),
+                const Text(
+                  "DOP \$512.16",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: Themes.kBlackColor,
+                    height: 0.0,
+                  ),
+                ),
+                const SizedBox(width: 8.0),
+                GestureDetector(
+                  onTap: () => Constants.showSnackBar(
+                      context, "SUCCESS", "Item added successfully!"),
+                  child: Image.asset(
+                    Images.addToCart,
+                    height: 24.0,
+                    width: 24.0,
+                    color: Themes.kPrimaryColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Expandable section
+          Obx(() => commonController.expandedIndex.value == index
+              ? Column(
+                  children: [
+                    const SizedBox(height: 8.0),
+                    cartBullet("Code", "64913826"),
+                    const SizedBox(height: 8.0),
+                  ],
+                )
+              : const SizedBox.shrink()),
+        ],
+      ),
+    );
+  }
+
+  Widget cartBullet(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w400,
+            color: Themes.kPrimaryColor,
+            height: 0.0,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w600,
+            color: Themes.kBlackColor,
+            height: 0.0,
+          ),
+        ),
+      ],
     );
   }
 

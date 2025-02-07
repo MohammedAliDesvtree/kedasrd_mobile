@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_dropdown.dart';
-import 'package:kedasrd/widgets/custom_tabs_list.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';

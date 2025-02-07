@@ -168,7 +168,7 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                       WidgetTransitionEffects.incomingSlideInFromRight(
                           delay: Duration(milliseconds: index * 150)),
                   child: Container(
-                    height: 84.0,
+                    height: 124.0,
                     width: itemWidth,
                     decoration: BoxDecoration(
                       color: Themes.kWhiteColor,
@@ -196,9 +196,8 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                                       left: -74.0,
                                       child: ClipRRect(
                                         borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(100.0),
-                                            bottomRight:
-                                                Radius.circular(100.0)),
+                                            topRight: Radius.circular(68.0),
+                                            bottomRight: Radius.circular(68.0)),
                                         child: Image.asset(
                                           data["image"],
                                           height: 124.0,
@@ -210,27 +209,31 @@ class _OnlineStoreViewState extends State<OnlineStoreView> {
                                   ],
                                 ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    data["title"],
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w700,
-                                      color: Themes.kBlackColor,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      data["title"],
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: Themes.kBlackColor,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "\$${data["price"]}",
-                                    style: const TextStyle(
-                                      fontSize: 24.0,
-                                      fontWeight: FontWeight.w700,
-                                      color: Themes.kBlackColor,
+                                    Text(
+                                      "\$${data["price"]}",
+                                      style: const TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: Themes.kBlackColor,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),

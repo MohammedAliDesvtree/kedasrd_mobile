@@ -180,8 +180,6 @@ class _POSViewState extends State<POSView> {
                         Container(
                           height: 124.0,
                           width: itemWidth,
-                          // margin: const EdgeInsets.only(
-                          //     left: 16.0, right: 16.0, bottom: 16.0),
                           decoration: BoxDecoration(
                             color: Themes.kWhiteColor,
                             borderRadius: BorderRadius.circular(8.0),
@@ -198,7 +196,6 @@ class _POSViewState extends State<POSView> {
                             borderRadius: BorderRadius.circular(8.0),
                             child: Stack(
                               children: [
-                                //
                                 Row(
                                   children: [
                                     SizedBox(
@@ -235,8 +232,10 @@ class _POSViewState extends State<POSView> {
                                         children: [
                                           Text(
                                             data["title"],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
-                                              fontSize: 18.0,
+                                              fontSize: 16.0,
                                               fontWeight: FontWeight.w700,
                                               color: Themes.kBlackColor,
                                             ),
@@ -244,68 +243,9 @@ class _POSViewState extends State<POSView> {
                                           Text(
                                             "DOP \$${data["price"]}",
                                             style: const TextStyle(
-                                              fontSize: 24.0,
+                                              fontSize: 20.0,
                                               fontWeight: FontWeight.w700,
                                               color: Themes.kBlackColor,
-                                            ),
-                                          ),
-                                          Container(
-                                            // width: size.width / 1.7,
-                                            margin:
-                                                const EdgeInsets.only(top: 6.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Obx(() {
-                                                  // Check if item exists in cart
-                                                  final cartItemIndex =
-                                                      cartController.cartItems
-                                                          .indexWhere((item) =>
-                                                              item.name ==
-                                                              data["title"]);
-
-                                                  if (cartItemIndex != -1) {
-                                                    // Show quantity controls if item is in cart
-                                                    return SizedBox(
-                                                      width: 84.0,
-                                                      child: Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          qtyButton(
-                                                              Images.less,
-                                                              "Increase",
-                                                              cartItemIndex),
-                                                          Text(
-                                                            "${cartController.cartItems[cartItemIndex].quantity.value}",
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 15.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color: Themes
-                                                                  .kBlackColor,
-                                                            ),
-                                                          ),
-                                                          qtyButton(
-                                                              Images.add,
-                                                              "Decrease",
-                                                              cartItemIndex),
-                                                        ],
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return const SizedBox
-                                                        .shrink(); // Hide controls if not in cart
-                                                  }
-                                                }),
-                                              ],
                                             ),
                                           ),
                                         ],
@@ -373,7 +313,64 @@ class _POSViewState extends State<POSView> {
                                       ),
                                     );
                                   } else {
-                                    return const SizedBox.shrink();
+                                    return Positioned(
+                                      bottom: 10.0,
+                                      right: 10.0,
+                                      child: Container(
+                                        margin: const EdgeInsets.only(top: 6.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Obx(() {
+                                              // Check if item exists in cart
+                                              final cartItemIndex =
+                                                  cartController.cartItems
+                                                      .indexWhere((item) =>
+                                                          item.name ==
+                                                          data["title"]);
+
+                                              if (cartItemIndex != -1) {
+                                                // Show quantity controls if item is in cart
+                                                return SizedBox(
+                                                  width: 84.0,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      qtyButton(
+                                                          Images.less,
+                                                          "Increase",
+                                                          cartItemIndex),
+                                                      Text(
+                                                        "${cartController.cartItems[cartItemIndex].quantity.value}",
+                                                        style: const TextStyle(
+                                                          fontSize: 15.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Themes
+                                                              .kBlackColor,
+                                                        ),
+                                                      ),
+                                                      qtyButton(
+                                                          Images.add,
+                                                          "Decrease",
+                                                          cartItemIndex),
+                                                    ],
+                                                  ),
+                                                );
+                                              } else {
+                                                return const SizedBox
+                                                    .shrink(); // Hide controls if not in cart
+                                              }
+                                            }),
+                                          ],
+                                        ),
+                                      ),
+                                    );
                                   }
                                 }),
                               ],

@@ -9,6 +9,8 @@ import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
+import 'package:kedasrd/controllers/common_controller.dart';
+
 class AllOrdersView extends StatefulWidget {
   const AllOrdersView({super.key});
 
@@ -18,6 +20,7 @@ class AllOrdersView extends StatefulWidget {
 
 class _AllOrdersViewState extends State<AllOrdersView> {
   dynamic data = Get.arguments;
+  final CommonController commonController = Get.find<CommonController>();
 
   @override
   Widget build(BuildContext context) {
@@ -70,212 +73,143 @@ class _AllOrdersViewState extends State<AllOrdersView> {
 
   Widget orderItem(Size size, int index, double itemWidth) {
     String title = data["title"];
+
     return Container(
-      // height: 56.0,
       width: itemWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(8.0),
         boxShadow: [
           BoxShadow(
             color: Themes.kBlackColor.withOpacity(0.20),
             blurRadius: 8.0,
             spreadRadius: -3,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 0),
           ),
         ],
       ),
-      child: Stack(
+      child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                // width: size.width / 4.3,
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet("Customer", "Key"),
-                        itemBullet("Paloma Medrano", "Value"),
-                      ],
+          // Title row with tap gesture
+          GestureDetector(
+            onTap: () => commonController.toggleItemExpansion(index),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Text(
+                    index % 2 == 0
+                        ? "Empresa Distribuidora De Electricidad Del"
+                        : "Paloma Medrano",
+                    style: const TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                      color: Themes.kBlackColor,
                     ),
-                    const SizedBox(height: 12.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "Status"
-                                : "NCF",
-                            "Key"),
-                        itemBullet(
-                            title == "Draft"
-                                ? "Draft"
-                                : title.contains("Deleted")
-                                    ? "Deleted"
-                                    : "B0100000147",
-                            "Value"),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              Expanded(
-                // width: size.width / 4.3,
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "Table"
-                                : "Invoice No.",
-                            "Key"),
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "Table 56 (Chair 5)"
-                                : "SC009238110",
-                            "Value"),
-                      ],
-                    ),
-                    const SizedBox(height: 12.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet("Date", "Key"),
-                        itemBullet("01/01/2025", "Value"),
-                      ],
-                    ),
-                  ],
+                const SizedBox(width: 16.0),
+                Text(
+                  title == "Draft"
+                      ? "Draft"
+                      : title.contains("Deleted")
+                          ? "Deleted"
+                          : "Paid",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: title == "Draft"
+                        ? Themes.kOrangeColor
+                        : title.contains("Deleted")
+                            ? Themes.kRedColor
+                            : Themes.kGreenColor,
+                    height: 0.0,
+                  ),
                 ),
-              ),
-              Expanded(
-                // width: size.width / 6.0,
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "Order No."
-                                : "Total",
-                            "Key"),
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "141212"
-                                : "\$512.16",
-                            "Value"),
-                      ],
-                    ),
-                    const SizedBox(height: 12.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet("Time", "Key"),
-                        itemBullet("02:58 AM", "Value"),
-                      ],
-                    ),
-                  ],
+                const SizedBox(width: 16.0),
+                const Text(
+                  "\$512.16",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w400,
+                    color: Themes.kBlackColor,
+                    height: 0.0,
+                  ),
                 ),
-              ),
-              Expanded(
-                // width: size.width / 6.0,
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "Total"
-                                : "Status",
-                            "Key"),
-                        itemBullet(
-                            title == "Draft" || title.contains("Deleted")
-                                ? "\$1605"
-                                : (title == "All Orders" ||
-                                        title == "Orders" && index % 2 != 1)
-                                    ? "Paid"
-                                    : (title == "All Orders" ||
-                                            title == "Orders" && index % 3 != 1)
-                                        ? "Draft"
-                                        : "Deleted",
-                            "Value"),
-                      ],
-                    ),
-                    const SizedBox(height: 12.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        itemBullet("", "Key"),
-                        itemBullet("", "Value"),
-                      ],
-                    ),
-                  ],
+                const SizedBox(width: 8.0),
+                GestureDetector(
+                  onTapDown: (details) => Constants.openPopupMenu(
+                      context, details, DummyData.actionItems, "Items"),
+                  child: Image.asset(
+                    Images.moreNew,
+                    height: 20.0,
+                    width: 20.0,
+                    color: Themes.kBlackColor,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Positioned(
-            top: 6.0,
-            right: 0.0,
-            child: GestureDetector(
-              onTapDown: (details) => Constants.openPopupMenu(
-                  context, details, DummyData.actionItems, "Items"),
-              child: Image.asset(
-                Images.more,
-                height: 12.0,
-                color: Themes.kPrimaryColor,
-              ),
+              ],
             ),
           ),
+          // Expandable section
+          Obx(() => commonController.expandedIndex.value == index
+              ? Column(
+                  children: [
+                    const SizedBox(height: 12.0),
+                    cartBullet(
+                        title.contains("All") ? "Invoice No." : "Table",
+                        title.contains("All")
+                            ? "SC009238110"
+                            : "Table 56 (Chair 5)"),
+                    spaceBetween(size),
+                    cartBullet(title.contains("All") ? "NFC" : "Order No.",
+                        title.contains("All") ? "B0100000147" : "14212"),
+                    spaceBetween(size),
+                    cartBullet("Date", "01/01/2025"),
+                    spaceBetween(size),
+                    cartBullet("Time", "02:58 AM"),
+                    const SizedBox(height: 8.0),
+                  ],
+                )
+              : const SizedBox.shrink()),
         ],
       ),
     );
   }
 
-  Widget itemBullet(String title, String type) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 10.0,
-        fontWeight: type == "Key" ? FontWeight.w400 : FontWeight.w600,
-        color: title == "Paid"
-            ? Themes.kGreenColor
-            : title == "Draft"
-                ? Themes.kOrangeColor
-                : title == "Deleted"
-                    ? Themes.kRedColor
-                    : type == "Key"
-                        ? Themes.kPrimaryColor
-                        : Themes.kBlackColor,
-      ),
+  Widget spaceBetween(size) {
+    return Column(
+      children: [
+        const SizedBox(height: 4.0),
+        Constants.divider(size),
+        const SizedBox(height: 4.0),
+      ],
+    );
+  }
+
+  Widget cartBullet(String title, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w400,
+            color: Themes.kPrimaryColor,
+            height: 0.0,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 12.0,
+            fontWeight: FontWeight.w600,
+            color: Themes.kBlackColor,
+            height: 0.0,
+          ),
+        ),
+      ],
     );
   }
 

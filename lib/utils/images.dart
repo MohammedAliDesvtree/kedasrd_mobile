@@ -87,4 +87,9 @@ class Images {
 
   static const String general = "lib/assets/icons/general.png";
   static const String taxes = "lib/assets/icons/taxes.png";
+
+  static const String addToCart = "lib/assets/icons/add-to-cart.png";
+  static const String touchscreen = "lib/assets/icons/touchscreen.png";
+
+  static const String moreNew = "lib/assets/icons/more_new.png";
 }

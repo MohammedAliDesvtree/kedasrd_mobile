@@ -5,6 +5,7 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
+import 'package:kedasrd/widgets/custom_qty_view.dart';
 
 import 'package:kedasrd/utils/images.dart';
 import 'package:kedasrd/utils/themes.dart';
@@ -33,10 +34,8 @@ class _CartViewState extends State<CartView> {
 
   @override
   Widget build(BuildContext context) {
-    controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-    // if (controller.isKeyboardVisible) {
-    //   controller.isDigitsViewVisible.value = false;
-    // }
+    Size size = MediaQuery.sizeOf(context);
+
     return GestureDetector(
       onTap: () => controller.isDiscountFieldVisible.value = false,
       child: Scaffold(
@@ -55,8 +54,7 @@ class _CartViewState extends State<CartView> {
               const SizedBox(height: 16.0),
               Obx(() => controller.cartItems.isEmpty
                   ? emptySection()
-                  : cartItemsSection()),
-              // if (!controller.isKeyboardVisible)
+                  : cartItemsSection(size)),
               totalView(),
               const SizedBox(height: 16.0),
               Obx(() {
@@ -127,7 +125,7 @@ class _CartViewState extends State<CartView> {
     );
   }
 
-  Widget cartItemsSection() {
+  Widget cartItemsSection(Size size) {
     return Expanded(
       child: Obx(
         () => SingleChildScrollView(
@@ -144,153 +142,75 @@ class _CartViewState extends State<CartView> {
                     duration: const Duration(milliseconds: 400),
                     delay: Duration(milliseconds: 150 * index),
                   ),
-                  child: Column(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            left: 16.0, right: 16.0, bottom: 16.0),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0, vertical: 8.0),
-                        decoration: BoxDecoration(
-                          color: Themes.kWhiteColor,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Themes.kBlackColor.withOpacity(0.20),
-                              blurRadius: 8.0,
-                              spreadRadius: -3,
-                              offset: const Offset(0, 0),
-                            ),
-                          ],
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                        left: 16.0, right: 16.0, bottom: 16.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 8.0),
+                    decoration: BoxDecoration(
+                      color: Themes.kWhiteColor,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Themes.kBlackColor.withOpacity(0.20),
+                          blurRadius: 8.0,
+                          spreadRadius: -3,
+                          offset: const Offset(0, 0),
                         ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  data.name,
-                                  style: const TextStyle(
-                                    fontSize: 15.0,
-                                  ),
-                                ),
-                                Obx(
-                                  () => Text(
-                                    "DOP \$${(data.price.value * data.quantity.value - (controller.discountPercentage.value / 100)).toStringAsFixed(2)}",
-                                    style: const TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            data.name,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w400,
+                              color: Themes.kBlackColor,
                             ),
-                            const SizedBox(height: 6.0),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: Get.width / 4.5,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // GestureDetector(
-                                      //   onTap: () => controller.updateQuantity(
-                                      //       index, false),
-                                      //   child: Image.asset(
-                                      //     Images.less,
-                                      //     height: 10.0,
-                                      //     width: 10.0,
-                                      //   ),
-                                      // ),
-                                      qtyButton(Images.less, "Decrease", index),
-                                      Obx(
-                                        () => AnimatedSwitcher(
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                          transitionBuilder: (Widget child,
-                                              Animation<double> animation) {
-                                            return SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: const Offset(
-                                                    0, 0.5), // Start from below
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              child: child,
-                                            );
-                                          },
-                                          child: Text(
-                                            key: ValueKey<int>(
-                                                data.quantity.value),
-                                            "${data.quantity}",
-                                            style: const TextStyle(
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w500,
-                                              color: Themes.kBlackColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      qtyButton(Images.add, "Increase", index),
-                                      // GestureDetector(
-                                      //   onTap: () => controller.updateQuantity(
-                                      //       index, true),
-                                      //   child: Image.asset(
-                                      //     Images.add,
-                                      //     height: 10.0,
-                                      //     width: 10.0,
-                                      //   ),
-                                      // ),
-                                    ],
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () => controller.deleteItem(index),
-                                  child: Image.asset(
-                                    Images.delete,
-                                    height: 17.0,
-                                    width: 17.0,
-                                    color: Themes.kPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 16.0),
+                        Obx(
+                          () => CustomQtyView(
+                            screenName: "POS Cart",
+                            initialValue: data.quantity.value,
+                            onDecrease: () =>
+                                controller.updateQuantity(index, false),
+                            onIncrease: () =>
+                                controller.updateQuantity(index, true),
+                          ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        Obx(
+                          () => Text(
+                            "DOP \$${(data.price.value * data.quantity.value - (controller.discountPercentage.value / 100)).toStringAsFixed(2)}",
+                            style: const TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w400,
+                              color: Themes.kBlackColor,
+                              height: 0.0,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8.0),
+                        GestureDetector(
+                          onTap: () => controller.deleteItem(index),
+                          child: Image.asset(
+                            Images.delete,
+                            height: 17.0,
+                            width: 17.0,
+                            color: Themes.kPrimaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
             }),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget qtyButton(String image, String type, int index) {
-    return Material(
-      color: Themes.kTransparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(7.0),
-        onTap: () {
-          if (type == "Decrease") {
-            controller.updateQuantity(index, false);
-          } else {
-            controller.updateQuantity(index, true);
-          }
-        },
-        child: Ink(
-          decoration: BoxDecoration(
-              color: Themes.kPrimaryColor,
-              borderRadius: BorderRadius.circular(7.0)),
-          child: Container(
-            height: 25.0,
-            width: 26.0,
-            padding: const EdgeInsets.all(8.0),
-            child: Image.asset(image, color: Themes.kWhiteColor),
           ),
         ),
       ),
@@ -428,7 +348,6 @@ class _CartViewState extends State<CartView> {
                             fontSize: 12.0, color: Themes.kBlackColor),
                         controller: controller.qtyController,
                         decoration: InputDecoration(
-                          // contentPadding: const EdgeInsets.symmetric(vertical: 12.0),
                           border: InputBorder.none,
                           hintText: title,
                           hintStyle: TextStyle(

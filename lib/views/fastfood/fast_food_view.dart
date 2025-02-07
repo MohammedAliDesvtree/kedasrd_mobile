@@ -312,70 +312,31 @@ class _FastFoodViewState extends State<FastFoodView> {
                                   ],
                                 ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    data["title"],
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w700,
-                                      color: Themes.kBlackColor,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      data["title"],
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: Themes.kBlackColor,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "\$${data["price"]}",
-                                    style: const TextStyle(
-                                      fontSize: 24.0,
-                                      fontWeight: FontWeight.w700,
-                                      color: Themes.kBlackColor,
+                                    Text(
+                                      "\$${data["price"]}",
+                                      style: const TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.w700,
+                                        color: Themes.kBlackColor,
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    // width: size.width / 1.7,
-                                    margin: const EdgeInsets.only(top: 6.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Obx(() {
-                                          if (controller.expandedItems[index] ==
-                                              true) {
-                                            return SizedBox(
-                                              width: 84.0,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  qtyButton(
-                                                      Images.less, "Increase"),
-                                                  const Text(
-                                                    "1",
-                                                    style: TextStyle(
-                                                      fontSize: 15.0,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Themes.kBlackColor,
-                                                    ),
-                                                  ),
-                                                  qtyButton(
-                                                      Images.add, "Decrease"),
-                                                ],
-                                              ),
-                                            );
-                                          } else {
-                                            return const SizedBox
-                                                .shrink(); // Hide controls if not in cart
-                                          }
-                                        }),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -431,7 +392,52 @@ class _FastFoodViewState extends State<FastFoodView> {
                                 ),
                               );
                             } else {
-                              return const SizedBox.shrink();
+                              return Positioned(
+                                bottom: 10.0,
+                                right: 10.0,
+                                child: Container(
+                                  // width: size.width / 1.7,
+                                  margin: const EdgeInsets.only(top: 6.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Obx(() {
+                                        if (controller.expandedItems[index] ==
+                                            true) {
+                                          return SizedBox(
+                                            width: 84.0,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                qtyButton(
+                                                    Images.less, "Increase"),
+                                                const Text(
+                                                  "1",
+                                                  style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Themes.kBlackColor,
+                                                  ),
+                                                ),
+                                                qtyButton(
+                                                    Images.add, "Decrease"),
+                                              ],
+                                            ),
+                                          );
+                                        } else {
+                                          return const SizedBox
+                                              .shrink(); // Hide controls if not in cart
+                                        }
+                                      }),
+                                    ],
+                                  ),
+                                ),
+                              );
                             }
                           }),
                         ],

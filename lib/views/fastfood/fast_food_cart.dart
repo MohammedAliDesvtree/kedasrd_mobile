@@ -5,6 +5,7 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 import 'package:kedasrd/widgets/custom_dialog.dart';
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_header.dart';
+import 'package:kedasrd/widgets/custom_qty_view.dart';
 
 import 'package:kedasrd/routes/app_pages.dart';
 
@@ -15,6 +16,7 @@ import 'package:kedasrd/utils/dummy_data.dart';
 
 import 'package:kedasrd/views/pos/add_customer_view.dart';
 
+import 'package:kedasrd/controllers/common_controller.dart';
 import 'package:kedasrd/controllers/auth/auth_controller.dart';
 import 'package:kedasrd/controllers/fastfood/fast_food_cart_controller.dart';
 
@@ -28,8 +30,9 @@ class FastFoodCart extends StatefulWidget {
 class _FastFoodCartState extends State<FastFoodCart> {
   dynamic data = Get.arguments;
   final GlobalKey<ScaffoldState> fastFoodCartGlobalKey = GlobalKey();
-  FastFoodCartController controller = Get.put(FastFoodCartController());
+  final FastFoodCartController controller = Get.put(FastFoodCartController());
   final AuthController authController = Get.find<AuthController>();
+  final CommonController commonController = Get.find<CommonController>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,8 +121,9 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                   DummyData.cartOptionsItems,
                                   "Regular - User"),
                               child: Image.asset(
-                                Images.more,
-                                height: 14.0,
+                                Images.moreNew,
+                                height: 20.0,
+                                width: 20.0,
                                 color: Themes.kBlackColor,
                               ),
                             ),
@@ -128,19 +132,14 @@ class _FastFoodCartState extends State<FastFoodCart> {
                       ),
                     ],
                   ),
-
             const SizedBox(height: 14.0),
-            // data["title"] == "Delivery"
-            //     ?
             Expanded(
               child: Column(
                 children: [
                   updatedCartItems(size, isPortrait),
-                  // const Spacer(),
                 ],
               ),
             ),
-            // : emptySection(),
             totalView(),
             const SizedBox(height: 4.0),
             Obx(() {
@@ -327,34 +326,6 @@ class _FastFoodCartState extends State<FastFoodCart> {
                 }));
   }
 
-  Widget emptySection() {
-    return Expanded(
-      child: WidgetAnimator(
-        atRestEffect: WidgetRestingEffects.bounce(),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              "Empty Cart",
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.w500,
-                color: Themes.kPrimaryColor,
-              ),
-            ),
-            const SizedBox(width: 8.0),
-            Image.asset(
-              Images.sadFace,
-              height: 28.0,
-              width: 28.0,
-              color: Themes.kPrimaryColor,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget updatedCartItems(Size size, bool isPortrait) {
     return Expanded(
       child: SingleChildScrollView(
@@ -363,8 +334,10 @@ class _FastFoodCartState extends State<FastFoodCart> {
               List.generate(DummyData.productList.take(12).length, (index) {
             var data = DummyData.productList[index];
             return WidgetAnimator(
+              key: ValueKey(data.hashCode),
               incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                  delay: const Duration(milliseconds: 150)),
+                  duration: const Duration(milliseconds: 400),
+                  delay: Duration(milliseconds: 150 * index)),
               child: Padding(
                 padding: const EdgeInsets.only(
                     left: 16.0, right: 16.0, bottom: 8.0, top: 4.0),
@@ -387,23 +360,14 @@ class _FastFoodCartState extends State<FastFoodCart> {
                     children: [
                       // Title row with tap gesture
                       GestureDetector(
-                        onTap: () => controller.toggleItemExpansion(index),
+                        onTap: () =>
+                            commonController.toggleItemExpansion(index),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Image.asset(
-                            //   Images.downArrow,
-                            //   height: 14.0,
-                            //   width: 14.0,
-                            //   color: Themes.kPrimaryColor,
-                            // ),
-                            // const SizedBox(width: 8.0),
                             Expanded(
                               child: Text(
                                 data["title"],
-                                // index % 2 == 0
-                                //     ? "Cerveza Presidente"
-                                //     : "Cerveza Presidente\n(Light Jumbo)",
                                 style: const TextStyle(
                                   fontSize: 14.0,
                                   fontWeight: FontWeight.w400,
@@ -411,15 +375,13 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                 ),
                               ),
                             ),
-                            // const SizedBox(width: 8.0),
-                            // Image.asset(
-                            //   Images.downArrow,
-                            //   height: 14.0,
-                            //   width: 14.0,
-                            //   color: Themes.kPrimaryColor,
-                            // ),
                             const SizedBox(width: 16.0),
-                            qtyView(),
+                            CustomQtyView(
+                              screenName: "FastFood Cart",
+                              initialValue: 2,
+                              onDecrease: () {},
+                              onIncrease: () {},
+                            ),
                             const SizedBox(width: 16.0),
                             const Text(
                               "\$500",
@@ -438,8 +400,9 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                   DummyData.cartSingleItems,
                                   "Regular - Item"),
                               child: Image.asset(
-                                Images.more,
-                                height: 14.0,
+                                Images.moreNew,
+                                height: 20.0,
+                                width: 20.0,
                                 color: Themes.kBlackColor,
                               ),
                             ),
@@ -447,8 +410,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                         ),
                       ),
                       // Expandable section
-                      //  Obx(() => controller.expandedItems[index] == true
-                      Obx(() => controller.expandedIndex.value == index
+                      Obx(() => commonController.expandedIndex.value == index
                           ? Column(
                               children: [
                                 const SizedBox(height: 8.0),
@@ -530,8 +492,9 @@ class _FastFoodCartState extends State<FastFoodCart> {
                               DummyData.cartSingleItems,
                               "Regular - Item"),
                           child: Image.asset(
-                            Images.more,
-                            height: 14.0,
+                            Images.moreNew,
+                            height: 20.0,
+                            width: 20.0,
                             color: Themes.kPrimaryColor,
                           ),
                         ),
@@ -567,33 +530,6 @@ class _FastFoodCartState extends State<FastFoodCart> {
     );
   }
 
-  Widget qtyView() {
-    return Container(
-      height: 26.0,
-      width: 78.0,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(5.5),
-          border: Border.all(width: 0.5, color: Themes.kGreyColor)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          qtyButton(Images.less, "Decrease", 0),
-          const Text(
-            "2",
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500,
-              color: Themes.kBlackColor,
-            ),
-          ),
-          qtyButton(Images.add, "Increase", 0),
-        ],
-      ),
-    );
-  }
-
   Widget cartBullet(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -611,7 +547,12 @@ class _FastFoodCartState extends State<FastFoodCart> {
                 (title == "Price" && data["title"] != "Online Store")
             ? inputView(title)
             : title.contains("Qty")
-                ? qtyView()
+                ? CustomQtyView(
+                    screenName: "FastFood Cart",
+                    initialValue: 2,
+                    onDecrease: () {},
+                    onIncrease: () {},
+                  )
                 : Text(
                     value,
                     style: const TextStyle(
@@ -648,21 +589,6 @@ class _FastFoodCartState extends State<FastFoodCart> {
             color: Themes.kBlackColor,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget qtyButton(String image, String type, int index) {
-    return GestureDetector(
-      onTap: () {
-        if (type == "Decrease") {
-        } else {}
-      },
-      child: Image.asset(
-        image,
-        height: 11.0,
-        width: 11.0,
-        color: Themes.kPrimaryColor,
       ),
     );
   }

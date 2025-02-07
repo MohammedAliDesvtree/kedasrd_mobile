@@ -4,6 +4,7 @@ import 'package:widget_and_text_animator/widget_and_text_animator.dart';
 
 import 'package:kedasrd/widgets/custom_drawer.dart';
 import 'package:kedasrd/widgets/custom_dropdown.dart';
+import 'package:kedasrd/widgets/custom_qty_view.dart';
 import 'package:kedasrd/widgets/custom_search_bar.dart';
 
 import 'package:kedasrd/routes/app_pages.dart';
@@ -13,6 +14,7 @@ import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/utils/constants.dart';
 import 'package:kedasrd/utils/dummy_data.dart';
 
+import 'package:kedasrd/controllers/common_controller.dart';
 import 'package:kedasrd/controllers/super_market/super_market_controller.dart';
 
 class SuperMarketView extends StatefulWidget {
@@ -25,6 +27,7 @@ class SuperMarketView extends StatefulWidget {
 class _SuperMarketViewState extends State<SuperMarketView> {
   final GlobalKey<ScaffoldState> superMarketGlobalKey = GlobalKey();
   final SuperMarketController controller = Get.find<SuperMarketController>();
+  final CommonController commonController = Get.find<CommonController>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +35,9 @@ class _SuperMarketViewState extends State<SuperMarketView> {
         MediaQuery.orientationOf(context) == Orientation.portrait;
     Size size = MediaQuery.of(context).size;
 
-    controller.isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
-
     return Scaffold(
       key: superMarketGlobalKey,
       backgroundColor: Themes.kWhiteColor,
-      // bottomNavigationBar: controller.isKeyboardVisible
-      //     ? const SizedBox.shrink()
-      //     : SafeArea(child: buttonsView()),
       drawer: CustomDrawer(items: DummyData.superMarketDrawerItems),
       body: SafeArea(
         bottom: false,
@@ -49,7 +47,6 @@ class _SuperMarketViewState extends State<SuperMarketView> {
             Column(
               children: [
                 customHeader(),
-                // const SizedBox(height: 16.0),
                 isPortrait
                     ? Align(
                         alignment: Alignment.centerLeft,
@@ -148,7 +145,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                           const SizedBox(width: 16.0),
                         ],
                       ),
-                Flexible(
+                Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: List.generate(3, (index) {
@@ -158,12 +155,10 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                   ),
                 ),
                 const SizedBox(height: 16.0),
-                // if (!controller.isKeyboardVisible)
                 Column(
                   children: [
                     totalView(),
                     const SizedBox(height: 16.0),
-
                     Obx(() {
                       if (controller.isDigitsViewVisible.value) {
                         return Column(
@@ -176,8 +171,6 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                         return const SizedBox.shrink();
                       }
                     })
-                    // bottomView(),
-                    // const SizedBox(height: 16.0),
                   ],
                 ),
               ],
@@ -221,56 +214,91 @@ class _SuperMarketViewState extends State<SuperMarketView> {
       incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
           delay: Duration(milliseconds: index * 200)),
       child: Padding(
-        padding: const EdgeInsets.only(left: 12.0, right: 12.0, bottom: 12.0),
-        child: Column(
-          children: [
-            Container(
-              width: Get.width,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-              decoration: BoxDecoration(
-                color: Themes.kWhiteColor,
-                borderRadius: BorderRadius.circular(10.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Themes.kBlackColor.withOpacity(0.20),
-                    blurRadius: 8.0,
-                    spreadRadius: -3,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+        padding: const EdgeInsets.only(
+            left: 12.0, right: 12.0, bottom: 12.0, top: 4.0),
+        child: Container(
+          width: Get.width,
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          decoration: BoxDecoration(
+            color: Themes.kWhiteColor,
+            borderRadius: BorderRadius.circular(8.0),
+            boxShadow: [
+              BoxShadow(
+                color: Themes.kBlackColor.withOpacity(0.20),
+                blurRadius: 8.0,
+                spreadRadius: -3,
+                offset: const Offset(0, 0),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: () => Constants.showSnackBar(
-                        context, "SUCCESS", "Item Removed!"),
-                    child: Image.asset(
-                      Images.delete,
-                      height: 16.0,
-                      width: 16.0,
-                      color: Themes.kPrimaryColor,
+            ],
+          ),
+          child: Column(
+            children: [
+              // Title row with tap gesture
+              GestureDetector(
+                onTap: () => commonController.toggleItemExpansion(index),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        index % 2 == 1
+                            ? "Salted Tahini Chocolate Chunk (1 ud)"
+                            : "Nachitos Ricos",
+                        style: const TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: Themes.kBlackColor,
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12.0),
-                  cartBullet("Barcode", "55487125"),
-                  divider(),
-                  cartBullet("Item Description", "Nachitos Ricos"),
-                  divider(),
-                  cartBullet("Price", "\$250.00"),
-                  divider(),
-                  cartBullet("Qty", "0"),
-                  divider(),
-                  cartBullet("Taxes", "\$38.14"),
-                  divider(),
-                  cartBullet("Disc %", "0"),
-                  divider(),
-                  cartBullet("Total", "\$538.14"),
-                ],
+                    const SizedBox(width: 16.0),
+                    CustomQtyView(
+                      screenName: "SuperMarket",
+                      initialValue: 2,
+                      onDecrease: () {},
+                      onIncrease: () {},
+                    ),
+                    const SizedBox(width: 16.0),
+                    const Text(
+                      "\$250.00",
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Themes.kBlackColor,
+                        height: 0.0,
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    GestureDetector(
+                      onTap: () => Constants.showSnackBar(
+                          context, "SUCCESS", "Item Removed!"),
+                      child: Image.asset(
+                        Images.delete,
+                        height: 16.0,
+                        width: 16.0,
+                        color: Themes.kPrimaryColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              // Expandable section
+              Obx(() => commonController.expandedIndex.value == index
+                  ? Column(
+                      children: [
+                        const SizedBox(height: 12.0),
+                        cartBullet("Barcode", "55487125"),
+                        divider(),
+                        cartBullet("Taxes", "\$38.14"),
+                        divider(),
+                        cartBullet("Disc %", "0"),
+                        divider(),
+                        cartBullet("Total", "\$538.14"),
+                      ],
+                    )
+                  : const SizedBox.shrink()),
+            ],
+          ),
         ),
       ),
     );
@@ -291,17 +319,15 @@ class _SuperMarketViewState extends State<SuperMarketView> {
         ),
         title.contains("Disc")
             ? inputView()
-            : title.contains("Qty")
-                ? qtyView()
-                : Text(
-                    value,
-                    style: const TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w600,
-                      color: Themes.kBlackColor,
-                      height: 0.0,
-                    ),
-                  ),
+            : Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600,
+                  color: Themes.kBlackColor,
+                  height: 0.0,
+                ),
+              ),
       ],
     );
   }
@@ -333,228 +359,12 @@ class _SuperMarketViewState extends State<SuperMarketView> {
     );
   }
 
-  Widget qtyView() {
-    return Container(
-      height: 26.0,
-      width: 78.0,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      decoration: BoxDecoration(
-          color: Themes.kWhiteColor,
-          borderRadius: BorderRadius.circular(5.5),
-          border: Border.all(width: 0.5, color: Themes.kGreyColor)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          qtyButton(Images.less),
-          const Text(
-            "2",
-            style: TextStyle(
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500,
-              color: Themes.kBlackColor,
-            ),
-          ),
-          qtyButton(Images.add),
-        ],
-      ),
-    );
-  }
-
-  Widget qtyButton(String image) {
-    return GestureDetector(
-      onTap: () {},
-      child: Image.asset(
-        image,
-        height: 11.0,
-        width: 11.0,
-        color: Themes.kPrimaryColor,
-      ),
-    );
-  }
-
-  Widget quantityView() {
-    return Container(
-      height: Get.width / 5,
-      width: 32.0,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-      decoration: BoxDecoration(
-        color: Themes.kPrimaryColor.withOpacity(0.3),
-        // borderRadius: BorderRadius.circular(4.0),
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(0.0),
-          bottomLeft: Radius.circular(0.0),
-          topLeft: Radius.circular(0.0),
-          bottomRight: Radius.circular(0.0),
-        ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset(
-              Images.less,
-              height: 10.0,
-              width: 10.0,
-              color: Themes.kPrimaryColor,
-            ),
-          ),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return SlideTransition(
-                position: Tween<Offset>(
-                  begin: const Offset(0, 0.5), // Start from below
-                  end: Offset.zero,
-                ).animate(animation),
-                child: child,
-              );
-            },
-            child: const Text(
-              "1",
-              style: TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.w500,
-                color: Themes.kPrimaryColor,
-              ),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: Image.asset(
-              Images.add,
-              height: 10.0,
-              width: 10.0,
-              color: Themes.kPrimaryColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget closeButton() {
-    return Material(
-      color: Themes.kTransparent,
-      child: InkWell(
-        onTap: () {},
-        borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(0.0),
-          bottomLeft: Radius.circular(0.0),
-          topLeft: Radius.circular(0.0),
-          bottomRight: Radius.circular(0.0),
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            color: Themes.kPrimaryColor.withOpacity(0.3),
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(0.0),
-              bottomLeft: Radius.circular(0.0),
-              topLeft: Radius.circular(0.0),
-              bottomRight: Radius.circular(0.0),
-            ),
-          ),
-          child: Container(
-            height: 32.0,
-            width: 32.0,
-            padding: const EdgeInsets.all(10.0),
-            child: Image.asset(
-              Images.delete,
-              color: Themes.kPrimaryColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buttonsView() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children:
-            List.generate(DummyData.superMarketButtonItems.length, (index) {
-          var data = DummyData.superMarketButtonItems[index];
-          return WidgetAnimator(
-            incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
-                duration: const Duration(milliseconds: 500),
-                delay: Duration(milliseconds: index * 100)),
-            child: Material(
-              color: Themes.kTransparent,
-              child: InkWell(
-                onTap: () {},
-                child: Ink(
-                  decoration: BoxDecoration(color: data["color"]),
-                  child: Container(
-                    height: 52.0,
-                    width: 150.0,
-                    alignment: Alignment.center,
-                    child: Text(
-                      data["title"].toUpperCase(),
-                      style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                          color: Themes.kWhiteColor),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
   Widget divider() {
     return Container(
       height: 0.2,
       width: Get.width,
       color: Themes.kGreyColor,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
-    );
-  }
-
-  Widget bottomView() {
-    return WidgetAnimator(
-      incomingEffect: WidgetTransitionEffects.incomingSlideInFromLeft(),
-      child: Row(
-        children: [
-          Container(
-            height: 52.0,
-            width: Get.width / 2,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 1.5,
-                color: Themes.kPrimaryColor.withOpacity(0.5),
-              ),
-            ),
-            child: const Text(
-              "No. Items : ${0}",
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Themes.kBlackColor,
-              ),
-            ),
-          ),
-          Container(
-            height: 52.0,
-            width: Get.width / 2,
-            alignment: Alignment.center,
-            color: Themes.kPrimaryColor.withOpacity(0.5),
-            child: Text(
-              "Payment : \$${0.00.toStringAsFixed(2)}",
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-                color: Themes.kBlackColor,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
@@ -642,15 +452,6 @@ class _SuperMarketViewState extends State<SuperMarketView> {
           children: [
             const Row(
               children: [
-                // Text(
-                //   "2 Item",
-                //   style: TextStyle(
-                //     fontSize: 14.0,
-                //     fontWeight: FontWeight.w500,
-                //     color: Themes.kGreyColor,
-                //   ),
-                // ),
-                // SizedBox(width: 8.0),
                 Text(
                   "3 Items",
                   style: TextStyle(
@@ -659,15 +460,6 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                     color: Themes.kBlackColor,
                   ),
                 ),
-                // SizedBox(width: 8.0),
-                // Text(
-                //   "\$900",
-                //   style: TextStyle(
-                //     fontSize: 24.0,
-                //     fontWeight: FontWeight.w600,
-                //     color: Themes.kBlackColor,
-                //   ),
-                // ),
               ],
             ),
             Image.asset(
@@ -765,23 +557,10 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                 ),
               ),
             ),
-            // Row(
-            //   children: [
-            //     headerButton(Images.searchCustomer, "Customer"),
-            //     const SizedBox(width: 10.0),
-            //     headerButton(Images.searchItem, "Item"),
-            //     const SizedBox(width: 10.0),
-            //     headerButton(Images.currency, "Currency"),
-            //   ],
-            // ),
             Row(
               children: [
                 WidgetAnimator(
                   atRestEffect: WidgetRestingEffects.swing(),
-                  // key: ValueKey(cartController.cartItems.isNotEmpty),
-                  // atRestEffect: cartController.cartItems.isNotEmpty
-                  //     ? WidgetRestingEffects.swing()
-                  //     : null,
                   child: GestureDetector(
                     onTap: () => Get.toNamed(Routes.SUPER_MARKET_CART),
                     child: Stack(
@@ -805,11 +584,7 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                         Image.asset(
                           Images.shoppingCart,
                           height: 20.0,
-                          color:
-                              // cartController.cartItems.isNotEmpty
-                              //     ? Themes.kRedColor
-                              //     :
-                              Themes.kRedColor,
+                          color: Themes.kRedColor,
                         ),
                       ],
                     ),
@@ -817,33 +592,34 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                 ),
                 const SizedBox(width: 16.0),
                 GestureDetector(
-                    onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Image.asset(Images.notification, height: 22.0),
-                        Positioned(
-                          top: -4.0,
-                          right: -4.0,
-                          child: Container(
-                            height: 16.0,
-                            width: 16.0,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Themes.kRedColor,
-                                borderRadius: BorderRadius.circular(16.0)),
-                            child: const Text(
-                              "2",
-                              style: TextStyle(
-                                fontSize: 10.0,
-                                fontWeight: FontWeight.bold,
-                                color: Themes.kWhiteColor,
-                              ),
+                  onTap: () => Get.toNamed(Routes.NOTIFICATIONS),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Image.asset(Images.notification, height: 22.0),
+                      Positioned(
+                        top: -4.0,
+                        right: -4.0,
+                        child: Container(
+                          height: 16.0,
+                          width: 16.0,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: Themes.kRedColor,
+                              borderRadius: BorderRadius.circular(16.0)),
+                          child: const Text(
+                            "2",
+                            style: TextStyle(
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              color: Themes.kWhiteColor,
                             ),
                           ),
                         ),
-                      ],
-                    )),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(width: 16.0),
                 GestureDetector(
                   onTap: () => superMarketGlobalKey.currentState!.openDrawer(),
@@ -856,15 +632,4 @@ class _SuperMarketViewState extends State<SuperMarketView> {
       ),
     );
   }
-
-  // Widget headerButton(String icon, String type) {
-  //   return GestureDetector(
-  //     onTap: () => controller.searchCustomerToggle(type),
-  //     child: Image.asset(
-  //       icon,
-  //       height: 22.0,
-  //       color: Themes.kBlackColor,
-  //     ),
-  //   );
-  // }
 }
