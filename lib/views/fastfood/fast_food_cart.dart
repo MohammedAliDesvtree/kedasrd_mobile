@@ -376,6 +376,17 @@ class _FastFoodCartState extends State<FastFoodCart> {
                               ),
                             ),
                             const SizedBox(width: 16.0),
+                            GestureDetector(
+                              onTap: () => Constants.showSnackBar(
+                                  context, "SUCCESS", "Customer Selected"),
+                              child: Image.asset(
+                                Images.touchscreen,
+                                height: 20.0,
+                                width: 20.0,
+                                color: Themes.kPrimaryColor,
+                              ),
+                            ),
+                            const SizedBox(width: 8.0),
                             CustomQtyView(
                               screenName: "FastFood Cart",
                               initialValue: 2,

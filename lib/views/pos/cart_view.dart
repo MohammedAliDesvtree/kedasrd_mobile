@@ -146,7 +146,7 @@ class _CartViewState extends State<CartView> {
                     margin: const EdgeInsets.only(
                         left: 16.0, right: 16.0, bottom: 16.0),
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 8.0),
+                        horizontal: 12.0, vertical: 12.0),
                     decoration: BoxDecoration(
                       color: Themes.kWhiteColor,
                       borderRadius: BorderRadius.circular(8.0),

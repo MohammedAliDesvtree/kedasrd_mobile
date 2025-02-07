@@ -96,7 +96,7 @@ class _AllItemsViewState extends State<AllItemsView> {
     return Container(
       width: itemWidth,
       margin: const EdgeInsets.only(top: 4.0),
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),
@@ -145,8 +145,8 @@ class _AllItemsViewState extends State<AllItemsView> {
                       context, "SUCCESS", "Customer Selected"),
                   child: Image.asset(
                     Images.touchscreen,
-                    height: 16.0,
-                    width: 16.0,
+                    height: 20.0,
+                    width: 20.0,
                     color: Themes.kPrimaryColor,
                   ),
                 ),
@@ -188,7 +188,7 @@ class _AllItemsViewState extends State<AllItemsView> {
     return Container(
       width: itemWidth,
       margin: const EdgeInsets.only(top: 4.0),
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),

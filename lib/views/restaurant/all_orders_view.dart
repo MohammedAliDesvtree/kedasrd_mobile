@@ -76,7 +76,7 @@ class _AllOrdersViewState extends State<AllOrdersView> {
 
     return Container(
       width: itemWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),
