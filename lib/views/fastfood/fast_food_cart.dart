@@ -44,7 +44,8 @@ class _FastFoodCartState extends State<FastFoodCart> {
       key: fastFoodCartGlobalKey,
       backgroundColor: Themes.kWhiteColor,
       drawer: CustomDrawer(
-          screenName: "Online Store",
+          screenName:
+              data["title"] == "Online Store" ? "Online Store" : "FastFood",
           items: data["title"] == "Online Store"
               ? DummyData.onlineStoreDrawerItems
               : DummyData.fastFoodDrawerItems),
@@ -376,22 +377,16 @@ class _FastFoodCartState extends State<FastFoodCart> {
                               ),
                             ),
                             const SizedBox(width: 16.0),
-                            GestureDetector(
-                              onTap: () => Constants.showSnackBar(
-                                  context, "SUCCESS", "Customer Selected"),
-                              child: Image.asset(
-                                Images.touchscreen,
-                                height: 20.0,
-                                width: 20.0,
-                                color: Themes.kPrimaryColor,
+                            Obx(
+                              () => CustomQtyView(
+                                screenName: "FastFood Cart",
+                                initialValue: commonController.qtyValues[
+                                    index], // Use index to get specific quantity
+                                onDecrease: () => commonController
+                                    .updateQuantity(index, false),
+                                onIncrease: () => commonController
+                                    .updateQuantity(index, true),
                               ),
-                            ),
-                            const SizedBox(width: 8.0),
-                            CustomQtyView(
-                              screenName: "FastFood Cart",
-                              initialValue: 2,
-                              onDecrease: () {},
-                              onIncrease: () {},
                             ),
                             const SizedBox(width: 16.0),
                             const Text(

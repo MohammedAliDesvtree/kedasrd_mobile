@@ -252,11 +252,16 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                       ),
                     ),
                     const SizedBox(width: 16.0),
-                    CustomQtyView(
-                      screenName: "SuperMarket",
-                      initialValue: 2,
-                      onDecrease: () {},
-                      onIncrease: () {},
+                    Obx(
+                      () => CustomQtyView(
+                        screenName: "SuperMarket",
+                        initialValue: commonController.qtyValues[
+                            index], // Use index to get specific quantity
+                        onDecrease: () =>
+                            commonController.updateQuantity(index, false),
+                        onIncrease: () =>
+                            commonController.updateQuantity(index, true),
+                      ),
                     ),
                     const SizedBox(width: 16.0),
                     const Text(
