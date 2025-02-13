@@ -29,6 +29,7 @@ class _ProductInfoState extends State<ProductInfo> {
         MediaQuery.of(context).viewInsets.bottom > 0;
 
     double modalSize = commonController.isKeyboardVisible ? 0.92 : 0.6;
+    Size size = MediaQuery.sizeOf(context);
 
     return DraggableScrollableSheet(
       initialChildSize: modalSize, // Opens at 1/3 screen height
@@ -70,12 +71,15 @@ class _ProductInfoState extends State<ProductInfo> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              widget.itemData["title"],
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w500,
-                                color: Themes.kBlackColor,
+                            SizedBox(
+                              width: size.width / 2,
+                              child: Text(
+                                widget.itemData["title"],
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Themes.kBlackColor,
+                                ),
                               ),
                             ),
                             Text(
@@ -113,18 +117,20 @@ class _ProductInfoState extends State<ProductInfo> {
                         const SizedBox(width: 32.0),
                         Row(
                           children: [
-                            qtyButton(Images.less, "Decrease"),
+                            qtyButton(Images.less, "Decrease", widget.index),
                             const SizedBox(width: 12.0),
-                            const Text(
-                              "1",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.w500,
-                                color: Themes.kBlackColor,
+                            Obx(
+                              () => Text(
+                                "${commonController.qtyValues[widget.index]}",
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w500,
+                                  color: Themes.kBlackColor,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 12.0),
-                            qtyButton(Images.add, "Increase"),
+                            qtyButton(Images.add, "Increase", widget.index),
                           ],
                         ),
                       ],
@@ -149,12 +155,18 @@ class _ProductInfoState extends State<ProductInfo> {
     );
   }
 
-  Widget qtyButton(String image, String type) {
+  Widget qtyButton(String image, String type, index) {
     return Material(
       color: Themes.kTransparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(7.0),
-        onTap: () {},
+        onTap: () {
+          if (type == "Decrease") {
+            commonController.updateQuantity(index, false);
+          } else {
+            commonController.updateQuantity(index, true);
+          }
+        },
         child: Ink(
           decoration: BoxDecoration(
               color: Themes.kPrimaryColor,

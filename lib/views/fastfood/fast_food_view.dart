@@ -15,6 +15,7 @@ import 'package:kedasrd/widgets/custom_search_bar.dart';
 
 import 'package:kedasrd/views/fastfood/filter_view.dart';
 
+import 'package:kedasrd/controllers/common_controller.dart';
 import 'package:kedasrd/controllers/fastfood/fast_food_controller.dart';
 
 class FastFoodView extends StatefulWidget {
@@ -27,7 +28,9 @@ class FastFoodView extends StatefulWidget {
 class _FastFoodViewState extends State<FastFoodView> {
   final GlobalKey<ScaffoldState> fastFoodGlobalKey = GlobalKey();
   var data = Get.arguments;
+
   final FastFoodController controller = Get.find<FastFoodController>();
+  final CommonController commonController = Get.find<CommonController>();
 
   @override
   void initState() {
@@ -414,18 +417,21 @@ class _FastFoodViewState extends State<FastFoodView> {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                qtyButton(
-                                                    Images.less, "Increase"),
-                                                const Text(
-                                                  "1",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Themes.kBlackColor,
+                                                qtyButton(Images.less,
+                                                    "Decrease", index),
+                                                Obx(
+                                                  () => Text(
+                                                    "${commonController.qtyValues[index]}",
+                                                    style: const TextStyle(
+                                                      fontSize: 15.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Themes.kBlackColor,
+                                                    ),
                                                   ),
                                                 ),
-                                                qtyButton(
-                                                    Images.add, "Decrease"),
+                                                qtyButton(Images.add,
+                                                    "Increase", index),
                                               ],
                                             ),
                                           );
@@ -451,14 +457,17 @@ class _FastFoodViewState extends State<FastFoodView> {
     );
   }
 
-  Widget qtyButton(String image, String type) {
+  Widget qtyButton(String image, String type, int index) {
     return Material(
       color: Themes.kTransparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(7.0),
         onTap: () {
           if (type == "Decrease") {
-          } else {}
+            commonController.updateQuantity(index, false);
+          } else {
+            commonController.updateQuantity(index, true);
+          }
         },
         child: Ink(
           decoration: BoxDecoration(

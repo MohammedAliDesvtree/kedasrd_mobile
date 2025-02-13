@@ -343,7 +343,7 @@ class _POSViewState extends State<POSView> {
                                                     children: [
                                                       qtyButton(
                                                           Images.less,
-                                                          "Increase",
+                                                          "Decrease",
                                                           cartItemIndex),
                                                       Text(
                                                         "${cartController.cartItems[cartItemIndex].quantity.value}",
@@ -357,7 +357,7 @@ class _POSViewState extends State<POSView> {
                                                       ),
                                                       qtyButton(
                                                           Images.add,
-                                                          "Decrease",
+                                                          "Increase",
                                                           cartItemIndex),
                                                     ],
                                                   ),
@@ -414,9 +414,9 @@ class _POSViewState extends State<POSView> {
         borderRadius: BorderRadius.circular(7.0),
         onTap: () {
           if (type == "Decrease") {
-            cartController.updateQuantity(index, true);
-          } else {
             cartController.updateQuantity(index, false);
+          } else {
+            cartController.updateQuantity(index, true);
           }
         },
         child: Ink(
