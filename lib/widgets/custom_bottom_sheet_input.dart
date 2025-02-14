@@ -30,7 +30,7 @@ class CustomBottomSheetInput extends StatelessWidget {
     double modalSize = !isPortrait
         ? 0.75
         : isKeyboardVisible
-            ? 0.76
+            ? 0.8
             : title.contains("Cash")
                 ? 0.46
                 : 0.3;
