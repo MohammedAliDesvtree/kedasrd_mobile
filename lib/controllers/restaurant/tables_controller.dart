@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class TablesController extends GetxController {
   RxList<int> randomNumbers = <int>[].obs;
-  RxInt selectedTabIndex = 0.obs;
+  final RxInt selectedTabIndex = 0.obs;
 
   // Add observable strings for each dropdown
   final RxMap<String, String> dropdownValues = <String, String>{}.obs;
@@ -12,6 +12,11 @@ class TablesController extends GetxController {
     selectedTabIndex.value = index;
     // Clear all dropdown selections
     dropdownValues.clear();
+  }
+
+  void resetTab() {
+    // Reset to initial state (0 index)
+    selectedTabIndex.value = 0;
   }
 
   void setDropdownValue(String key, String value) {
@@ -33,6 +38,10 @@ class TablesController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    // Initialize tab index to 0 explicitly
+    selectedTabIndex.value = 0;
+
     ever(selectedTabIndex, (value) {
       int tableLength = getTableLength(value);
       updateRandomNumbers(tableLength);

@@ -7,11 +7,11 @@ import 'package:kedasrd/utils/themes.dart';
 import 'package:kedasrd/controllers/restaurant/tables_controller.dart';
 
 class CustomTabsList extends StatefulWidget {
-  final dynamic data;
+  final dynamic listData;
   final String type;
   const CustomTabsList({
     super.key,
-    this.data,
+    this.listData,
     required this.type,
   });
 
@@ -25,68 +25,70 @@ class _CustomTabsListState extends State<CustomTabsList> {
   @override
   void initState() {
     super.initState();
-    // if (widget.type == "Tables") {
-    controller.selectedTabIndex.value = 0;
-    // }
+    // Call onScreenEnter when the widget is initialized
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.resetTab();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 6.0,
-      runSpacing: 6.0,
-      children: List.generate(
-        widget.data.length,
-        (index) {
-          var title = widget.data[index];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: List.generate(widget.listData.length, (index) {
+          var data = widget.listData[index];
           return WidgetAnimator(
+            key: ValueKey(data["title"]),
             incomingEffect: WidgetTransitionEffects.incomingSlideInFromRight(
                 delay: Duration(milliseconds: index * 200)),
-            child: Material(
-              color: Themes.kTransparent,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(48.0),
-                onTap: () {
-                  // if (widget.type == "Tables") {
-                  controller.selectTab(index);
-                  // }
-                },
-                child: Obx(
-                  () {
-                    final isSelected =
-                        // widget.type == "Tables" &&
-                        controller.selectedTabIndex.value == index;
-
-                    return Ink(
-                      decoration: BoxDecoration(
-                          color: isSelected
-                              ? Themes.kPrimaryColor // Selected color
-                              : Themes.kWhiteColor, // Unselected color
-                          border: Border.all(
-                              width: 0.5, color: Themes.kPrimaryColor),
-                          borderRadius: BorderRadius.circular(48.0)),
-                      child: Container(
-                        height: 42.0,
-                        width: widget.type == "Tables" ? 108.0 : 78.0,
-                        alignment: Alignment.center,
-                        child: Text(
-                          title,
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: isSelected
-                                ? Themes.kWhiteColor
-                                : Themes.kGreyColor,
+            child: Column(
+              children: [
+                Material(
+                  color: Themes.kTransparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(52.0),
+                    onTap: () => controller.selectTab(index),
+                    child: Obx(
+                      () {
+                        return Ink(
+                          child: Container(
+                            height: 48.0,
+                            width: 48.0,
+                            padding: const EdgeInsets.all(12.0),
+                            child: Image.asset(
+                              data["icon"],
+                              height: 24.0,
+                              width: 24.0,
+                              color: controller.selectedTabIndex.value == index
+                                  ? Themes.kPrimaryColor
+                                  : Themes.kGreyColor,
+                            ),
                           ),
-                        ),
-                      ),
-                    );
-                  },
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 0.0),
+                Obx(
+                  () => Text(
+                    data["title"],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                      color: controller.selectedTabIndex.value == index
+                          ? Themes.kPrimaryColor
+                          : Themes.kGreyColor,
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
-        },
+        }),
       ),
     );
   }

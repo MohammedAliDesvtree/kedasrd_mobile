@@ -252,6 +252,14 @@ class _SuperMarketViewState extends State<SuperMarketView> {
                       ),
                     ),
                     const SizedBox(width: 16.0),
+                    Image.asset(
+                      Images.downArrow,
+                      height: 14.0,
+                      width: 14.0,
+                      fit: BoxFit.contain,
+                      color: Themes.kPrimaryColor,
+                    ),
+                    const SizedBox(width: 16.0),
                     Obx(
                       () => CustomQtyView(
                         screenName: "SuperMarket",

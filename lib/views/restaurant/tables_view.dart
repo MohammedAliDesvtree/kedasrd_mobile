@@ -27,6 +27,14 @@ class _TablesViewState extends State<TablesView> {
   final TablesController controller = Get.find<TablesController>();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.resetTab();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
@@ -45,7 +53,7 @@ class _TablesViewState extends State<TablesView> {
             CustomHeader(
                 title: data["title"],
                 onMenuTapped: () => tablesGlobalKey.currentState!.openDrawer()),
-            CustomTabsList(data: DummyData.tableTabs, type: "Tables"),
+            CustomTabsList(listData: DummyData.tableTabs, type: "Tables"),
             const SizedBox(height: 16.0),
             Obx(() {
               int tableLength = controller.selectedTabIndex.value == 0

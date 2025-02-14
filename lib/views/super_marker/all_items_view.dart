@@ -130,6 +130,14 @@ class _AllItemsViewState extends State<AllItemsView> {
                   ),
                 ),
                 const SizedBox(width: 16.0),
+                Image.asset(
+                  Images.downArrow,
+                  height: 14.0,
+                  width: 14.0,
+                  fit: BoxFit.contain,
+                  color: Themes.kPrimaryColor,
+                ),
+                const SizedBox(width: 16.0),
                 const Text(
                   "\$0.00",
                   style: TextStyle(
@@ -205,56 +213,74 @@ class _AllItemsViewState extends State<AllItemsView> {
         children: [
           // Title row with tap gesture
           GestureDetector(
+            behavior:
+                HitTestBehavior.opaque, // Makes the entire row area tappable
             onTap: () => commonController.toggleItemExpansion(index),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text(
-                    index % 3 != 1
-                        ? "Nachitos Ricos"
-                        : "Salted Tahini Chocolate Chunk (1 ud)",
-                    style: const TextStyle(
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400,
-                      color: Themes.kBlackColor,
+            child: SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          index % 3 != 1 ? "In Stock" : "Out Of Stock",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w400,
+                            color: index % 3 != 1
+                                ? Themes.kGreenColor
+                                : Themes.kOrangeColor,
+                            height: 0.0,
+                          ),
+                        ),
+                        Text(
+                          index % 3 != 1
+                              ? "Nachitos Ricos"
+                              : "Salted Tahini Chocolate Chunk (1 ud)",
+                          style: const TextStyle(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: Themes.kBlackColor,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                const SizedBox(width: 16.0),
-                Text(
-                  index % 3 != 1 ? "In Stock" : "Out Of Stock",
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w400,
-                    color: index % 3 != 1
-                        ? Themes.kGreenColor
-                        : Themes.kOrangeColor,
-                    height: 0.0,
-                  ),
-                ),
-                const SizedBox(width: 16.0),
-                const Text(
-                  "DOP \$512.16",
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w400,
-                    color: Themes.kBlackColor,
-                    height: 0.0,
-                  ),
-                ),
-                const SizedBox(width: 8.0),
-                GestureDetector(
-                  onTap: () => Constants.showSnackBar(
-                      context, "SUCCESS", "Item added successfully!"),
-                  child: Image.asset(
-                    Images.addToCart,
-                    height: 24.0,
-                    width: 24.0,
+                  const SizedBox(width: 16.0),
+                  Image.asset(
+                    Images.downArrow,
+                    height: 14.0,
+                    width: 14.0,
+                    fit: BoxFit.contain,
                     color: Themes.kPrimaryColor,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 16.0),
+                  const Text(
+                    "DOP \$512.16",
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                      color: Themes.kBlackColor,
+                      height: 0.0,
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  GestureDetector(
+                    onTap: () => Constants.showSnackBar(
+                        context, "SUCCESS", "Item added successfully!"),
+                    child: Image.asset(
+                      Images.addToCart,
+                      height: 24.0,
+                      width: 24.0,
+                      color: Themes.kPrimaryColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // Expandable section

@@ -209,20 +209,11 @@ class DummyData {
   ];
 
   static List<dynamic> tableTabs = [
-    'Main Room',
-    'Inside Room',
-    'Outside Room',
-    'Balcony Side',
-    'Near Balcony'
-  ];
-
-  static List<dynamic> settingTabs = [
-    'General',
-    'Orders',
-    'Kitchen',
-    'Tables',
-    'Printer',
-    'Taxes',
+    {"icon": Images.mainRoom, "title": "Main\nRoom"},
+    {"icon": Images.insideRoom, "title": "Inside\nRoom"},
+    {"icon": Images.outsideRoom, "title": "Outside\nRoom"},
+    {"icon": Images.balconySide, "title": "Balcony\nSide"},
+    {"icon": Images.nearBalcony, "title": "Near\nBalcony"},
   ];
 
   static List<dynamic> ordersItems = [

@@ -344,7 +344,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                     left: 16.0, right: 16.0, bottom: 8.0, top: 4.0),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 8.0),
+                      horizontal: 12.0, vertical: 12.0),
                   decoration: BoxDecoration(
                     color: Themes.kWhiteColor,
                     borderRadius: BorderRadius.circular(8.0),
@@ -375,6 +375,14 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                   color: Themes.kBlackColor,
                                 ),
                               ),
+                            ),
+                            const SizedBox(width: 16.0),
+                            Image.asset(
+                              Images.downArrow,
+                              height: 14.0,
+                              width: 14.0,
+                              fit: BoxFit.contain,
+                              color: Themes.kPrimaryColor,
                             ),
                             const SizedBox(width: 16.0),
                             Obx(

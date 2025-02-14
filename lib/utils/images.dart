@@ -92,4 +92,10 @@ class Images {
   static const String touchscreen = "lib/assets/icons/touchscreen.png";
 
   static const String moreNew = "lib/assets/icons/more_new.png";
+
+  static const String mainRoom = "lib/assets/icons/main_room.png";
+  static const String insideRoom = "lib/assets/icons/inside_room.png";
+  static const String outsideRoom = "lib/assets/icons/outside_room.png";
+  static const String balconySide = "lib/assets/icons/balcony_side.png";
+  static const String nearBalcony = "lib/assets/icons/near_balcony.png";
 }

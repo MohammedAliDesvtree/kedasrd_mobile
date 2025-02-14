@@ -25,11 +25,12 @@ class CustomBottomSheetInput extends StatelessWidget {
     final isPortrait =
         MediaQuery.orientationOf(context) == Orientation.portrait;
     isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+    Size size = MediaQuery.sizeOf(context);
 
     double modalSize = !isPortrait
         ? 0.75
         : isKeyboardVisible
-            ? 0.6
+            ? 0.76
             : title.contains("Cash")
                 ? 0.46
                 : 0.3;
@@ -41,6 +42,7 @@ class CustomBottomSheetInput extends StatelessWidget {
       // snapSizes: const [0.3, 0.6, 0.9],
       builder: (context, scrollController) {
         return Container(
+          height: size.height * modalSize,
           decoration: const BoxDecoration(
             color: Themes.kWhiteColor,
             borderRadius: BorderRadius.only(
@@ -49,6 +51,7 @@ class CustomBottomSheetInput extends StatelessWidget {
             ),
           ),
           child: Stack(
+            fit: StackFit.expand, // Added to ensure proper layout
             alignment: Alignment.topCenter,
             children: [
               WidgetAnimator(
@@ -58,6 +61,7 @@ class CustomBottomSheetInput extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 24.0),
                   child: Text(
                     title.contains("Cash") ? title.toUpperCase() : title,
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 16.0,
                       fontWeight: FontWeight.bold,
@@ -67,12 +71,18 @@ class CustomBottomSheetInput extends StatelessWidget {
                 ),
               ),
               closeButton(),
-              WidgetAnimator(
-                incomingEffect: WidgetTransitionEffects.incomingScaleUp(),
-                child: inputView(),
+              Positioned(
+                top: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: WidgetAnimator(
+                  incomingEffect: WidgetTransitionEffects.incomingScaleUp(),
+                  child: inputView(),
+                ),
               ),
               Positioned(
-                bottom: 16.0,
+                bottom: MediaQuery.of(context).viewInsets.bottom +
+                    16.0, // Adjust position based on keyboard
                 left: 24.0,
                 right: 24.0,
                 child: WidgetAnimator(
@@ -80,6 +90,8 @@ class CustomBottomSheetInput extends StatelessWidget {
                       WidgetTransitionEffects.incomingSlideInFromBottom(),
                   child: SafeArea(
                     child: Column(
+                      mainAxisSize:
+                          MainAxisSize.min, // Added to prevent expansion
                       children: [
                         if (title.contains("Cash"))
                           Column(
