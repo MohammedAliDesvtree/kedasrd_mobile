@@ -343,8 +343,7 @@ class _FastFoodCartState extends State<FastFoodCart> {
                 padding: const EdgeInsets.only(
                     left: 16.0, right: 16.0, bottom: 8.0, top: 4.0),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 12.0, vertical: 12.0),
+                  width: Get.width,
                   decoration: BoxDecoration(
                     color: Themes.kWhiteColor,
                     borderRadius: BorderRadius.circular(8.0),
@@ -369,8 +368,10 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                   .opaque, // Makes the entire row area tappable
                               onTap: () =>
                                   commonController.toggleItemExpansion(index),
-                              child: SizedBox(
+                              child: Container(
                                 width: double.infinity,
+                                padding: const EdgeInsets.only(
+                                    left: 12.0, top: 12.0, bottom: 12.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -392,64 +393,77 @@ class _FastFoodCartState extends State<FastFoodCart> {
                                       fit: BoxFit.contain,
                                       color: Themes.kPrimaryColor,
                                     ),
+                                    const SizedBox(width: 16.0),
                                   ],
                                 ),
                               ),
                             ),
                           ),
                           // Non-clickable price and more options
-                          const SizedBox(width: 16.0),
-                          Obx(
-                            () => CustomQtyView(
-                              screenName: "FastFood Cart",
-                              initialValue: commonController.qtyValues[
-                                  index], // Use index to get specific quantity
-                              onDecrease: () =>
-                                  commonController.updateQuantity(index, false),
-                              onIncrease: () =>
-                                  commonController.updateQuantity(index, true),
-                            ),
-                          ),
-                          const SizedBox(width: 16.0),
-                          const Text(
-                            "\$500",
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w400,
-                              color: Themes.kBlackColor,
-                              height: 0.0,
-                            ),
-                          ),
-                          const SizedBox(width: 8.0),
-                          GestureDetector(
-                            onTapDown: (details) => Constants.openPopupMenu(
-                                context,
-                                details,
-                                DummyData.cartSingleItems,
-                                "Regular - Item"),
-                            child: Image.asset(
-                              Images.moreNew,
-                              height: 20.0,
-                              width: 20.0,
-                              color: Themes.kBlackColor,
+                          Container(
+                            padding: const EdgeInsets.only(
+                                right: 12.0, top: 12.0, bottom: 12.0),
+                            child: Row(
+                              children: [
+                                Obx(
+                                  () => CustomQtyView(
+                                    screenName: "FastFood Cart",
+                                    initialValue: commonController.qtyValues[
+                                        index], // Use index to get specific quantity
+                                    onDecrease: () => commonController
+                                        .updateQuantity(index, false),
+                                    onIncrease: () => commonController
+                                        .updateQuantity(index, true),
+                                  ),
+                                ),
+                                const SizedBox(width: 16.0),
+                                const Text(
+                                  "\$500",
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Themes.kBlackColor,
+                                    height: 0.0,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                GestureDetector(
+                                  onTapDown: (details) =>
+                                      Constants.openPopupMenu(
+                                          context,
+                                          details,
+                                          DummyData.cartSingleItems,
+                                          "Regular - Item"),
+                                  child: Image.asset(
+                                    Images.moreNew,
+                                    height: 20.0,
+                                    width: 20.0,
+                                    color: Themes.kBlackColor,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                       // Expandable section
-                      Obx(() => commonController.expandedIndex.value == index
-                          ? Column(
-                              children: [
-                                const SizedBox(height: 8.0),
-                                cartBullet("Disc %", "0"),
-                                const SizedBox(height: 4.0),
-                                Constants.divider(size),
-                                const SizedBox(height: 4.0),
-                                cartBullet("Total", "DOP \$300.00"),
-                                const SizedBox(height: 8.0),
-                              ],
-                            )
-                          : const SizedBox.shrink()),
+                      Container(
+                        padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+                        child: Obx(
+                            () => commonController.expandedIndex.value == index
+                                ? Column(
+                                    children: [
+                                      const SizedBox(height: 8.0),
+                                      cartBullet("Disc %", "0"),
+                                      const SizedBox(height: 4.0),
+                                      Constants.divider(size),
+                                      const SizedBox(height: 4.0),
+                                      cartBullet("Total", "DOP \$300.00"),
+                                      const SizedBox(height: 12.0),
+                                    ],
+                                  )
+                                : const SizedBox.shrink()),
+                      ),
                     ],
                   ),
                 ),

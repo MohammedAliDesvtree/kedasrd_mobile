@@ -96,7 +96,6 @@ class _AllItemsViewState extends State<AllItemsView> {
     return Container(
       width: itemWidth,
       margin: const EdgeInsets.only(top: 4.0),
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),
@@ -120,8 +119,10 @@ class _AllItemsViewState extends State<AllItemsView> {
                   behavior: HitTestBehavior
                       .opaque, // Makes the entire row area tappable
                   onTap: () => commonController.toggleItemExpansion(index),
-                  child: SizedBox(
+                  child: Container(
                     width: double.infinity,
+                    padding: const EdgeInsets.only(
+                        left: 12.0, top: 12.0, bottom: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -145,51 +146,62 @@ class _AllItemsViewState extends State<AllItemsView> {
                           fit: BoxFit.contain,
                           color: Themes.kPrimaryColor,
                         ),
+                        const SizedBox(width: 16.0),
                       ],
                     ),
                   ),
                 ),
               ),
               // Non-clickable price and more options
-              const SizedBox(width: 16.0),
-              const Text(
-                "\$0.00",
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w400,
-                  color: Themes.kBlackColor,
-                  height: 0.0,
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              GestureDetector(
-                onTap: () => Constants.showSnackBar(
-                    context, "SUCCESS", "Customer Selected"),
-                child: Image.asset(
-                  Images.touchscreen,
-                  height: 20.0,
-                  width: 20.0,
-                  color: Themes.kPrimaryColor,
+              Container(
+                padding:
+                    const EdgeInsets.only(right: 12.0, top: 12.0, bottom: 12.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "\$0.00",
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Themes.kBlackColor,
+                        height: 0.0,
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    GestureDetector(
+                      onTap: () => Constants.showSnackBar(
+                          context, "SUCCESS", "Customer Selected"),
+                      child: Image.asset(
+                        Images.touchscreen,
+                        height: 20.0,
+                        width: 20.0,
+                        color: Themes.kPrimaryColor,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
           // Expandable section remains the same
-          Obx(() => commonController.expandedIndex.value == index
-              ? Column(
-                  children: [
-                    const SizedBox(height: 8.0),
-                    cartBullet("Phone No.", "0276744518"),
-                    spaceBetween(size),
-                    cartBullet("Mobile", "9856320147"),
-                    spaceBetween(size),
-                    cartBullet("Email", "mesa10@kedas.com"),
-                    spaceBetween(size),
-                    cartBullet("Tax ID", "131174884"),
-                    const SizedBox(height: 8.0),
-                  ],
-                )
-              : const SizedBox.shrink()),
+          Container(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+            child: Obx(() => commonController.expandedIndex.value == index
+                ? Column(
+                    children: [
+                      const SizedBox(height: 8.0),
+                      cartBullet("Phone No.", "0276744518"),
+                      spaceBetween(size),
+                      cartBullet("Mobile", "9856320147"),
+                      spaceBetween(size),
+                      cartBullet("Email", "mesa10@kedas.com"),
+                      spaceBetween(size),
+                      cartBullet("Tax ID", "131174884"),
+                      const SizedBox(height: 12.0),
+                    ],
+                  )
+                : const SizedBox.shrink()),
+          ),
         ],
       ),
     );
@@ -209,7 +221,6 @@ class _AllItemsViewState extends State<AllItemsView> {
     return Container(
       width: itemWidth,
       margin: const EdgeInsets.only(top: 4.0),
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),
@@ -233,8 +244,10 @@ class _AllItemsViewState extends State<AllItemsView> {
                   behavior: HitTestBehavior
                       .opaque, // Makes the entire row area tappable
                   onTap: () => commonController.toggleItemExpansion(index),
-                  child: SizedBox(
+                  child: Container(
                     width: double.infinity,
+                    padding: const EdgeInsets.only(
+                        left: 12.0, top: 12.0, bottom: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -275,45 +288,56 @@ class _AllItemsViewState extends State<AllItemsView> {
                           fit: BoxFit.contain,
                           color: Themes.kPrimaryColor,
                         ),
+                        const SizedBox(width: 16.0),
                       ],
                     ),
                   ),
                 ),
               ),
               // Non-clickable price and more options
-              const SizedBox(width: 16.0),
-              const Text(
-                "DOP \$512.16",
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w400,
-                  color: Themes.kBlackColor,
-                  height: 0.0,
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              GestureDetector(
-                onTap: () => Constants.showSnackBar(
-                    context, "SUCCESS", "Item added successfully!"),
-                child: Image.asset(
-                  Images.addToCart,
-                  height: 24.0,
-                  width: 24.0,
-                  color: Themes.kPrimaryColor,
+              Container(
+                padding:
+                    const EdgeInsets.only(right: 12.0, top: 12.0, bottom: 12.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "DOP \$512.16",
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Themes.kBlackColor,
+                        height: 0.0,
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    GestureDetector(
+                      onTap: () => Constants.showSnackBar(
+                          context, "SUCCESS", "Item added successfully!"),
+                      child: Image.asset(
+                        Images.addToCart,
+                        height: 24.0,
+                        width: 24.0,
+                        color: Themes.kPrimaryColor,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
           // Expandable section
-          Obx(() => commonController.expandedIndex.value == index
-              ? Column(
-                  children: [
-                    const SizedBox(height: 8.0),
-                    cartBullet("Code", "64913826"),
-                    const SizedBox(height: 8.0),
-                  ],
-                )
-              : const SizedBox.shrink()),
+          Container(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+            child: Obx(() => commonController.expandedIndex.value == index
+                ? Column(
+                    children: [
+                      const SizedBox(height: 8.0),
+                      cartBullet("Code", "64913826"),
+                      const SizedBox(height: 12.0),
+                    ],
+                  )
+                : const SizedBox.shrink()),
+          ),
         ],
       ),
     );

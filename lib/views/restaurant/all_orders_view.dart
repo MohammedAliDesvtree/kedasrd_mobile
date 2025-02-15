@@ -76,7 +76,6 @@ class _AllOrdersViewState extends State<AllOrdersView> {
 
     return Container(
       width: itemWidth,
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
       decoration: BoxDecoration(
         color: Themes.kWhiteColor,
         borderRadius: BorderRadius.circular(8.0),
@@ -100,8 +99,10 @@ class _AllOrdersViewState extends State<AllOrdersView> {
                   behavior: HitTestBehavior
                       .opaque, // Makes the entire row area tappable
                   onTap: () => commonController.toggleItemExpansion(index),
-                  child: SizedBox(
+                  child: Container(
                     width: double.infinity,
+                    padding: const EdgeInsets.only(
+                        left: 12.0, top: 12.0, bottom: 12.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -147,56 +148,67 @@ class _AllOrdersViewState extends State<AllOrdersView> {
                           fit: BoxFit.contain,
                           color: Themes.kPrimaryColor,
                         ),
+                        const SizedBox(width: 16.0),
                       ],
                     ),
                   ),
                 ),
               ),
               // Non-clickable price and more options
-              const SizedBox(width: 16.0),
-              const Text(
-                "\$512.16",
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w400,
-                  color: Themes.kBlackColor,
-                  height: 0.0,
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              GestureDetector(
-                onTapDown: (details) => Constants.openPopupMenu(
-                    context, details, DummyData.actionItems, "Items"),
-                child: Image.asset(
-                  Images.moreNew,
-                  height: 20.0,
-                  width: 20.0,
-                  color: Themes.kBlackColor,
+              Container(
+                padding:
+                    const EdgeInsets.only(right: 12.0, top: 12.0, bottom: 12.0),
+                child: Row(
+                  children: [
+                    const Text(
+                      "\$512.16",
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w400,
+                        color: Themes.kBlackColor,
+                        height: 0.0,
+                      ),
+                    ),
+                    const SizedBox(width: 8.0),
+                    GestureDetector(
+                      onTapDown: (details) => Constants.openPopupMenu(
+                          context, details, DummyData.actionItems, "Items"),
+                      child: Image.asset(
+                        Images.moreNew,
+                        height: 20.0,
+                        width: 20.0,
+                        color: Themes.kBlackColor,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],
           ),
           // Expandable section remains the same
-          Obx(() => commonController.expandedIndex.value == index
-              ? Column(
-                  children: [
-                    const SizedBox(height: 12.0),
-                    cartBullet(
-                        title.contains("All") ? "Invoice No." : "Table",
-                        title.contains("All")
-                            ? "SC009238110"
-                            : "Table 56 (Chair 5)"),
-                    spaceBetween(size),
-                    cartBullet(title.contains("All") ? "NFC" : "Order No.",
-                        title.contains("All") ? "B0100000147" : "14212"),
-                    spaceBetween(size),
-                    cartBullet("Date", "01/01/2025"),
-                    spaceBetween(size),
-                    cartBullet("Time", "02:58 AM"),
-                    const SizedBox(height: 8.0),
-                  ],
-                )
-              : const SizedBox.shrink()),
+          Container(
+            padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+            child: Obx(() => commonController.expandedIndex.value == index
+                ? Column(
+                    children: [
+                      const SizedBox(height: 12.0),
+                      cartBullet(
+                          title.contains("All") ? "Invoice No." : "Table",
+                          title.contains("All")
+                              ? "SC009238110"
+                              : "Table 56 (Chair 5)"),
+                      spaceBetween(size),
+                      cartBullet(title.contains("All") ? "NFC" : "Order No.",
+                          title.contains("All") ? "B0100000147" : "14212"),
+                      spaceBetween(size),
+                      cartBullet("Date", "01/01/2025"),
+                      spaceBetween(size),
+                      cartBullet("Time", "02:58 AM"),
+                      const SizedBox(height: 12.0),
+                    ],
+                  )
+                : const SizedBox.shrink()),
+          ),
         ],
       ),
     );
