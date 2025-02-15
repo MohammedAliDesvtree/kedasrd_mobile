@@ -19,8 +19,8 @@ class CustomQtyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 26.0,
-      width: 78.0,
+      height: 36.0,
+      width: 82.0,
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
           color: Themes.kWhiteColor,
@@ -50,8 +50,8 @@ Widget qtyButton(String image, VoidCallback onTap) {
     onTap: onTap,
     child: Image.asset(
       image,
-      height: 11.0,
-      width: 11.0,
+      height: 12.0,
+      width: 12.0,
       color: Themes.kPrimaryColor,
     ),
   );

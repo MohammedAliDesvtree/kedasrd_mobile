@@ -234,66 +234,79 @@ class _SuperMarketViewState extends State<SuperMarketView> {
           child: Column(
             children: [
               // Title row with tap gesture
-              GestureDetector(
-                onTap: () => commonController.toggleItemExpansion(index),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        index % 2 == 1
-                            ? "Salted Tahini Chocolate Chunk (1 ud)"
-                            : "Nachitos Ricos",
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: Themes.kBlackColor,
+              Row(
+                children: [
+                  // Clickable section containing status, title, and arrow
+                  Expanded(
+                    child: GestureDetector(
+                      behavior: HitTestBehavior
+                          .opaque, // Makes the entire row area tappable
+                      onTap: () => commonController.toggleItemExpansion(index),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                index % 2 == 1
+                                    ? "Salted Tahini Chocolate Chunk (1 ud)"
+                                    : "Nachitos Ricos",
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w400,
+                                  color: Themes.kBlackColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16.0),
+                            Image.asset(
+                              Images.downArrow,
+                              height: 14.0,
+                              width: 14.0,
+                              fit: BoxFit.contain,
+                              color: Themes.kPrimaryColor,
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16.0),
-                    Image.asset(
-                      Images.downArrow,
-                      height: 14.0,
-                      width: 14.0,
-                      fit: BoxFit.contain,
+                  ),
+                  // Non-clickable price and more options
+                  const SizedBox(width: 16.0),
+                  Obx(
+                    () => CustomQtyView(
+                      screenName: "SuperMarket",
+                      initialValue: commonController.qtyValues[
+                          index], // Use index to get specific quantity
+                      onDecrease: () =>
+                          commonController.updateQuantity(index, false),
+                      onIncrease: () =>
+                          commonController.updateQuantity(index, true),
+                    ),
+                  ),
+                  const SizedBox(width: 16.0),
+                  const Text(
+                    "\$250.00",
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w400,
+                      color: Themes.kBlackColor,
+                      height: 0.0,
+                    ),
+                  ),
+                  const SizedBox(width: 8.0),
+                  GestureDetector(
+                    onTap: () => Constants.showSnackBar(
+                        context, "SUCCESS", "Item Removed!"),
+                    child: Image.asset(
+                      Images.delete,
+                      height: 16.0,
+                      width: 16.0,
                       color: Themes.kPrimaryColor,
                     ),
-                    const SizedBox(width: 16.0),
-                    Obx(
-                      () => CustomQtyView(
-                        screenName: "SuperMarket",
-                        initialValue: commonController.qtyValues[
-                            index], // Use index to get specific quantity
-                        onDecrease: () =>
-                            commonController.updateQuantity(index, false),
-                        onIncrease: () =>
-                            commonController.updateQuantity(index, true),
-                      ),
-                    ),
-                    const SizedBox(width: 16.0),
-                    const Text(
-                      "\$250.00",
-                      style: TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w400,
-                        color: Themes.kBlackColor,
-                        height: 0.0,
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    GestureDetector(
-                      onTap: () => Constants.showSnackBar(
-                          context, "SUCCESS", "Item Removed!"),
-                      child: Image.asset(
-                        Images.delete,
-                        height: 16.0,
-                        width: 16.0,
-                        color: Themes.kPrimaryColor,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               // Expandable section
               Obx(() => commonController.expandedIndex.value == index

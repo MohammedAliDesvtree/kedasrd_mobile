@@ -360,68 +360,81 @@ class _FastFoodCartState extends State<FastFoodCart> {
                   child: Column(
                     children: [
                       // Title row with tap gesture
-                      GestureDetector(
-                        onTap: () =>
-                            commonController.toggleItemExpansion(index),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                data["title"],
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Themes.kBlackColor,
+                      Row(
+                        children: [
+                          // Clickable section containing status, title, and arrow
+                          Expanded(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior
+                                  .opaque, // Makes the entire row area tappable
+                              onTap: () =>
+                                  commonController.toggleItemExpansion(index),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        data["title"],
+                                        style: const TextStyle(
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                          color: Themes.kBlackColor,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16.0),
+                                    Image.asset(
+                                      Images.downArrow,
+                                      height: 14.0,
+                                      width: 14.0,
+                                      fit: BoxFit.contain,
+                                      color: Themes.kPrimaryColor,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 16.0),
-                            Image.asset(
-                              Images.downArrow,
-                              height: 14.0,
-                              width: 14.0,
-                              fit: BoxFit.contain,
-                              color: Themes.kPrimaryColor,
+                          ),
+                          // Non-clickable price and more options
+                          const SizedBox(width: 16.0),
+                          Obx(
+                            () => CustomQtyView(
+                              screenName: "FastFood Cart",
+                              initialValue: commonController.qtyValues[
+                                  index], // Use index to get specific quantity
+                              onDecrease: () =>
+                                  commonController.updateQuantity(index, false),
+                              onIncrease: () =>
+                                  commonController.updateQuantity(index, true),
                             ),
-                            const SizedBox(width: 16.0),
-                            Obx(
-                              () => CustomQtyView(
-                                screenName: "FastFood Cart",
-                                initialValue: commonController.qtyValues[
-                                    index], // Use index to get specific quantity
-                                onDecrease: () => commonController
-                                    .updateQuantity(index, false),
-                                onIncrease: () => commonController
-                                    .updateQuantity(index, true),
-                              ),
+                          ),
+                          const SizedBox(width: 16.0),
+                          const Text(
+                            "\$500",
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w400,
+                              color: Themes.kBlackColor,
+                              height: 0.0,
                             ),
-                            const SizedBox(width: 16.0),
-                            const Text(
-                              "\$500",
-                              style: TextStyle(
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w400,
-                                color: Themes.kBlackColor,
-                                height: 0.0,
-                              ),
+                          ),
+                          const SizedBox(width: 8.0),
+                          GestureDetector(
+                            onTapDown: (details) => Constants.openPopupMenu(
+                                context,
+                                details,
+                                DummyData.cartSingleItems,
+                                "Regular - Item"),
+                            child: Image.asset(
+                              Images.moreNew,
+                              height: 20.0,
+                              width: 20.0,
+                              color: Themes.kBlackColor,
                             ),
-                            const SizedBox(width: 8.0),
-                            GestureDetector(
-                              onTapDown: (details) => Constants.openPopupMenu(
-                                  context,
-                                  details,
-                                  DummyData.cartSingleItems,
-                                  "Regular - Item"),
-                              child: Image.asset(
-                                Images.moreNew,
-                                height: 20.0,
-                                width: 20.0,
-                                color: Themes.kBlackColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       // Expandable section
                       Obx(() => commonController.expandedIndex.value == index
