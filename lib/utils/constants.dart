@@ -104,31 +104,20 @@ class Constants {
                   msg: 'Are you sure you want to clear the cart?',
                   positiveAction: () => Get.back()));
         } else if (selectedItem.contains("Extra")) {
-          // Constants.openWideDialog(
-          //   context: context,
-          //   title: "Nachitos Ricos",
-          //   hintText: "Item",
-          //   // btnText1: "Add Extra Items",
-          // );
+          Get.toNamed(Routes.ALL_ITEMS, arguments: {"title": "Nachitos Ricos"});
         } else if (selectedItem.contains("Notes")) {
           Constants.openDialog(
-            context: context,
-            title: "Add Notes",
-            btnText1: "Add",
-            child:
-                const CustomTextInput(hintText: "Add Notes", isNumber: false),
-          );
+              context: context,
+              title: "Add Notes",
+              btnText1: "Add",
+              child: const CustomTextInput(
+                  hintText: "Add Notes", isNumber: false));
         } else if (selectedItem.contains("Kitchen")) {
           Constants.showSnackBar(context, "SUCCESS", "Order Sent to Kitchen!");
         } else if (selectedItem.contains("Bar")) {
           Constants.showSnackBar(context, "SUCCESS", "Order Sent to Bar!");
         } else if (selectedItem.contains("Remove")) {
-          // Constants.openWideDialog(
-          //   context: context,
-          //   title: "Remove Item",
-          //   hintText: "Item",
-          //   // btnText1: "Add Formula Items",
-          // );
+          Get.toNamed(Routes.ALL_ITEMS, arguments: {"title": "Remove Item"});
         }
       }
     });

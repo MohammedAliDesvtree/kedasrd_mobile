@@ -54,39 +54,59 @@ class _AllItemsViewState extends State<AllItemsView> {
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
               child: CustomSearchBar(
                   isEnabled: true,
-                  title: data["title"] == "Items"
-                      ? "Search Item"
-                      : "Search Customer"),
+                  title: data["title"] == "Customers"
+                      ? "Search Customer"
+                      : "Search Item"),
             ),
             const SizedBox(height: 16.0),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: List.generate(5, (index) {
-                      // Calculate item width based on orientation
-                      final itemWidth = isPortrait
-                          ? size.width - 32 // Account for padding
-                          : (size.width / 2.2);
+            (data["title"].contains("Ricos") ||
+                    data["title"].contains("Remove"))
+                ? extraRemoveItemsView(size)
+                : Expanded(
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Wrap(
+                          spacing: 8.0,
+                          runSpacing: 8.0,
+                          children: List.generate(5, (index) {
+                            // Calculate item width based on orientation
+                            final itemWidth = isPortrait
+                                ? size.width - 32 // Account for padding
+                                : (size.width / 2.2);
 
-                      return WidgetAnimator(
-                        incomingEffect:
-                            WidgetTransitionEffects.incomingSlideInFromRight(
-                                delay: Duration(milliseconds: index * 200)),
-                        child: data["title"] == "Items"
-                            ? itemView(size, index, itemWidth)
-                            : customerView(size, index, itemWidth),
-                      );
-                    }),
+                            return WidgetAnimator(
+                              incomingEffect: WidgetTransitionEffects
+                                  .incomingSlideInFromRight(
+                                      delay:
+                                          Duration(milliseconds: index * 200)),
+                              child: data["title"] == "Items"
+                                  ? itemView(size, index, itemWidth)
+                                  : customerView(size, index, itemWidth),
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
             const SizedBox(height: 16.0),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget extraRemoveItemsView(Size size) {
+    return Expanded(
+      child: Center(
+        heightFactor: size.height,
+        child: const Text(
+          "No result found!",
+          style: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.w600,
+            color: Themes.kBlackColor,
+          ),
         ),
       ),
     );
@@ -413,6 +433,20 @@ class _AllItemsViewState extends State<AllItemsView> {
                 ),
               ),
             ),
+            if (data["title"].contains("Ricos") ||
+                data["title"].contains("Remove"))
+              GestureDetector(
+                onTap: () {
+                  if (data["title"].contains("Ricos")) {
+                    Constants.showSnackBar(
+                        context, "SUCCESS", "Extra Items Added!");
+                  } else {
+                    Constants.showSnackBar(
+                        context, "SUCCESS", "Formula Items Added!");
+                  }
+                },
+                child: Image.asset(Images.add, height: 14.0),
+              ),
             if (data["title"] == "Items")
               Row(
                 children: [
